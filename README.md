@@ -1,0 +1,1 @@
+# skeniraj-pogledaj-skeniraj-plati
