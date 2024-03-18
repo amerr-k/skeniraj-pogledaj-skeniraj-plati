@@ -45,6 +45,12 @@ namespace SPSP.Controllers
             return await service.PutReservationOnHold(create);
         }
 
+        [HttpPost("pendingConfirmation")]
+        public virtual async Task<Models.Reservation> SwitchToPendingConfirmation(int id)
+        {
+            return await service.SwitchToPendingConfirmation(id);
+        }
+
         [HttpGet("{id}/allowedActions")]
         public virtual async Task<List<string>> GetAllowedActions(int id)
         {

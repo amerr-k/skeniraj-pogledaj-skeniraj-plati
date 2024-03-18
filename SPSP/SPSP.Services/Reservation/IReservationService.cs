@@ -9,9 +9,10 @@ namespace SPSP.Services.Reservation
     public interface IReservationService
         : ICRUDService<Models.Reservation, BaseSearchObject, ReservationCreateRequest, ReservationUpdateRequest>
     {
-        public Task<Models.Reservation> ConfirmReservation(int id);
-        public Task<Models.Reservation> CancelReservation(int id);
-        public Task<Models.Reservation> PutReservationOnHold(ReservationCreateRequest create);
-        public Task<List<string>> GetAllowedActions(int id);
+        Task<Models.Reservation> ConfirmReservation(int id);
+        Task<Models.Reservation> CancelReservation(int id);
+        Task<Models.Reservation> PutReservationOnHold(ReservationCreateRequest create);
+        Task<List<string>> GetAllowedActions(int id);
+        Task<Models.Reservation> SwitchToPendingConfirmation(int id);
     }
 }

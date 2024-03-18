@@ -43,10 +43,19 @@ namespace SPSP.Services.Reservation.StateMachine
             return mapper.Map<Models.Reservation>(entity);
         }
 
+        public override async Task<Models.Reservation> Update(Database.Reservation dbEntity, ReservationUpdateRequest update)
+        {
+            mapper.Map(update, dbEntity);
+
+            await context.SaveChangesAsync();
+
+            return mapper.Map<Models.Reservation>(dbEntity);
+        }
+
         public override async Task<List<string>> GetAllowedActions()
         {
             var allowedActions = await base.GetAllowedActions();
-            allowedActions.AddRange(new List<string> { "CancelReservation" , "SwitchToPendingConfirmation" }); //mogu li se ovdje staviti create i put on hold ili cu u create-u radit provjeru?
+            allowedActions.AddRange(new List<string> { "CancelReservation" , "SwitchToPendingConfirmation", "Update" }); //mogu li se ovdje staviti create i put on hold ili cu u create-u radit provjeru?
             return allowedActions;
         }
     }

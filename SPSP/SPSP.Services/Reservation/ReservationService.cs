@@ -27,7 +27,7 @@ namespace SPSP.Services.Reservation
 
         public async Task<Models.Reservation> PutReservationOnHold(ReservationCreateRequest create)
         {
-            var state = baseState.CreateState("ON_HOLD");
+            var state = baseState.CreateState("INITIAL");
 
             return await state.PutReservationOnHold(create);
         }
@@ -67,5 +67,13 @@ namespace SPSP.Services.Reservation
             return await state.CancelReservation(id);
         }
 
+        public async Task<Models.Reservation> SwitchToPendingConfirmation(int id)
+        {
+            var entity = await context.Reservations.FindAsync(id);
+
+            var state = baseState.CreateState(entity?.Status);
+
+            return await state.SwitchToPendingConfirmation(id);
+        }
     }
 }
