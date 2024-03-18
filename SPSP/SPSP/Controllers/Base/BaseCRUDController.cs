@@ -6,23 +6,23 @@ using System.Threading.Tasks;
 namespace SPSP.Controllers.Base
 {
     [Route("[controller]")]
-    public class BaseCRUDController<T, TSearch, TInsert, TUpdate> 
+    public class BaseCRUDController<T, TSearch, TCreate, TUpdate> 
         : BaseController<T, TSearch> 
-        where T : class where TSearch : class where TInsert : class where TUpdate : class
+        where T : class where TSearch : class where TCreate : class where TUpdate : class
     {
-        protected readonly ILogger<BaseCRUDController<T, TSearch, TInsert, TUpdate>> logger; //logger nam ovdje sad za sad ne treba, jer ga već ima u nasljedjenom BaseControlleru
-        protected new readonly ICRUDService<T, TSearch, TInsert, TUpdate> service;
+        protected readonly ILogger<BaseCRUDController<T, TSearch, TCreate, TUpdate>> logger; //logger nam ovdje sad za sad ne treba, jer ga već ima u nasljedjenom BaseControlleru
+        protected new readonly ICRUDService<T, TSearch, TCreate, TUpdate> service;
 
-        public BaseCRUDController(ILogger<BaseCRUDController<T, TSearch, TInsert, TUpdate>> logger, ICRUDService<T, TSearch, TInsert, TUpdate> service)
+        public BaseCRUDController(ILogger<BaseCRUDController<T, TSearch, TCreate, TUpdate>> logger, ICRUDService<T, TSearch, TCreate, TUpdate> service)
             : base(logger, service)
         {
             this.service = service;
         }
 
         [HttpPost]
-        public async Task<T> Insert([FromBody]TInsert insert)
+        public async Task<T> Create([FromBody]TCreate create)
         {
-            return await service.Insert(insert);
+            return await service.Create(create);
         }
 
         [HttpPut("{id}")]

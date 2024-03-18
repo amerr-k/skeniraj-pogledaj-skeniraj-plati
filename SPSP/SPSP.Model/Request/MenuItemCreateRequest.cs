@@ -1,6 +1,6 @@
 ﻿namespace SPSP.Services
 {
-    public class MenuItemInsertRequest
+    public class MenuItemCreateRequest
     {
         public int MenuId { get; set; }
         public int? CategoryId { get; set; }

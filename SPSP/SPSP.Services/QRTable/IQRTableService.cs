@@ -5,7 +5,7 @@ using SPSP.Services.Base;
 namespace SPSP.Services.QRTable
 {
     public interface IQRTableService 
-        : ICRUDService<Models.QRTable, BaseSearchObject, QRTableInsertRequest, QRTableUpdateRequest>
+        : ICRUDService<Models.QRTable, BaseSearchObject, QRTableCreateRequest, QRTableUpdateRequest>
     {
 
     }

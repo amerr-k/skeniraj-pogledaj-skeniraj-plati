@@ -2,7 +2,7 @@
 
 namespace SPSP.Services
 {
-    public class OrderInsertRequest
+    public class OrderCreateRequest
     {
 
         public int? CustomerId { get; set; }

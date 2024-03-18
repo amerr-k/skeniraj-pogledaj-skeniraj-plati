@@ -21,6 +21,7 @@ using SPSP.Services.Order;
 using SPSP.Services.Reservation;
 
 using SPSP.Services.Base;
+using SPSP.Services.Reservation.StateMachine;
 
 namespace SPSP
 {
@@ -64,6 +65,11 @@ namespace SPSP
             services.AddTransient<IQRTableService, QRTableService>();
             services.AddTransient<IReservationService, ReservationService>();
 
+            services.AddTransient<BaseState>();
+            services.AddTransient<InitialReservationState>();
+            services.AddTransient<PendingConfirmationReservationState>();
+            services.AddTransient<ConfirmedReservationState>();
+            services.AddTransient<OnHoldReservationState>();
 
             services.AddControllers();
             services.AddSwaggerGen(c =>

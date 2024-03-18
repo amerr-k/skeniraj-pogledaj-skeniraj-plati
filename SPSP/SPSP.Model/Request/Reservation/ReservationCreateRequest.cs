@@ -1,22 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-#nullable disable
-
-namespace SPSP.Services.Database
+namespace SPSP.Models.Request.Reservation
 {
-    public partial class Reservation
+    public class ReservationCreateRequest
     {
-        public int Id { get; set; }
         public int QRTableId { get; set; }
         public int CustomerId { get; set; }
         public string ContactInfo { get; set; }
         public string? SpecialRequest { get; set; }
         public DateTime StartTime { get; set; }
         public DateTime? EndTime { get; set; }
-        public string Status { get; set; }
-        public bool? Valid { get; set; }
-        public virtual QRTable QRTable { get; set; }
-        public virtual Customer Customer { get; set; }
+        //public string? Status { get; set; }
     }
 }

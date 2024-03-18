@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SPSP.Models.Request.QRTable
 {
-    public class QRTableInsertRequest
+    public class QRTableCreateRequest
     {
         public string QRCode { get; set; }
         public int? TableNumber { get; set; }

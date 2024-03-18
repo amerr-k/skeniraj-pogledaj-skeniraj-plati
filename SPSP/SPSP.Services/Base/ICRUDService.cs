@@ -2,13 +2,13 @@
 
 namespace SPSP.Services.Base
 {
-    public interface ICRUDService<T, TSearch, TInsert, TUpdate> 
+    public interface ICRUDService<T, TSearch, TCreate, TUpdate> 
         : IService<T, TSearch> 
         where TSearch : class 
-        where TInsert : class 
+        where TCreate : class 
         where TUpdate : class
     {
-        Task<T> Insert(TInsert insert);
+        Task<T> Create(TCreate create);
         Task<T> Update(int id, TUpdate update);
     }
 }

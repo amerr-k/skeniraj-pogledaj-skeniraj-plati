@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace SPSP.Services.Base
 {
-    public class BaseCRUDService<T, TDb, TSearch, TInsert, TUpdate> 
+    public class BaseCRUDService<T, TDb, TSearch, TCreate, TUpdate> 
         : BaseService<T, TDb, TSearch> 
         where TDb : class where T : class 
         where TSearch : BaseSearchObject
@@ -17,20 +17,20 @@ namespace SPSP.Services.Base
 
         }
 
-        public virtual async Task PrepareBeforeInsert(TDb db, TInsert insert)
+        public virtual async Task PrepareBeforeInsert(TDb db, TCreate create)
         {
             
         }
 
-        public virtual async Task<T> Insert(TInsert insert)
+        public virtual async Task<T> Create(TCreate create)
         {
             var set = context.Set<TDb>();
 
-            var entity = mapper.Map<TDb>(insert);
+            var entity = mapper.Map<TDb>(create);
 
             set.Add(entity);
 
-            await PrepareBeforeInsert(entity, insert);
+            await PrepareBeforeInsert(entity, create);
 
             await context.SaveChangesAsync();
 

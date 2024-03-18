@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-
+using SPSP.Models.Request.Reservation;
 
 namespace SPSP.Services.Configurations
 {
@@ -12,7 +12,7 @@ namespace SPSP.Services.Configurations
             CreateMap<Database.Menu, Models.Menu>();
 
             CreateMap<Database.MenuItem, Models.MenuItem>();
-            CreateMap<MenuItemInsertRequest, Database.MenuItem>();
+            CreateMap<MenuItemCreateRequest, Database.MenuItem>();
             CreateMap<MenuItemUpdateRequest, Database.MenuItem>();
 
             CreateMap<Database.Order, Models.Order>();
@@ -23,6 +23,8 @@ namespace SPSP.Services.Configurations
             CreateMap<Database.QRTable, Models.QRTable>();
 
             CreateMap<Database.Reservation, Models.Reservation>();
+            CreateMap<ReservationCreateRequest, Database.Reservation>();
+            CreateMap<ReservationUpdateRequest, Database.Reservation>();
 
         }
     }

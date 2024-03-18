@@ -10,15 +10,14 @@ namespace SPSP.Controllers
 {
     [ApiController] // mora ostati u konkretnom kontroleru zbog swaggera
     public class MenuItemController
-        : BaseCRUDController<Models.MenuItem, MenuItemSearchObject, MenuItemInsertRequest, MenuItemUpdateRequest>
+        : BaseCRUDController<Models.MenuItem, MenuItemSearchObject, MenuItemCreateRequest, MenuItemUpdateRequest>
     {
 
-        public MenuItemController(ILogger<BaseCRUDController<MenuItem, MenuItemSearchObject, MenuItemInsertRequest, MenuItemUpdateRequest>> logger,
+        public MenuItemController(ILogger<BaseCRUDController<MenuItem, MenuItemSearchObject, MenuItemCreateRequest, MenuItemUpdateRequest>> logger,
             IMenuItemService service)
             : base(logger, service)
         {
  
         }
-
     }
 }

@@ -26,6 +26,7 @@ namespace SPSP.Services.Database
         public virtual DbSet<QRTable> QRTables { get; set; }
         public virtual DbSet<SchemaVersion> SchemaVersions { get; set; }
         public virtual DbSet<UserAccount> UserAccounts { get; set; }
+        public virtual DbSet<Reservation> Reservations { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -240,6 +241,20 @@ namespace SPSP.Services.Database
                 entity.Property(e => e.Password).HasMaxLength(255);
 
                 entity.Property(e => e.Username).HasMaxLength(255);
+
+                entity.Property(e => e.Valid)
+                    .IsRequired()
+                    .HasDefaultValueSql("((1))");
+            });
+
+            modelBuilder.Entity<Reservation>(entity =>
+            {
+                entity.ToTable("Reservation");
+
+
+                entity.Property(e => e.StartTime)
+                    .HasColumnType("datetime2")
+                    .IsRequired();
 
                 entity.Property(e => e.Valid)
                     .IsRequired()
