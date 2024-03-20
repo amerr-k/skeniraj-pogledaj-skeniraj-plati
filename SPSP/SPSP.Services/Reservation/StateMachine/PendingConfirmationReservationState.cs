@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
+using Microsoft.Extensions.Logging;
 using SPSP.Models.Request.Reservation;
 using SPSP.Services.Database;
+using SPSP.Services.Reservation.StateMachine.Generics;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -10,9 +12,15 @@ namespace SPSP.Services.Reservation.StateMachine
     public class PendingConfirmationReservationState
         : BaseState
     {
-        public PendingConfirmationReservationState(IServiceProvider serviceProvider, DataDbContext context, IMapper mapper)
+        protected ILogger<PendingConfirmationReservationState> logger;
+        public PendingConfirmationReservationState(
+            ILogger<PendingConfirmationReservationState> logger,
+            IServiceProvider serviceProvider,
+            DataDbContext context,
+            IMapper mapper)
             : base(serviceProvider, context, mapper)
         {
+            this.logger = logger;
         }
 
         public override async Task<Models.Reservation> Update(Database.Reservation dbEntity, ReservationUpdateRequest update)
@@ -32,6 +40,8 @@ namespace SPSP.Services.Reservation.StateMachine
 
         public override async Task<Models.Reservation> ConfirmReservation(int id)
         {
+            logger.LogInformation($"Konfirmacija rezervacije id: {id}");
+
             var set = context.Set<Database.Reservation>();
 
             var entity = await set.FindAsync(id);

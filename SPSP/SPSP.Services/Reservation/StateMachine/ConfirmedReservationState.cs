@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using SPSP.Services.Database;
+using SPSP.Services.Reservation.StateMachine.Generics;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;

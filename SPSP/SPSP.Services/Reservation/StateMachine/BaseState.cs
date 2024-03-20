@@ -7,6 +7,7 @@ using AutoMapper;
 using SPSP.Models.Request.Reservation;
 using SPSP.Services.Database;
 using Microsoft.Extensions.DependencyInjection;
+using SPSP.Models;
 
 namespace SPSP.Services.Reservation.StateMachine
 {
@@ -25,30 +26,30 @@ namespace SPSP.Services.Reservation.StateMachine
 
         public virtual Task<Models.Reservation> Create(ReservationCreateRequest create)
         {
-            throw new Exception("Not allowed");
+            throw new AppException("Not allowed");
         }
 
         public virtual Task<Models.Reservation> PutReservationOnHold(ReservationCreateRequest create)
         {
-            throw new Exception("Not allowed");
+            throw new AppException("Not allowed");
         }
 
         public virtual Task<Models.Reservation> Update(Database.Reservation dbEntity, ReservationUpdateRequest update)
         {
-            throw new Exception("Not allowed");
+            throw new AppException("Not allowed");
         }
 
         public virtual Task<Models.Reservation> ConfirmReservation(int id)
         {
-            throw new Exception("Not allowed");
+            throw new AppException("Not allowed");
         }
         public virtual Task<Models.Reservation> SwitchToPendingConfirmation(int id)
         {
-            throw new Exception("Not allowed");
+            throw new AppException("Not allowed");
         }
         public virtual Task<Models.Reservation> CancelReservation(int id)
         {
-            throw new Exception("Not allowed");
+            throw new AppException("Not allowed");
         }
 
         public BaseState CreateState(string stateName)
@@ -66,7 +67,7 @@ namespace SPSP.Services.Reservation.StateMachine
                 case "PENDING_CONFIRMATION":
                     return serviceProvider.GetService<PendingConfirmationReservationState>();
                 default:
-                    throw new Exception("Not Allowed");
+                    throw new AppException("Not Allowed");
             }
         }
 

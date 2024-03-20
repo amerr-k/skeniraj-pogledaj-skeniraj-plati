@@ -19,9 +19,11 @@ using SPSP.Services.Menu;
 using SPSP.Services.MenuItem;
 using SPSP.Services.Order;
 using SPSP.Services.Reservation;
-
 using SPSP.Services.Base;
 using SPSP.Services.Reservation.StateMachine;
+using SPSP.Filters;
+using SPSP.Services.Reservation.StateMachine.Generics;
+using Microsoft.AspNetCore.Authentication;
 
 namespace SPSP
 {
@@ -49,15 +51,19 @@ namespace SPSP
             //var mapper = new Mapper(mappingConfig);
             //services.AddSingleton(mapper);
 
-            services.AddSingleton<IMapper>(sp => new Mapper(new MapperConfiguration(cfg => {
-                cfg.AddProfile<MappingProfile>(); 
+            services.AddSingleton<IMapper>(sp => new Mapper(new MapperConfiguration(cfg =>
+            {
+                cfg.AddProfile<MappingProfile>();
             }), sp.GetService));
+
+            services.AddAuthentication("BasicAuthentication")
+                .AddScheme<AuthenticationSchemeOptions, BasicAuthenticationHandler>("BasicAuthentication", null);
 
 
             services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddTransient<IMenuItemService, MenuItemService>();
             services.AddTransient
-                <IService<Models.Business, BaseSearchObject>, 
+                <IService<Models.Business, BaseSearchObject>,
                 BaseService<Models.Business, Business, BaseSearchObject>>();
             services.AddTransient<IMenuService, MenuService>();
             services.AddTransient<IOrderService, OrderService>();
@@ -71,9 +77,32 @@ namespace SPSP
             services.AddTransient<ConfirmedReservationState>();
             services.AddTransient<OnHoldReservationState>();
 
-            services.AddControllers();
+            //services.AddTransient<ICancelReservationMethod, CancelReservationMethod>();
+
+            services.AddControllers(x =>
+            {
+                x.Filters.Add<ErrorFilter>();
+            });
+
             services.AddSwaggerGen(c =>
             {
+                c.AddSecurityDefinition("basicAuth", new Microsoft.OpenApi.Models.OpenApiSecurityScheme()
+                {
+                    Type = Microsoft.OpenApi.Models.SecuritySchemeType.Http,
+                    Scheme = "basic"
+                });
+
+                c.AddSecurityRequirement(new Microsoft.OpenApi.Models.OpenApiSecurityRequirement()
+                {
+                    {
+                        new OpenApiSecurityScheme
+                        {
+                            Reference = new OpenApiReference{Type = ReferenceType.SecurityScheme, Id = "basicAuth"}
+                        },
+                        new string[]{}
+                    }
+                });
+
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "SPSP", Version = "v1" });
             });
 
@@ -90,29 +119,30 @@ namespace SPSP
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "SPSP v1"));
 
-                var connectionString = Configuration.GetConnectionString("LocalDb");
-                var scriptsFolderPath = Configuration["ScriptsPath"];
+                //var connectionString = Configuration.GetConnectionString("LocalDb");
+                //var scriptsFolderPath = Configuration["ScriptsPath"];
 
-                EnsureDatabase.For.SqlDatabase(connectionString);
+                //EnsureDatabase.For.SqlDatabase(connectionString);
 
-                var upgrader = DeployChanges.To
-                    .SqlDatabase(connectionString)
-                    .WithScriptsFromFileSystem(scriptsFolderPath)
-                    .LogToConsole()
-                    .Build();
+                //var upgrader = DeployChanges.To
+                //    .SqlDatabase(connectionString)
+                //    .WithScriptsFromFileSystem(scriptsFolderPath)
+                //    .LogToConsole()
+                //    .Build();
 
-                var result = upgrader.PerformUpgrade();
+                //var result = upgrader.PerformUpgrade();
 
-                if (!result.Successful)
-                {
-                    throw new Exception("Database migration failed!", result.Error);
-                }
+                //if (!result.Successful)
+                //{
+                //    throw new Exception("Database migration failed!", result.Error);
+                //}
             }
 
             app.UseHttpsRedirection();
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

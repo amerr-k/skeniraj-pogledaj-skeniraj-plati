@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using SPSP.Models;
 using SPSP.Services.Base;
@@ -7,6 +8,7 @@ using System.Threading.Tasks;
 namespace SPSP.Controllers.Base
 {
     [Route("[controller]")]
+    [Authorize]
     public class BaseController<T, TSearch> 
         : ControllerBase 
         where T : class where TSearch : class

@@ -9,7 +9,9 @@ using System.Collections.Generic;
 
 namespace SPSP.Services.Reservation
 {
-    public class ReservationService : BaseCRUDService<Models.Reservation, Database.Reservation, BaseSearchObject, ReservationCreateRequest, ReservationUpdateRequest>, IReservationService
+    public class ReservationService 
+        : BaseCRUDService<Models.Reservation, Database.Reservation, BaseSearchObject, ReservationCreateRequest, ReservationUpdateRequest>,
+          IReservationService
     {
         public BaseState baseState { get; set; }
         public ReservationService(BaseState baseState, DataDbContext context, IMapper mapper) 
