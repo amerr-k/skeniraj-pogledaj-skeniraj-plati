@@ -14,5 +14,6 @@ namespace SPSP.Models
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public bool? Valid { get; set; }
+        public virtual ICollection<UserAccountUserRole> UserAccountUserRoles { get; } = new List<UserAccountUserRole>();
     }
 }

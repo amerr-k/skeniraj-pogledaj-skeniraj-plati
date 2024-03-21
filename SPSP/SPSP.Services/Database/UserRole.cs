@@ -5,11 +5,11 @@ using System.Collections.Generic;
 
 namespace SPSP.Services.Database
 {
-    public partial class Category
+    public partial class UserRole
     {
-        public Category()
+        public UserRole()
         {
-            MenuItems = new HashSet<MenuItem>();
+            UserAccountUserRoles = new HashSet<UserAccountUserRole>();
         }
 
         public int Id { get; set; }
@@ -17,6 +17,6 @@ namespace SPSP.Services.Database
         public string Name { get; set; }
         public bool? Valid { get; set; }
 
-        public virtual ICollection<MenuItem> MenuItems { get; set; }
+        public virtual ICollection<UserAccountUserRole> UserAccountUserRoles { get; set; }
     }
 }

@@ -24,6 +24,9 @@ using SPSP.Services.Reservation.StateMachine;
 using SPSP.Filters;
 using SPSP.Services.Reservation.StateMachine.Generics;
 using Microsoft.AspNetCore.Authentication;
+using SPSP.Services.UserAccount;
+using SPSP.Services.Customer;
+using SPSP.Services.Employee;
 
 namespace SPSP
 {
@@ -61,7 +64,11 @@ namespace SPSP
 
 
             services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-            services.AddTransient<IMenuItemService, MenuItemService>();
+            services.AddTransient<IUserAccountService, UserAccountService>();
+            services.AddTransient<ICustomerService, CustomerService>();
+            services.AddTransient<IEmployeeService, EmployeeService>();
+
+
             services.AddTransient
                 <IService<Models.Business, BaseSearchObject>,
                 BaseService<Models.Business, Business, BaseSearchObject>>();
@@ -81,7 +88,7 @@ namespace SPSP
 
             services.AddControllers(x =>
             {
-                x.Filters.Add<ErrorFilter>();
+                //x.Filters.Add<ErrorFilter>();
             });
 
             services.AddSwaggerGen(c =>
@@ -105,9 +112,6 @@ namespace SPSP
 
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "SPSP", Version = "v1" });
             });
-
-
-
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -149,6 +153,17 @@ namespace SPSP
             {
                 endpoints.MapControllers();
             });
+
+            using (var scope = app.ApplicationServices.CreateScope())
+            {
+                var dataContext = scope.ServiceProvider.GetRequiredService<DataDbContext>();
+                //dataContext.Database.EnsureCreated();
+
+                var conn = dataContext.Database.GetConnectionString();
+
+                dataContext.Database.Migrate();
+
+            }
         }
     }
 }

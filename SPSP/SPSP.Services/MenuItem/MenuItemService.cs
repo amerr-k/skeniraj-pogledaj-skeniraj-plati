@@ -21,7 +21,7 @@ namespace SPSP.Services.MenuItem
             //obzirom da smo pozvali base() ne potrebno je ovdje dodavati i deklarisati context i mapper i funkcije
         }
 
-        public override async Task PrepareBeforeInsert(Database.MenuItem entity, MenuItemCreateRequest insert)
+        public override async Task PrepareBeforeCreate(Database.MenuItem entity, MenuItemCreateRequest insert)
         {
             //URADI NESTO SPECIFICNO ZA MENU ITEM SERVICE NPR DODAJ U ATRIBUT
         }

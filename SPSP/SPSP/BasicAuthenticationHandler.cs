@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using SPSP.Services.UserAccount;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,8 +15,10 @@ namespace SPSP
 {
     public class BasicAuthenticationHandler : AuthenticationHandler<AuthenticationSchemeOptions>
     {
-        public BasicAuthenticationHandler(IOptionsMonitor<AuthenticationSchemeOptions> options, ILoggerFactory logger, UrlEncoder encoder, ISystemClock clock) : base(options, logger, encoder, clock)
+        IUserAccountService userAccountService;
+        public BasicAuthenticationHandler(IUserAccountService userAccountService, IOptionsMonitor<AuthenticationSchemeOptions> options, ILoggerFactory logger, UrlEncoder encoder, ISystemClock clock) : base(options, logger, encoder, clock)
         {
+            this.userAccountService = userAccountService;
         }
 
         protected override async Task<AuthenticateResult> HandleAuthenticateAsync()
@@ -27,19 +30,36 @@ namespace SPSP
 
             var authHeader = AuthenticationHeaderValue.Parse(Request.Headers["Authorization"]);
             var credentialsBytes = Convert.FromBase64String(authHeader.Parameter);
-            var credentials = Encoding.UTF8.GetString(credentialsBytes);
+            var credentials = Encoding.UTF8.GetString(credentialsBytes).Split(':');
 
             var username = credentials[0];
             var password = credentials[1];
 
-            if(username == null || password == null)
+            var user = await userAccountService.Login(username, password);
+
+            if (user == null)
             {
                 return AuthenticateResult.Fail("Incorrect username or password");
             }
             else
             {
-                var identity = new ClaimsIdentity();
+
+
+                var claims = new List<Claim>()
+                {
+                    new Claim(ClaimTypes.Name, user.FirstName),
+                    new Claim(ClaimTypes.NameIdentifier, user.Username)
+                };
+
+                foreach (var role in user.UserAccountUserRoles)
+                {
+                    claims.Add(new Claim(ClaimTypes.Role, role.UserRole.Name));
+                }
+
+                var identity = new ClaimsIdentity(claims, Scheme.Name);
+
                 var principal = new ClaimsPrincipal(identity);
+
                 var ticket = new AuthenticationTicket(principal, Scheme.Name);
                 return AuthenticateResult.Success(ticket);
             }

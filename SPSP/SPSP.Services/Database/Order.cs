@@ -10,18 +10,25 @@ namespace SPSP.Services.Database
         public Order()
         {
             OrderItems = new HashSet<OrderItem>();
+            SaleInvoices = new HashSet<SaleInvoice>();
         }
 
         public int Id { get; set; }
         public int? CustomerId { get; set; }
-        public int? EmployeeId { get; set; }
-        public DateTime OrderDate { get; set; }
+        public int PurchaseInvoiceId { get; set; }
+        public int MenuItemId { get; set; }
+        public DateTime OrderDateTime { get; set; }
         public decimal? TotalAmount { get; set; }
+        public decimal TotalAmountWithVAT { get; set; }
+        public decimal? VAT { get; set; }
+        public decimal? VATAmount { get; set; }
         public string Status { get; set; }
+        public int QRTableId { get; set; }
         public bool? Valid { get; set; }
 
         public virtual Customer Customer { get; set; }
-        public virtual Employee Employee { get; set; }
+        public virtual QRTable QRTable { get; set; }
         public virtual ICollection<OrderItem> OrderItems { get; set; }
+        public virtual ICollection<SaleInvoice> SaleInvoices { get; set; }
     }
 }

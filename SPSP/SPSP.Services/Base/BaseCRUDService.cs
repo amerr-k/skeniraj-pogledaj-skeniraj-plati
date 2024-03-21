@@ -17,20 +17,21 @@ namespace SPSP.Services.Base
 
         }
 
-        public virtual async Task PrepareBeforeInsert(TDb db, TCreate create)
+        public virtual async Task PrepareBeforeCreate(TDb db, TCreate create)
         {
             
         }
 
         public virtual async Task<T> Create(TCreate create)
         {
+
             var set = context.Set<TDb>();
 
             var entity = mapper.Map<TDb>(create);
 
             set.Add(entity);
 
-            await PrepareBeforeInsert(entity, create);
+            await PrepareBeforeCreate(entity, create);
 
             await context.SaveChangesAsync();
 

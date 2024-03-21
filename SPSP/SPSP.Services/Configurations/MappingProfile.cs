@@ -1,5 +1,8 @@
 ﻿using AutoMapper;
+using SPSP.Models.Request.Customer;
+using SPSP.Models.Request.Employee;
 using SPSP.Models.Request.Reservation;
+using SPSP.Models.Request.UserAccount;
 
 namespace SPSP.Services.Configurations
 {
@@ -25,6 +28,18 @@ namespace SPSP.Services.Configurations
             CreateMap<Database.Reservation, Models.Reservation>();
             CreateMap<ReservationCreateRequest, Database.Reservation>();
             CreateMap<ReservationUpdateRequest, Database.Reservation>();
+
+            CreateMap<Database.Employee, Models.Employee>();
+            CreateMap<EmployeeCreateRequest, Database.Employee>();
+            CreateMap<EmployeeUpdateRequest, Database.Employee>();
+
+            CreateMap<Database.Customer, Models.Customer>();
+            CreateMap<CustomerCreateRequest, Database.Customer>();
+            CreateMap<CustomerUpdateRequest, Database.Customer>();
+
+            CreateMap<Database.UserAccount, Models.UserAccount>();
+            CreateMap<UserAccountCreateRequest, Database.UserAccount>();
+            CreateMap<UserAccountUpdateRequest, Database.UserAccount>();
 
         }
     }

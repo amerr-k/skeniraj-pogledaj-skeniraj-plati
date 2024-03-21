@@ -9,14 +9,18 @@ namespace SPSP.Services.Database
     {
         public Employee()
         {
-            Orders = new HashSet<Order>();
+            PurchaseInvoices = new HashSet<PurchaseInvoice>();
+            SaleInvoices = new HashSet<SaleInvoice>();
         }
 
         public int Id { get; set; }
         public int UserAccountId { get; set; }
-        public bool IsAdmin { get; set; }
+        public int BusinessId { get; set; }
         public bool? Valid { get; set; }
+
+        public virtual Business Business { get; set; }
         public virtual UserAccount UserAccount { get; set; }
-        public virtual ICollection<Order> Orders { get; set; }
+        public virtual ICollection<PurchaseInvoice> PurchaseInvoices { get; set; }
+        public virtual ICollection<SaleInvoice> SaleInvoices { get; set; }
     }
 }
