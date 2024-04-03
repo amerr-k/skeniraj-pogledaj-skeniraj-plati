@@ -14,7 +14,6 @@ namespace SPSP.Services.Database
         }
 
         public int Id { get; set; }
-        public int BusinessId { get; set; }
         public string QRCode { get; set; }
         public int? TableNumber { get; set; }
         public int? Capacity { get; set; }
@@ -22,7 +21,6 @@ namespace SPSP.Services.Database
         public bool IsTaken { get; set; }
         public bool? Valid { get; set; }
 
-        public virtual Business Business { get; set; }
         public virtual ICollection<Order> Orders { get; set; }
         public virtual ICollection<Reservation> Reservations { get; set; }
     }

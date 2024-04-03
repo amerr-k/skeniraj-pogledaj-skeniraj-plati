@@ -6,6 +6,7 @@ using SPSP.Services.Database;
 using System.Linq;
 using System.Threading.Tasks;
 using SPSP.Services.Base;
+using SPSP.Models.Request.MenuItem;
 
 namespace SPSP.Services.MenuItem
 {
@@ -37,11 +38,24 @@ namespace SPSP.Services.MenuItem
 
             if (!string.IsNullOrWhiteSpace(search?.FTS))
             {
-                query = query.Where(x => x.Name.Contains(search.FTS));
+                query = query.Where(x => x.Name.Contains(search.FTS) || x.Code.Contains(search.FTS) || x.Description.Contains(search.FTS));
             }
 
             return base.AddFilter(query, search);
         }
 
+        public override IQueryable<Database.MenuItem> AddInclude(IQueryable<Database.MenuItem> query, MenuItemSearchObject search = null)
+        {
+            if (search.IsCategoryIncluded == true)
+            {
+                query = query.Include(x => x.Category);
+            }
+            if (search.IsMenuIncluded == true)
+            {
+                query = query.Include(x => x.Menu);
+            }
+
+            return base.AddInclude(query, search);
+        }
     }
 }

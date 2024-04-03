@@ -15,10 +15,8 @@ namespace SPSP.Services.Database
 
         public int Id { get; set; }
         public int UserAccountId { get; set; }
-        public int BusinessId { get; set; }
         public bool? Valid { get; set; }
 
-        public virtual Business Business { get; set; }
         public virtual UserAccount UserAccount { get; set; }
         public virtual ICollection<PurchaseInvoice> PurchaseInvoices { get; set; }
         public virtual ICollection<SaleInvoice> SaleInvoices { get; set; }

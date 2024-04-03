@@ -5,9 +5,15 @@ VisualStudioVersion = 17.9.34714.143
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SPSP", "SPSP\SPSP.csproj", "{674895E6-1BED-4947-B22F-4A88A6B1010D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SPSP.Models", "SPSP.Models\SPSP.Models.csproj", "{6B1812EF-AD03-4FFD-8E39-BE049A7DE2AC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SPSP.Models", "SPSP.Models\SPSP.Models.csproj", "{6B1812EF-AD03-4FFD-8E39-BE049A7DE2AC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SPSP.Services", "SPSP.Services\SPSP.Services.csproj", "{785E87DD-E8B2-429D-B2FF-F28A2AC5D35D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SPSP.Services", "SPSP.Services\SPSP.Services.csproj", "{785E87DD-E8B2-429D-B2FF-F28A2AC5D35D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{DD3D3468-8BC1-4B74-8769-3FA85BF7D576}"
+	ProjectSection(SolutionItems) = preProject
+		docker-compose.yml = docker-compose.yml
+		Dockerfile = Dockerfile
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

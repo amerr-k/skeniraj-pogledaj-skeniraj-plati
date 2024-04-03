@@ -15,6 +15,8 @@ using SPSP.Services.Order;
 using SPSP.Services.QRTable;
 using SPSP.Services.Reservation;
 using SPSP.Services.UserAccount;
+using SPSP.Services.MenuItem;
+using SPSP.Services.OrderItem;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -26,11 +28,13 @@ builder.Services.AddTransient<ICustomerService, CustomerService>();
 builder.Services.AddTransient<IEmployeeService, EmployeeService>();
 
 
-builder.Services.AddTransient
-    <IService<SPSP.Models.Business, BaseSearchObject>,
-    BaseService<SPSP.Models.Business, Business, BaseSearchObject>>();
+//builder.Services.AddTransient
+//    <IService<SPSP.Models.Business, BaseSearchObject>,
+//    BaseService<SPSP.Models.Business, Business, BaseSearchObject>>();
 builder.Services.AddTransient<IMenuService, MenuService>();
+builder.Services.AddTransient<IMenuItemService, MenuItemService>();
 builder.Services.AddTransient<IOrderService, OrderService>();
+builder.Services.AddTransient<IOrderItemService, OrderItemService>();
 builder.Services.AddTransient<ICategoryService, CategoryService>();
 builder.Services.AddTransient<IQRTableService, QRTableService>();
 builder.Services.AddTransient<IReservationService, ReservationService>();
@@ -44,7 +48,7 @@ builder.Services.AddTransient<OnHoldReservationState>();
 
 builder.Services.AddControllers(x =>
 {
-    x.Filters.Add<ErrorFilter>();
+    //x.Filters.Add<ErrorFilter>();
 });
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -102,8 +106,6 @@ using (var scope = app.Services.CreateScope())
     var conn = dataContext.Database.GetConnectionString();
 
     dataContext.Database.Migrate();
-
-
 }
 
 app.Run();

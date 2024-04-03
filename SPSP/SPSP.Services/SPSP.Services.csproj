@@ -28,9 +28,5 @@
   <ItemGroup>
     <ProjectReference Include="..\SPSP.Models\SPSP.Models.csproj" />
   </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Database\" />
-  </ItemGroup>
   
 </Project>

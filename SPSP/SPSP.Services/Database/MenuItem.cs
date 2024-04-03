@@ -22,7 +22,9 @@ namespace SPSP.Services.Database
         public string Description { get; set; }
         public decimal? Price { get; set; }
         public bool? Valid { get; set; }
-
+        public int InStorage { get; set; }
+        public byte[]? Image { get; set; }
+        public byte[]? ImageThumb { get; set; }
         public virtual Category Category { get; set; }
         public virtual Menu Menu { get; set; }
         public virtual ICollection<OrderItem> OrderItems { get; set; }

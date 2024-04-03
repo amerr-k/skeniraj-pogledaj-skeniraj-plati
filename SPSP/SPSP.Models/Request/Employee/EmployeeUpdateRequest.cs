@@ -11,6 +11,5 @@ namespace SPSP.Models.Request.Employee
     public class EmployeeUpdateRequest
     {
         public UserAccountUpdateRequest UserAccount { get; set; }
-        public int BusinessId { get; set; }
     }
 }

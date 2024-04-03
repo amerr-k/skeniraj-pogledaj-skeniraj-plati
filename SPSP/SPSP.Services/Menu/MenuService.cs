@@ -2,6 +2,7 @@
 using SPSP.Models.SearchObjects;
 using SPSP.Services.Database;
 using SPSP.Services.Base;
+using Microsoft.EntityFrameworkCore;
 
 namespace SPSP.Services.Menu
 {
@@ -12,6 +13,15 @@ namespace SPSP.Services.Menu
             : base(context, mapper)
         {
            
+        }
+        public override IQueryable<Database.Menu> AddInclude(IQueryable<Database.Menu> query, MenuSearchObject search = null)
+        {
+            if (search.IsMenuItemsIncluded == true)
+            {
+                query = query.Include(x => x.MenuItems);
+            }
+
+            return base.AddInclude(query, search);
         }
 
         //public override IQueryable<Database.MenuItem> AddFilter(IQueryable<Database.MenuItem> query, MenuItemSearchObject search)

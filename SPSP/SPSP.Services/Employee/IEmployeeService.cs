@@ -5,7 +5,7 @@ using SPSP.Services.Base;
 namespace SPSP.Services.Employee
 {
     public interface IEmployeeService 
-        : ICRUDService<Models.Employee, BaseSearchObject, EmployeeCreateRequest, EmployeeUpdateRequest>
+        : ICRUDService<Models.Employee, EmployeeSearchObject, EmployeeCreateRequest, EmployeeUpdateRequest>
     {
         
     }

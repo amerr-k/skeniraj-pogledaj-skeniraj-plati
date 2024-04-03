@@ -13,10 +13,10 @@ namespace SPSP.Controllers
     [ApiController]
     [AllowAnonymous]
     public class CustomerController
-        : BaseCRUDController<Models.Customer, BaseSearchObject, CustomerCreateRequest, CustomerUpdateRequest>
+        : BaseCRUDController<Models.Customer, CustomerSearchObject, CustomerCreateRequest, CustomerUpdateRequest>
     {
 
-        public CustomerController(ILogger<BaseCRUDController<Customer, BaseSearchObject, CustomerCreateRequest, CustomerUpdateRequest>> logger,
+        public CustomerController(ILogger<BaseCRUDController<Customer, CustomerSearchObject, CustomerCreateRequest, CustomerUpdateRequest>> logger,
             ICustomerService service)
             : base(logger, service)
         {

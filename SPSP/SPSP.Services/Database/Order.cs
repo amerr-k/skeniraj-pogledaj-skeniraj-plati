@@ -15,8 +15,6 @@ namespace SPSP.Services.Database
 
         public int Id { get; set; }
         public int? CustomerId { get; set; }
-        public int PurchaseInvoiceId { get; set; }
-        public int MenuItemId { get; set; }
         public DateTime OrderDateTime { get; set; }
         public decimal? TotalAmount { get; set; }
         public decimal TotalAmountWithVAT { get; set; }

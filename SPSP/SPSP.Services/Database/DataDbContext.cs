@@ -1,6 +1,5 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata;
+﻿using Microsoft.EntityFrameworkCore;
+using SPSP.Services.Database.SeedData;
 
 #nullable disable
 
@@ -16,8 +15,6 @@ namespace SPSP.Services.Database
             : base(options)
         {
         }
-
-        public virtual DbSet<Business> Businesses { get; set; }
         public virtual DbSet<Category> Categories { get; set; }
         public virtual DbSet<Customer> Customers { get; set; }
         public virtual DbSet<Employee> Employees { get; set; }
@@ -35,31 +32,16 @@ namespace SPSP.Services.Database
         public virtual DbSet<UserAccountUserRole> UserAccountUserRoles { get; set; }
         public virtual DbSet<UserRole> UserRoles { get; set; }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
+        //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        //{
 
-        }
+        //}
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.HasAnnotation("Relational:Collation", "Bosnian_Latin_100_CI_AI");
 
-            modelBuilder.Entity<Business>(entity =>
-            {
-                entity.ToTable("Business");
 
-                entity.Property(e => e.Address).HasMaxLength(255);
-
-                entity.Property(e => e.ContactInfo).HasMaxLength(255);
-
-                entity.Property(e => e.Name)
-                    .IsRequired()
-                    .HasMaxLength(255);
-
-                entity.Property(e => e.Valid)
-                    .IsRequired()
-                    .HasDefaultValueSql("((1))");
-            });
 
             modelBuilder.Entity<Category>(entity =>
             {
@@ -106,19 +88,12 @@ namespace SPSP.Services.Database
             {
                 entity.ToTable("Employee");
 
-                entity.HasIndex(e => e.BusinessId, "IX_Employee_BusinessId");
 
                 entity.HasIndex(e => e.UserAccountId, "IX_Employee_UserAccountId");
 
                 entity.Property(e => e.Valid)
                     .IsRequired()
                     .HasDefaultValueSql("((1))");
-
-                entity.HasOne(d => d.Business)
-                    .WithMany(p => p.Employees)
-                    .HasForeignKey(d => d.BusinessId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_Employee_BusinessId");
 
                 entity.HasOne(d => d.UserAccount)
                     .WithMany(p => p.Employees)
@@ -131,19 +106,12 @@ namespace SPSP.Services.Database
             {
                 entity.ToTable("Menu");
 
-                entity.HasIndex(e => e.BusinessId, "IX_Menu_BusinessId");
-
                 entity.Property(e => e.Name).HasMaxLength(255);
 
                 entity.Property(e => e.Valid)
                     .IsRequired()
                     .HasDefaultValueSql("((1))");
 
-                entity.HasOne(d => d.Business)
-                    .WithMany(p => p.Menus)
-                    .HasForeignKey(d => d.BusinessId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_Menu_BusinessId");
             });
 
             modelBuilder.Entity<MenuItem>(entity =>
@@ -305,19 +273,13 @@ namespace SPSP.Services.Database
             {
                 entity.ToTable("QRTable");
 
-                entity.HasIndex(e => e.BusinessId, "IX_QRTable_BusinessId");
-
                 entity.Property(e => e.QRCode).HasMaxLength(255);
 
                 entity.Property(e => e.Valid)
                     .IsRequired()
                     .HasDefaultValueSql("((1))");
 
-                entity.HasOne(d => d.Business)
-                    .WithMany(p => p.QRTables)
-                    .HasForeignKey(d => d.BusinessId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_QRTable_BusinessId");
+
             });
 
             modelBuilder.Entity<Reservation>(entity =>
@@ -495,9 +457,26 @@ namespace SPSP.Services.Database
                     .HasMaxLength(255);
 
                 entity.Property(e => e.Valid)
-                    .IsRequired()
+                .IsRequired()
                     .HasDefaultValueSql("((1))");
             });
+
+            modelBuilder.Entity<Category>().SeedData();
+            modelBuilder.Entity<Menu>().SeedData();
+            modelBuilder.Entity<MenuItem>().SeedData();
+            modelBuilder.Entity<UserAccount>().SeedData();
+            modelBuilder.Entity<UserRole>().SeedData();
+            modelBuilder.Entity<UserAccountUserRole>().SeedData();
+            modelBuilder.Entity<Customer>().SeedData();
+            modelBuilder.Entity<Employee>().SeedData();
+            modelBuilder.Entity<PurchaseInvoice>().SeedData();
+            modelBuilder.Entity<PurchaseInvoiceItem>().SeedData();
+            modelBuilder.Entity<QRTable>().SeedData();
+            modelBuilder.Entity<Order>().SeedData();
+            modelBuilder.Entity<OrderItem>().SeedData();
+            modelBuilder.Entity<SaleInvoice>().SeedData();
+            modelBuilder.Entity<SaleInvoiceItem>().SeedData();
+            modelBuilder.Entity<Reservation>().SeedData();
 
             OnModelCreatingPartial(modelBuilder);
         }

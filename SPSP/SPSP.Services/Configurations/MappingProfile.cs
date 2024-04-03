@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using SPSP.Models.Request.Customer;
 using SPSP.Models.Request.Employee;
+using SPSP.Models.Request.MenuItem;
 using SPSP.Models.Request.Reservation;
 using SPSP.Models.Request.UserAccount;
 
@@ -10,8 +11,6 @@ namespace SPSP.Services.Configurations
     {
         public MappingProfile()
         {
-            CreateMap<Database.Business, Models.Business>();
-
             CreateMap<Database.Menu, Models.Menu>();
 
             CreateMap<Database.MenuItem, Models.MenuItem>();
@@ -40,6 +39,10 @@ namespace SPSP.Services.Configurations
             CreateMap<Database.UserAccount, Models.UserAccount>();
             CreateMap<UserAccountCreateRequest, Database.UserAccount>();
             CreateMap<UserAccountUpdateRequest, Database.UserAccount>();
+
+            CreateMap<Database.UserAccountUserRole, Models.UserAccountUserRole>();
+            CreateMap<Database.UserRole, Models.UserRole>();
+
 
         }
     }

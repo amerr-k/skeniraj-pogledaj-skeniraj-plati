@@ -9,9 +9,8 @@ using System.Threading.Tasks;
 
 namespace SPSP.Models.Request.Employee
 {
-    public class EmployeeCreateRequest
+    public class EmployeeCreateRequest : UserAccountCreateRequest
     {
-        public UserAccountUpdateRequest UserAccount { get; set; }
-        public int BusinessId { get; set; }
+        //public UserAccountUpdateRequest UserAccount { get; set; }
     }
 }

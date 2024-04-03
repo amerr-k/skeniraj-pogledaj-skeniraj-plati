@@ -7,7 +7,6 @@ namespace SPSP.Models
 {
     public partial class Order
     {
-
         public int Id { get; set; }
         public int? CustomerId { get; set; }
         public int? EmployeeId { get; set; }

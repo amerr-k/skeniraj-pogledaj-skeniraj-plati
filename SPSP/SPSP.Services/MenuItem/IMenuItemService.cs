@@ -1,4 +1,5 @@
-﻿using SPSP.Models.SearchObjects;
+﻿using SPSP.Models.Request.MenuItem;
+using SPSP.Models.SearchObjects;
 using SPSP.Services.Base;
 
 namespace SPSP.Services.MenuItem

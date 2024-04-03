@@ -9,10 +9,10 @@ namespace SPSP.Models
     {
 
         public int Id { get; set; }
-        public int BusinessId { get; set; }
         public string Name { get; set; }
+        public string? QRCode { get; set; }
+        public bool? IsActive { get; set; }
         public bool? Valid { get; set; }
-        public virtual Business Business { get; set; }
         public virtual ICollection<MenuItem> MenuItems { get; set; }
     }
 }

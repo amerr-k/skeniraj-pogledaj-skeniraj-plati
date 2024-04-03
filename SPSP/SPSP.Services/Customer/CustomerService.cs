@@ -13,11 +13,11 @@ using SPSP.Services.MenuItem;
 namespace SPSP.Services.Customer
 {
 
-    public class CustomerService : BaseCRUDService<Models.Customer, Database.Customer, BaseSearchObject, CustomerCreateRequest, CustomerUpdateRequest>, ICustomerService
+    public class CustomerService : BaseCRUDService<Models.Customer, Database.Customer, CustomerSearchObject, CustomerCreateRequest, CustomerUpdateRequest>, ICustomerService
     {
 
         protected readonly IUserAccountService userAccountService;
-        protected readonly ICustomerService customerService;
+        //protected readonly ICustomerService customerService;
 
         public CustomerService(DataDbContext context, IMapper mapper, IUserAccountService userAccountService) 
             : base(context, mapper)
@@ -38,6 +38,15 @@ namespace SPSP.Services.Customer
             return mapper.Map<Models.Customer>(customerEntity);
         }
 
+        public override IQueryable<Database.Customer> AddInclude(IQueryable<Database.Customer> query, CustomerSearchObject search = null)
+        {
+            if (search.IsUserAccountIncluded == true)
+            {
+                query = query.Include(x => x.UserAccount);
+            }
+
+            return base.AddInclude(query, search);
+        }
 
     }
 }
