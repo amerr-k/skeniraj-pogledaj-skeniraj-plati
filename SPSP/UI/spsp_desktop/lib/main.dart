@@ -2,14 +2,20 @@
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:spsp_desktop/providers/category_provider.dart';
 import 'package:spsp_desktop/providers/menu_item_provider.dart';
+import 'package:spsp_desktop/providers/menu_provider.dart';
 import 'package:spsp_desktop/utils/util.dart';
 import './screens/menu_item_list_screen.dart';
 
 void main() {
   runApp(
     MultiProvider(
-      providers: [ChangeNotifierProvider(create: (_) => MenuItemProvider())],
+      providers: [
+        ChangeNotifierProvider(create: (_) => MenuItemProvider()),
+        ChangeNotifierProvider(create: (_) => CategoryProvider()),
+        ChangeNotifierProvider(create: (_) => MenuProvider()),
+      ],
       child: const MyMaterialApp(),
     ),
   );

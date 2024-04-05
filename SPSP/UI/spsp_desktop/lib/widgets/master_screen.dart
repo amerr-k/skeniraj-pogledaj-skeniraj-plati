@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:spsp_desktop/main.dart';
 import 'package:spsp_desktop/screens/menu_item_detail_screen.dart';
 import 'package:spsp_desktop/screens/menu_item_list_screen.dart';
+import 'package:spsp_desktop/screens/pos_screen.dart';
 
 class MasterScreenWidget extends StatefulWidget {
   String? title;
@@ -38,10 +39,10 @@ class _MasterScreenWidgetState extends State<MasterScreenWidget> {
               },
             ),
             ListTile(
-              title: Text("Detalji"),
+              title: Text("POS"),
               onTap: () {
-                Navigator.of(context).push(
-                    MaterialPageRoute(builder: (context) => MenuItemDetailScreen()));
+                Navigator.of(context)
+                    .push(MaterialPageRoute(builder: (context) => POSScreen()));
               },
             )
           ],

@@ -1,29 +1,22 @@
 import 'package:json_annotation/json_annotation.dart';
 
-part 'menu_item.g.dart';
+part 'category.g.dart';
 
 @JsonSerializable()
-class MenuItem {
+class Category {
   int? id;
   String? code;
   String? name;
-  String? description;
-  double? price;
-  int? inStorage;
-  String? image;
-  int? categoryId;
-  int? menuId;
 
-  MenuItem(this.id, this.name, this.description, this.price, this.inStorage, this.code,
-      this.image, this.categoryId, this.menuId);
+  Category(this.id, this.name, this.code);
 
   /// A necessary factory constructor for creating a new User instance
   /// from a map. Pass the map to the generated `_$UserFromJson()` constructor.
   /// The constructor is named after the source class, in this case, User.
-  factory MenuItem.fromJson(Map<String, dynamic> json) => _$MenuItemFromJson(json);
+  factory Category.fromJson(Map<String, dynamic> json) => _$CategoryFromJson(json);
 
   /// `toJson` is the convention for a class to declare support for serialization
   /// to JSON. The implementation simply calls the private, generated
   /// helper method `_$UserToJson`.
-  Map<String, dynamic> toJson() => _$MenuItemToJson(this);
+  Map<String, dynamic> toJson() => _$CategoryToJson(this);
 }

@@ -17,6 +17,7 @@ namespace SPSP.Models.Request.MenuItem
         [Required]
         [Range(0, double.MaxValue)]
         public decimal Price { get; set; }
+        public byte[] Image { get; set; }
     }
 }
 

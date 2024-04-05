@@ -45,93 +45,101 @@ class _MenuItemScreenState extends State<MenuItemScreen> {
 
   Widget _buildDataListView() {
     return Expanded(
-      //ili umjesto Expanded
-      //Container (height: 200, width: 200, child: SingleChildScrollView....)
       child: SingleChildScrollView(
-        child: DataTable(
-            columns: const [
-              DataColumn(
-                label: Expanded(
-                  child: Text(
-                    'Id',
-                    style: TextStyle(fontStyle: FontStyle.italic),
+        child: _buildDataTable(),
+      ),
+    );
+  }
+
+  Widget _buildDataTable() {
+    return Row(
+      children: [
+        Expanded(
+          child: DataTable(
+              showCheckboxColumn: false,
+              columns: const [
+                DataColumn(
+                  label: Expanded(
+                    child: Text(
+                      'Id',
+                      style: TextStyle(fontStyle: FontStyle.italic),
+                    ),
                   ),
                 ),
-              ),
-              DataColumn(
-                label: Expanded(
-                  child: Text(
-                    "Šifra",
-                    style: TextStyle(fontStyle: FontStyle.italic),
+                DataColumn(
+                  label: Expanded(
+                    child: Text(
+                      "Šifra",
+                      style: TextStyle(fontStyle: FontStyle.italic),
+                    ),
                   ),
                 ),
-              ),
-              DataColumn(
-                label: Expanded(
-                  child: Text(
-                    'Naziv',
-                    style: TextStyle(fontStyle: FontStyle.italic),
+                DataColumn(
+                  label: Expanded(
+                    child: Text(
+                      'Naziv',
+                      style: TextStyle(fontStyle: FontStyle.italic),
+                    ),
                   ),
                 ),
-              ),
-              DataColumn(
-                label: Expanded(
-                  child: Text(
-                    'Opis',
-                    style: TextStyle(fontStyle: FontStyle.italic),
+                DataColumn(
+                  label: Expanded(
+                    child: Text(
+                      'Opis',
+                      style: TextStyle(fontStyle: FontStyle.italic),
+                    ),
                   ),
                 ),
-              ),
-              DataColumn(
-                label: Expanded(
-                  child: Text(
-                    'Cijena',
-                    style: TextStyle(fontStyle: FontStyle.italic),
+                DataColumn(
+                  label: Expanded(
+                    child: Text(
+                      'Cijena',
+                      style: TextStyle(fontStyle: FontStyle.italic),
+                    ),
                   ),
                 ),
-              ),
-              DataColumn(
-                label: Expanded(
-                  child: Text(
-                    'Slika',
-                    style: TextStyle(fontStyle: FontStyle.italic),
+                DataColumn(
+                  label: Expanded(
+                    child: Text(
+                      'Slika',
+                      style: TextStyle(fontStyle: FontStyle.italic),
+                    ),
                   ),
-                ),
-              )
-            ],
-            rows: searchResult?.result
-                    .map(
-                      (e) => DataRow(
-                          onSelectChanged: (selected) => {
-                                if (selected == true)
-                                  {
-                                    Navigator.of(context).push(
-                                      MaterialPageRoute(
-                                        builder: (context) => MenuItemDetailScreen(
-                                          menuItem: e,
+                )
+              ],
+              rows: searchResult?.result
+                      .map(
+                        (e) => DataRow(
+                            onSelectChanged: (selected) => {
+                                  if (selected == true)
+                                    {
+                                      Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                          builder: (context) => MenuItemDetailScreen(
+                                            menuItem: e,
+                                          ),
                                         ),
-                                      ),
-                                    )
-                                  }
-                              },
-                          cells: [
-                            DataCell(
-                              Text(e.id?.toString() ?? ""),
-                            ),
-                            DataCell(
-                              Text(e.code ?? ""),
-                            ),
-                            DataCell(
-                              Text(e.name ?? ""),
-                            ),
-                            DataCell(
-                              Text(e.description ?? ""),
-                            ),
-                            DataCell(
-                              Text(formatNumber(e.price)),
-                            ),
-                            DataCell(
-                              Container(
+                                      )
+                                    }
+                                },
+                            cells: [
+                              DataCell(
+                                Text(e.id?.toString() ?? ""),
+                              ),
+                              DataCell(
+                                Text(e.code ?? ""),
+                              ),
+                              DataCell(
+                                Text(e.name ?? ""),
+                              ),
+                              DataCell(
+                                Text(e.description ?? ""),
+                              ),
+                              DataCell(
+                                Text(formatNumber(e.price)),
+                              ),
+                              DataCell(
+                                Container(
                                   width: 50,
                                   height: 50,
                                   decoration: BoxDecoration(
@@ -140,13 +148,15 @@ class _MenuItemScreenState extends State<MenuItemScreen> {
                                       width: 1,
                                     ),
                                   ),
-                                  child: imageFromBase64String(e.image!)),
-                            ),
-                          ]),
-                    )
-                    .toList() ??
-                []),
-      ),
+                                  child: imageFromBase64String(e.image!),
+                                ),
+                              ),
+                            ]),
+                      )
+                      .toList() ??
+                  []),
+        ),
+      ],
     );
   }
 
@@ -184,8 +194,31 @@ class _MenuItemScreenState extends State<MenuItemScreen> {
             },
             child: const Text("Pretraga"),
           ),
+          const SizedBox(width: 8),
+          ElevatedButton(
+            onPressed: () async {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => MenuItemDetailScreen(),
+                ),
+              );
+            },
+            child: const Text("Kreiraj novu meni stavku"),
+          ),
         ],
       ),
     );
   }
 }
+
+// class ListTileCursor extends MaterialStateMouseCursor {
+//   const ListTileCursor();
+
+//   @override
+//   MouseCursor resolve(Set<MaterialState> states) {
+//     return SystemMouseCursors.forbidden;
+//   }
+
+//   @override
+//   String get debugDescription => 'ListTileCursor()';
+// }
