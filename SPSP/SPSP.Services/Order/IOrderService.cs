@@ -1,12 +1,13 @@
 ﻿using SPSP.Models.SearchObjects;
 using System.Threading.Tasks;
 using SPSP.Services.Base;
+using SPSP.Models.Request.Order;
 
 namespace SPSP.Services.Order
 {
     public interface IOrderService 
-        : IService<Models.Order, OrderSearchObject>
+        : ICRUDService<Models.Order, OrderSearchObject, OrderCreateRequest, OrderUpdateRequest>
     {
-        Task<Models.Order> Insert();
+        //Task<Models.Order> Insert();
     }
 }

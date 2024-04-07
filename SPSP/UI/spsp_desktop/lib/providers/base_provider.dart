@@ -13,7 +13,7 @@ abstract class BaseProvider<T> with ChangeNotifier {
     _endpoint = endpoint;
     _baseUrl = const String.fromEnvironment(
       "baseUrl",
-      defaultValue: "http://localhost:7011/",
+      defaultValue: "https://localhost:7011/",
     );
   }
 
@@ -62,6 +62,10 @@ abstract class BaseProvider<T> with ChangeNotifier {
     } else {
       throw new Exception("Unknown error");
     }
+  }
+
+  void create2(dynamic request) async {
+    print(request);
   }
 
   Future<T> update(int id, [dynamic request]) async {

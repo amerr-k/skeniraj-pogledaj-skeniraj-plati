@@ -2,6 +2,8 @@
 using SPSP.Models.Request.Customer;
 using SPSP.Models.Request.Employee;
 using SPSP.Models.Request.MenuItem;
+using SPSP.Models.Request.Order;
+using SPSP.Models.Request.OrderItem;
 using SPSP.Models.Request.Reservation;
 using SPSP.Models.Request.UserAccount;
 
@@ -18,7 +20,12 @@ namespace SPSP.Services.Configurations
             CreateMap<MenuItemUpdateRequest, Database.MenuItem>();
 
             CreateMap<Database.Order, Models.Order>();
+            CreateMap<OrderCreateRequest, Database.Order>();
+            CreateMap<OrderUpdateRequest, Database.Order>();
+
             CreateMap<Database.OrderItem, Models.OrderItem>();
+            CreateMap<OrderItemCreateRequest, Database.OrderItem>();
+            CreateMap<OrderItemUpdateRequest, Database.OrderItem>();
 
             CreateMap<Database.Category, Models.Category>();
 

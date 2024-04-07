@@ -1,12 +1,9 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
-using SPSP.Models;
 using SPSP.Models.SearchObjects;
 using SPSP.Services.Database;
-using System.Threading.Tasks;
 using SPSP.Services.Base;
 using SPSP.Models.Request.Employee;
-using SPSP.Models.Request.Customer;
 using SPSP.Services.UserAccount;
 
 namespace SPSP.Services.Employee
@@ -18,9 +15,10 @@ namespace SPSP.Services.Employee
         protected readonly IUserAccountService userAccountService;
 
 
-        public EmployeeService(DataDbContext context, IMapper mapper) 
+        public EmployeeService(DataDbContext context, IMapper mapper, IUserAccountService userAccountService) 
             : base(context, mapper)
         {
+            this.userAccountService = userAccountService;
             //obzirom da smo pozvali base() ne potrebno je ovdje dodavati i deklarisati context i mapper i funkcije
         }
 

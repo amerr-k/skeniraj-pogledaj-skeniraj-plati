@@ -1,20 +1,19 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using SPSP.Controllers.Base;
-using SPSP.Models;
+using SPSP.Models.Request.Order;
 using SPSP.Models.SearchObjects;
 using SPSP.Services.Order;
 
 namespace SPSP.Controllers
 {
     [ApiController]
-    public class OrderController : BaseController<Models.Order, OrderSearchObject>
+
+    public class OrderController : BaseCRUDController<Models.Order, OrderSearchObject, OrderCreateRequest, OrderUpdateRequest>
     {
-        public OrderController(ILogger<BaseController<Order, OrderSearchObject>> logger,
-            IOrderService service)
+        public OrderController(ILogger<BaseCRUDController<Models.Order, OrderSearchObject, OrderCreateRequest, OrderUpdateRequest>> logger, IOrderService service)
             : base(logger, service)
         {
- 
+
         }
     }
 }

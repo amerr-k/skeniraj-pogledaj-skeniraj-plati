@@ -2,7 +2,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:spsp_desktop/main.dart';
-import 'package:spsp_desktop/screens/menu_item_detail_screen.dart';
 import 'package:spsp_desktop/screens/menu_item_list_screen.dart';
 import 'package:spsp_desktop/screens/pos_screen.dart';
 

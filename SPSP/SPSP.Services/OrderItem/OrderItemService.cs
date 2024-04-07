@@ -4,6 +4,8 @@ using SPSP.Models.SearchObjects;
 using SPSP.Services.Database;
 using System.Linq;
 using SPSP.Services.Base;
+using SPSP.Models.Request.Order;
+using SPSP.Models.Request.OrderItem;
 
 namespace SPSP.Services.OrderItem
 {
@@ -14,6 +16,22 @@ namespace SPSP.Services.OrderItem
             : base(context, mapper)
         {
            
+        }
+
+        public async Task<List<Models.OrderItem>> CreateMultiple(IEnumerable<OrderItemCreateRequest> orderItems, int orderId)
+        {
+            var orderItemEntities = new List<Database.OrderItem>();
+
+            foreach (var item in orderItems)
+            {
+                var orderItemEntity = mapper.Map<Database.OrderItem>(item);
+                orderItemEntity.OrderId = orderId;
+                orderItemEntities.Add(orderItemEntity);
+            }
+
+            context.OrderItems.AddRange(orderItemEntities);
+            await context.SaveChangesAsync();
+             return mapper.Map<List<Models.OrderItem>>(orderItemEntities);
         }
     }
 }

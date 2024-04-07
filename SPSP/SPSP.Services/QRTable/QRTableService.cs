@@ -13,5 +13,18 @@ namespace SPSP.Services.QRTable
         {
 
         }
+
+        public async Task<Models.QRTable> SetIsTaken(int qrTableId, bool isTaken)
+        {
+            var qrTableEntity = await context.QRTables.FindAsync(qrTableId);
+            if (qrTableEntity != null)
+            {
+                qrTableEntity.IsTaken = isTaken;
+            }
+
+            await context.SaveChangesAsync();
+
+            return mapper.Map<Models.QRTable>(qrTableEntity);   
+        }
     }
 }

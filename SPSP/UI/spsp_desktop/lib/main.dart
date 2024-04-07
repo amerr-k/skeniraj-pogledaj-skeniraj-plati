@@ -2,9 +2,12 @@
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:spsp_desktop/providers/cart_provider.dart';
 import 'package:spsp_desktop/providers/category_provider.dart';
 import 'package:spsp_desktop/providers/menu_item_provider.dart';
 import 'package:spsp_desktop/providers/menu_provider.dart';
+import 'package:spsp_desktop/providers/order_provider.dart';
+import 'package:spsp_desktop/providers/qr_table_provider.dart';
 import 'package:spsp_desktop/utils/util.dart';
 import './screens/menu_item_list_screen.dart';
 
@@ -15,6 +18,9 @@ void main() {
         ChangeNotifierProvider(create: (_) => MenuItemProvider()),
         ChangeNotifierProvider(create: (_) => CategoryProvider()),
         ChangeNotifierProvider(create: (_) => MenuProvider()),
+        ChangeNotifierProvider(create: (_) => CartProvider()),
+        ChangeNotifierProvider(create: (_) => QRTableProvider()),
+        ChangeNotifierProvider(create: (_) => OrderProvider()),
       ],
       child: const MyMaterialApp(),
     ),

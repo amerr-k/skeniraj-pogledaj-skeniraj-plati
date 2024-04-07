@@ -4,9 +4,9 @@ using SPSP.Services.Base;
 
 namespace SPSP.Services.QRTable
 {
-    public interface IQRTableService 
+    public interface IQRTableService
         : ICRUDService<Models.QRTable, BaseSearchObject, QRTableCreateRequest, QRTableUpdateRequest>
     {
-
+        public Task<Models.QRTable> SetIsTaken(int qrTableId, bool isTaken);
     }
 }
