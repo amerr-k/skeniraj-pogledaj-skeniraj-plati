@@ -1,0 +1,49 @@
+import 'package:http/http.dart';
+import 'package:spsp_desktop/models/customer.dart';
+import 'package:spsp_desktop/models/supplier.dart';
+
+class Invoice {
+  final InvoiceInfo info;
+  final Supplier supplier;
+  final Customer? customer;
+  final List<InvoiceItem> items;
+  final DateTime orderDateTime;
+  final double totalAmountWithVAT;
+  final double vat;
+  final double totalAmount;
+
+  const Invoice(
+      {required this.info,
+      required this.supplier,
+      this.customer,
+      required this.items,
+      required this.orderDateTime,
+      required this.totalAmountWithVAT,
+      required this.totalAmount,
+      required this.vat});
+}
+
+class InvoiceInfo {
+  final String? description;
+  final String number;
+  final DateTime date;
+
+  const InvoiceInfo({
+    this.description,
+    required this.number,
+    required this.date,
+  });
+}
+
+class InvoiceItem {
+  final String name;
+  final int quantity;
+  final double unitPrice;
+  final double subtotal;
+
+  const InvoiceItem(
+      {required this.name,
+      required this.quantity,
+      required this.unitPrice,
+      required this.subtotal});
+}

@@ -12,6 +12,7 @@ import 'package:spsp_desktop/providers/cart_provider.dart';
 import 'package:spsp_desktop/providers/menu_item_provider.dart';
 import 'package:spsp_desktop/providers/order_provider.dart';
 import 'package:spsp_desktop/providers/qr_table_provider.dart';
+import 'package:spsp_desktop/screens/qr_table_dialog.dart';
 import 'package:spsp_desktop/utils/util.dart';
 import 'package:spsp_desktop/widgets/master_screen.dart';
 import 'package:spsp_desktop/widgets/qr_table_screen.dart';
@@ -100,7 +101,10 @@ class _POSScreenState extends State<POSScreen> {
                     child: ListTile(
                       onTap: () => showDialog<String>(
                         context: context,
-                        builder: _buildQRTableDialog,
+                        builder: (context) => QRTableDialog(
+                            qrTableList: qrTableList,
+                            cartProvider: _cartProvider!,
+                            setState: setState),
                       ),
                       title: Text("Sto br.:",
                           style: TextStyle(
@@ -237,7 +241,10 @@ class _POSScreenState extends State<POSScreen> {
               if (_cartProvider?.cart.qrTable == null) {
                 showDialog<String>(
                   context: context,
-                  builder: _buildQRTableDialog,
+                  builder: (context) => QRTableDialog(
+                      qrTableList: qrTableList,
+                      cartProvider: _cartProvider!,
+                      setState: setState),
                 );
               } else {
                 var create = Order.fromCart(_cartProvider!.cart);
@@ -252,75 +259,6 @@ class _POSScreenState extends State<POSScreen> {
       ),
     );
   }
-
-  Widget _buildQRTableDialog(BuildContext context) => Dialog.fullscreen(
-        child: Center(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            // mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Text('ŠANK',
-                      style: TextStyle(
-                          fontStyle: FontStyle.italic, fontWeight: FontWeight.bold))
-                ],
-              ),
-              const SizedBox(height: 25),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Transform.rotate(
-                    angle: -90 * 3.1415926535 / 180,
-                    child: Text(
-                      'PROZORI',
-                      style: TextStyle(
-                          fontStyle: FontStyle.italic,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 16.0),
-                    ),
-                  ),
-                  const SizedBox(width: 25),
-                  TableWidget(
-                    qrTableList: qrTableList,
-                    onTap: (tableNumber) {
-                      if (!qrTableList[tableNumber - 1].isTaken) {
-                        print('Table $tableNumber tapped!');
-                        setState(() {
-                          _cartProvider?.cart.qrTable = qrTableList[tableNumber - 1];
-                        });
-                        Navigator.pop(context);
-                      }
-                    },
-                  ),
-                  const SizedBox(width: 25),
-                  Transform.rotate(
-                    angle: 90 * 3.1415926535 / 180,
-                    child: Text(
-                      'TOALET',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16.0,
-                        fontStyle: FontStyle.italic,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 25),
-              Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                ElevatedButton(
-                  onPressed: () async {
-                    Navigator.pop(context);
-                  },
-                  child: const Text("Zatvori"),
-                )
-              ])
-            ],
-          ),
-        ),
-      );
 
   List<Widget> _buildProductCardList() {
     if (menuItemList.length == 0) {

@@ -23,3 +23,8 @@ String formatNumber(dynamic) {
     return f.format(dynamic);
   }
 }
+
+class Utils {
+  static formatPrice(double price) => '\$ ${price.toStringAsFixed(2)}';
+  static formatDate(DateTime date) => DateFormat("dd.MM.yyyy");
+}

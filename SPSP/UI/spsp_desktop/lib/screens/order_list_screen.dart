@@ -4,15 +4,21 @@ import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:spsp_desktop/models/customer.dart';
 import 'package:spsp_desktop/models/enums/OrderStatus.dart';
+import 'package:spsp_desktop/models/invoice.dart';
 import 'package:spsp_desktop/models/order.dart';
 import 'package:spsp_desktop/models/qr_table.dart';
 import 'package:spsp_desktop/models/search_result.dart';
+import 'package:spsp_desktop/models/supplier.dart';
+import 'package:spsp_desktop/pdf_utils/pdf_api.dart';
+import 'package:spsp_desktop/pdf_utils/pdf_invoice_api.dart';
 import 'package:spsp_desktop/providers/cart_provider.dart';
 import 'package:spsp_desktop/providers/order_provider.dart';
 import 'package:spsp_desktop/providers/qr_table_provider.dart';
 import 'package:spsp_desktop/utils/util.dart';
 import 'package:spsp_desktop/widgets/master_screen.dart';
+import 'package:pdf/pdf.dart';
 
 class OrderListScreen extends StatefulWidget {
   const OrderListScreen({super.key});
@@ -39,8 +45,8 @@ class _OrderListScreenState extends State<OrderListScreen> {
 
     _orderProvider = context.read<OrderProvider>();
 
-    orderListRequestResult =
-        await _orderProvider?.get(filter: {"orderStatus": OrderStatus.ACTIVE.name});
+    orderListRequestResult = await _orderProvider?.get(
+        filter: {"orderStatus": OrderStatus.ACTIVE.name, "isOrderItemsIncluded": true});
     setState(() {
       orderList = orderListRequestResult!.result;
     });
@@ -55,19 +61,8 @@ class _OrderListScreenState extends State<OrderListScreen> {
       'orderStatus': OrderStatus.ACTIVE.name.toString(),
     };
 
-    // loadOrderList();
     loadQRTableList();
   }
-
-  // Future loadOrderList() async {
-  //   orderListRequestResult =
-  //       await _orderProvider?.get(filter: {"orderStatus": OrderStatus.ACTIVE.name});
-
-  //   setState(() {
-  //     orderList = orderListRequestResult!.result;
-  //   });
-  //   print(orderList[0].id);
-  // }
 
   Future loadQRTableList() async {
     var tmpQRTableList = await _qrTableProvider?.get();
@@ -138,30 +133,6 @@ class _OrderListScreenState extends State<OrderListScreen> {
             SizedBox(
               width: 8,
             ),
-            // Expanded(
-            //   child: FormBuilderDropdown<String>(
-            //     name: 'categoryId',
-            //     decoration: InputDecoration(
-            //         labelText: "Kategorija",
-            //         suffix: IconButton(
-            //           icon: const Icon(
-            //             Icons.close,
-            //           ),
-            //           onPressed: () {
-            //             _formKey.currentState!.fields['categoryId']?.reset();
-            //           },
-            //         ),
-            //         hintText: "Odaberi kategoriju"),
-            //     items: [1, 2, 3]
-            //             .map((item) => DropdownMenuItem(
-            //                   alignment: AlignmentDirectional.center,
-            //                   value: item != null ? item.toString() : "",
-            //                   child: Text(item.toString() ?? ""),
-            //                 ))
-            //             .toList() ??
-            //         [],
-            //   ),
-            // ),
             Expanded(
               child: FormBuilderDateTimePicker(
                 name: "orderDateTimeTo",
@@ -190,7 +161,6 @@ class _OrderListScreenState extends State<OrderListScreen> {
             Expanded(
               child: FormBuilderDropdown<String>(
                 name: 'orderStatus',
-                // initialValue: OrderStatus.ACTIVE,
                 decoration: InputDecoration(
                     labelText: "Status narudžbe",
                     suffixIcon: IconButton(
@@ -224,12 +194,9 @@ class _OrderListScreenState extends State<OrderListScreen> {
             ElevatedButton(
               onPressed: () async {
                 _formKey.currentState?.saveAndValidate();
-                print(_formKey.currentState?.value);
-                // var request = new Map.from(_formKey.currentState!.value);
-
-                var orderListSearchResult =
-                    await _orderProvider.get(filter: _formKey.currentState?.value);
-
+                var request = Map.from(_formKey.currentState!.value);
+                request['isOrderItemsIncluded'] = true;
+                var orderListSearchResult = await _orderProvider.get(filter: request);
                 setState(() {
                   orderList = orderListSearchResult!.result;
                 });
@@ -331,13 +298,7 @@ class _OrderListScreenState extends State<OrderListScreen> {
                                     backgroundColor: Colors.white, // Text color
                                   ),
                                   onPressed: () async {
-                                    // var menuItemListResult = await _menuItemProvider.get(filter: {
-                                    //   'fts': _ftsController.text,
-                                    // });
-
-                                    // setState(() {
-                                    //   menuItemList = menuItemListResult.result;
-                                    // });
+                                    // OTKAZII
                                   },
                                   child: const Text("Otkaži"),
                                 ),
@@ -350,13 +311,38 @@ class _OrderListScreenState extends State<OrderListScreen> {
                                     backgroundColor: Colors.white, // Text color
                                   ),
                                   onPressed: () async {
-                                    // var menuItemListResult = await _menuItemProvider.get(filter: {
-                                    //   'fts': _ftsController.text,
-                                    // });
+                                    final items = x.orderItems.map((orderItem) {
+                                      final name = orderItem.menuItem?.name ?? '';
+                                      final unitPrice = orderItem.menuItem?.price ?? 0.0;
+                                      final subtotal = orderItem.subtotal ?? 0.0;
+                                      final quantity = orderItem.quantity ?? 0;
 
-                                    // setState(() {
-                                    //   menuItemList = menuItemListResult.result;
-                                    // });
+                                      return InvoiceItem(
+                                          name: name,
+                                          quantity: quantity,
+                                          unitPrice: unitPrice,
+                                          subtotal: subtotal);
+                                    }).toList();
+
+                                    final invoice = Invoice(
+                                      supplier: Supplier(
+                                          name: 'Caffe Pub - Skeniraj Plati',
+                                          address: 'ul. Abdulaha Sidrana, Sarajevo, BiH',
+                                          contactInfo: "+387 62 123 321"),
+                                      info: InvoiceInfo(
+                                        date: x.orderDateTime!,
+                                        number: x.id.toString(),
+                                      ),
+                                      orderDateTime: x.orderDateTime!,
+                                      totalAmount: x.totalAmount!,
+                                      totalAmountWithVAT: x.totalAmountWithVAT!,
+                                      vat: x.vat!,
+                                      items: items,
+                                    );
+
+                                    final pdfFile = await PdfInvoiceApi.generate(invoice);
+
+                                    PdfApi.openFile(pdfFile);
                                   },
                                   child: const Text("Kreiraj račun"),
                                 )
