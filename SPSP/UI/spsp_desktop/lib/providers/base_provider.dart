@@ -18,7 +18,7 @@ abstract class BaseProvider<T> with ChangeNotifier {
   }
 
 //kad opcionalne parametre hoces poslat stavis u viticaste zagrade
-  Future<SearchResult<T>> get({dynamic filter}) async {
+  Future<RequestResult<T>> get({dynamic filter}) async {
     var url = "$_baseUrl$_endpoint";
 
     if (filter != null) {
@@ -33,7 +33,7 @@ abstract class BaseProvider<T> with ChangeNotifier {
     if (isValidResponse(response)) {
       var jsonData = jsonDecode(response.body);
 
-      var searchResult = SearchResult<T>();
+      var searchResult = RequestResult<T>();
 
       searchResult.count = jsonData["count"];
 

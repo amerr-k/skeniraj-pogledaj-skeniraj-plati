@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SPSP.Models.Enums;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,6 +9,9 @@ namespace SPSP.Models.SearchObjects
 {
     public class OrderSearchObject : BaseSearchObject
     {
+        public DateTime? orderDateTimeFrom {  get; set; }
+        public DateTime? orderDateTimeTo {  get; set; }
+        public OrderStatusEnum? orderStatus {  get; set; }
         public bool? IsOrderItemsIncluded { get; set; }
     }
 }

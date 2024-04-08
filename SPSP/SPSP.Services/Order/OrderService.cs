@@ -41,7 +41,7 @@ namespace SPSP.Services.Order
         public override async Task<Models.Order> Create(OrderCreateRequest create)
         {
             var orderEntity = mapper.Map<Database.Order>(create);
-            orderEntity.Status = "CREATED";
+            orderEntity.Status = "ACTIVE";
 
             context.Orders.Add(orderEntity);
             await context.SaveChangesAsync();
@@ -60,25 +60,31 @@ namespace SPSP.Services.Order
             return order;
         }
 
-        //public Task<Models.Order> Create(OrderUpdateRequest create)
-        //{
-        //    throw new NotImplementedException();
-        //}
+        public override IQueryable<Database.Order> AddFilter(IQueryable<Database.Order> query, OrderSearchObject search)
+        {
+            if (search?.orderStatus != null)
+            {
+                query = query.Where(x => x.Status.Equals(search.orderStatus.ToString()));
+            }
 
-        //public override IQueryable<Database.OrderItem> AddFilter(IQueryable<Database.OrderItem> query, OrderItemSearchObject search)
-        //{
-        //    if (!string.IsNullOrWhiteSpace(search?.Name))
-        //    {
-        //        query = query.Where(x => x.Name.StartsWith(search.Name));
-        //    }
+            if (search?.orderDateTimeFrom != null || search?.orderDateTimeTo != null)
+            {
+                if (search.orderDateTimeFrom != null && search.orderDateTimeTo != null)
+                {
+                    query = query.Where(x => x.OrderDateTime >= search.orderDateTimeFrom && x.OrderDateTime <= search.orderDateTimeTo);
+                }
+                else if (search.orderDateTimeFrom != null)
+                {
+                    query = query.Where(x => x.OrderDateTime >= search.orderDateTimeFrom);
+                }
+                else if (search.orderDateTimeTo != null)
+                {
+                    query = query.Where(x => x.OrderDateTime <= search.orderDateTimeTo);
+                }
+            }
 
-        //    if (!string.IsNullOrWhiteSpace(search?.FTS))
-        //    {
-        //        query = query.Where(x => x.Name.Contains(search.FTS));
-        //    }
-
-        //    return base.AddFilter(query, search);
-        //}
+            return base.AddFilter(query, search);
+        }
 
     }
 }

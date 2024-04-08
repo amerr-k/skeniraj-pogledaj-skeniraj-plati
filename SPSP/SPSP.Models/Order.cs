@@ -12,6 +12,9 @@ namespace SPSP.Models
         public int? EmployeeId { get; set; }
         public DateTime OrderDateTime { get; set; }
         public decimal? TotalAmount { get; set; }
+        public decimal? TotalAmountWithVAT { get; set; }
+        public decimal? VAT { get; set; }
+        public decimal? VATAmount { get; set; }
         public string Status { get; set; }
         public bool? Valid { get; set; }
         public virtual Customer Customer { get; set; }

@@ -29,8 +29,8 @@ class _MenuItemDetailScreenState extends State<MenuItemDetailScreen> {
   late CategoryProvider _categoryProvider;
   late MenuProvider _menuProvider;
   late MenuItemProvider _menuItemProvider;
-  SearchResult<Category>? categoryResult;
-  SearchResult<Menu>? menuResult;
+  RequestResult<Category>? categoryResult;
+  RequestResult<Menu>? menuResult;
   bool isLoading = true;
   String? previewImage;
 
@@ -105,7 +105,8 @@ class _MenuItemDetailScreenState extends State<MenuItemDetailScreen> {
                 child: ElevatedButton(
                     onPressed: () async {
                       _formKey.currentState?.saveAndValidate();
-
+                      print(_formKey.currentState?.value["code"]);
+                      //kopira stvari iz form keya u novu mapu da bi je mogao izmjeniti sa baseimageom
                       var request = new Map.from(_formKey.currentState!.value);
                       request['image'] = _base64Image;
 

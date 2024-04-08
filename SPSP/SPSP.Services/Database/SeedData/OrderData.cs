@@ -136,7 +136,7 @@ namespace SPSP.Services.Database.SeedData
                     TotalAmountWithVAT = 10,
                     VAT = (decimal)0.17,
                     VATAmount = (decimal)1.7,
-                    Status = "CREATED",
+                    Status = "ACTIVE",
                     QRTableId = 3,
                     Valid = true
                 },
@@ -149,7 +149,7 @@ namespace SPSP.Services.Database.SeedData
                     TotalAmountWithVAT = 15,
                     VAT = (decimal)0.17,
                     VATAmount = (decimal)2.55,
-                    Status = "CREATED",
+                    Status = "ACTIVE",
                     QRTableId = 5,
                     Valid = true
                 },
@@ -162,7 +162,7 @@ namespace SPSP.Services.Database.SeedData
                     TotalAmountWithVAT = 20,
                     VAT = (decimal)0.17,
                     VATAmount = (decimal)3.4,
-                    Status = "CREATED",
+                    Status = "ACTIVE",
                     QRTableId = 5,
                     Valid = true
                 },

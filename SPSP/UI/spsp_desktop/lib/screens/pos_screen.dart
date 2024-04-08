@@ -29,25 +29,11 @@ class _POSScreenState extends State<POSScreen> {
   late OrderProvider _orderProvider;
   CartProvider? _cartProvider;
 
-  SearchResult<MenuItem>? menuItemListResult;
+  RequestResult<MenuItem>? menuItemListResult;
 
   final TextEditingController _ftsController = TextEditingController();
   List<MenuItem> menuItemList = [];
   List<QRTable> qrTableList = [];
-  // QRTable? selectedTableId;
-  // TextEditingController _searchController = TextEditingController();
-
-  // @override
-  // void didChangeDependencies() async {
-  //   super.didChangeDependencies();
-
-  //   _menuItemProvider = context.read<MenuItemProvider>();
-
-  //   var menuItemList = await _menuItemProvider.get();
-  //   setState(() {
-  //     menuItemListResult = menuItemList;
-  //   });
-  // }
 
   @override
   void didChangeDependencies() {
@@ -61,15 +47,16 @@ class _POSScreenState extends State<POSScreen> {
     _menuItemProvider = context.read<MenuItemProvider>();
     _qrTableProvider = context.read<QRTableProvider>();
     _orderProvider = context.read<OrderProvider>();
-    print("called initState");
+    _cartProvider = context.read<CartProvider>();
+    _cartProvider!.cart = Cart();
     loadMenuItemList();
     loadQRTableList();
   }
 
   Future loadMenuItemList() async {
-    var tmpmenuItemList = await _menuItemProvider?.get();
+    menuItemListResult = await _menuItemProvider?.get();
     setState(() {
-      menuItemList = tmpmenuItemList!.result;
+      menuItemList = menuItemListResult!.result;
     });
   }
 
@@ -246,10 +233,6 @@ class _POSScreenState extends State<POSScreen> {
           ),
           const SizedBox(width: 10),
           ElevatedButton(
-            // onPressed: () => {showDialog<String>(
-            //   context: context,
-            //   builder: _buildQRTableDialog,
-            // )},
             onPressed: () async {
               if (_cartProvider?.cart.qrTable == null) {
                 showDialog<String>(
@@ -260,7 +243,6 @@ class _POSScreenState extends State<POSScreen> {
                 var create = Order.fromCart(_cartProvider!.cart);
                 await _orderProvider.create(create);
                 _cartProvider!.cart = Cart();
-                // Notify listeners after changing cart state
                 _cartProvider!.notifyListeners();
               }
             },
@@ -294,7 +276,7 @@ class _POSScreenState extends State<POSScreen> {
                     child: Text(
                       'PROZORI',
                       style: TextStyle(
-                          // fontStyle: FontStyle.italic,
+                          fontStyle: FontStyle.italic,
                           fontWeight: FontWeight.bold,
                           fontSize: 16.0),
                     ),
@@ -317,7 +299,11 @@ class _POSScreenState extends State<POSScreen> {
                     angle: 90 * 3.1415926535 / 180,
                     child: Text(
                       'TOALET',
-                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16.0),
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16.0,
+                        fontStyle: FontStyle.italic,
+                      ),
                     ),
                   ),
                 ],
@@ -327,13 +313,6 @@ class _POSScreenState extends State<POSScreen> {
                 ElevatedButton(
                   onPressed: () async {
                     Navigator.pop(context);
-
-                    // var menuItemList = await _menuItemProvider.get(filter: {
-                    //   'name': _ftsController.text,
-                    // });
-                    // setState(() {
-                    //   menuItemListResult = menuItemList;
-                    // });
                   },
                   child: const Text("Zatvori"),
                 )
@@ -355,9 +334,9 @@ class _POSScreenState extends State<POSScreen> {
                   Material(
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10),
-                      side: const BorderSide(color: Colors.blueAccent),
+                      side: const BorderSide(color: Colors.blue),
                     ),
-                    color: Colors.blueAccent,
+                    color: Colors.blue,
                     child: Column(
                       children: [
                         InkWell(

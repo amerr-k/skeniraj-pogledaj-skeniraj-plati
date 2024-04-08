@@ -15,7 +15,7 @@ class MenuItemScreen extends StatefulWidget {
 }
 
 class _MenuItemScreenState extends State<MenuItemScreen> {
-  SearchResult<MenuItem>? searchResult;
+  RequestResult<MenuItem>? searchResult;
   late MenuItemProvider _menuItemProvider;
   final TextEditingController _ftsController = TextEditingController();
   final TextEditingController _nameController = TextEditingController();
@@ -210,15 +210,3 @@ class _MenuItemScreenState extends State<MenuItemScreen> {
     );
   }
 }
-
-// class ListTileCursor extends MaterialStateMouseCursor {
-//   const ListTileCursor();
-
-//   @override
-//   MouseCursor resolve(Set<MaterialState> states) {
-//     return SystemMouseCursors.forbidden;
-//   }
-
-//   @override
-//   String get debugDescription => 'ListTileCursor()';
-// }

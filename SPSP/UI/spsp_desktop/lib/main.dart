@@ -77,7 +77,7 @@ class LoginPage extends StatelessWidget {
 
 Widget _buildLogo() {
   // return Image.network("https://cc.fit.ba/Images/logo.png", height: 100, width: 100);
-  return Image.asset("assets/images/logo.png", height: 100, width: 100);
+  return Image.asset("assets/images/logo.png", height: 130, width: 130);
 }
 
 Widget _buildUsernameTextField(TextEditingController usernameController) {

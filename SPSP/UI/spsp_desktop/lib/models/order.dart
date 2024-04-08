@@ -11,8 +11,8 @@ class Order {
   DateTime? orderDateTime;
   double? totalAmount;
   double? totalAmountWithVAT;
-  double? VAT;
-  double? VATAmount;
+  double? vat;
+  double? vatAmount;
   String? status;
   int? qrTableId;
   List<OrderItem> orderItems;
@@ -23,8 +23,8 @@ class Order {
       this.orderDateTime,
       this.totalAmount,
       this.totalAmountWithVAT,
-      this.VAT,
-      this.VATAmount,
+      this.vat,
+      this.vatAmount,
       this.status,
       this.qrTableId,
       this.orderItems);

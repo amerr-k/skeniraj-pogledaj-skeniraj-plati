@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:spsp_desktop/main.dart';
 import 'package:spsp_desktop/screens/menu_item_list_screen.dart';
+import 'package:spsp_desktop/screens/order_list_screen.dart';
 import 'package:spsp_desktop/screens/pos_screen.dart';
 
 class MasterScreenWidget extends StatefulWidget {
@@ -42,6 +43,13 @@ class _MasterScreenWidgetState extends State<MasterScreenWidget> {
               onTap: () {
                 Navigator.of(context)
                     .push(MaterialPageRoute(builder: (context) => POSScreen()));
+              },
+            ),
+            ListTile(
+              title: Text("Narudžbe"),
+              onTap: () {
+                Navigator.of(context)
+                    .push(MaterialPageRoute(builder: (context) => OrderListScreen()));
               },
             )
           ],

@@ -34,7 +34,7 @@ namespace SPSP.Services.Database.SeedData
                     TableNumber = 3,
                     Capacity = 4,
                     LocationDescription = "Centar",
-                    IsTaken = false,
+                    IsTaken = true,
                     Valid = true
                 },
                 new QRTable
@@ -44,7 +44,7 @@ namespace SPSP.Services.Database.SeedData
                     TableNumber = 4,
                     Capacity = 4,
                     LocationDescription = "Centar",
-                    IsTaken = false,
+                    IsTaken = true,
                     Valid = true
                 },
                 new QRTable
@@ -54,7 +54,7 @@ namespace SPSP.Services.Database.SeedData
                     TableNumber = 5,
                     Capacity = 4,
                     LocationDescription = "Uz prozore",
-                    IsTaken = false,
+                    IsTaken = true,
                     Valid = true
                 }
             );
