@@ -64,10 +64,6 @@ abstract class BaseProvider<T> with ChangeNotifier {
     }
   }
 
-  void create2(dynamic request) async {
-    print(request);
-  }
-
   Future<T> update(int id, [dynamic request]) async {
     var url = "$_baseUrl$_endpoint/$id";
     var uri = Uri.parse(url);
