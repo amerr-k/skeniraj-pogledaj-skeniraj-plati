@@ -42,6 +42,8 @@ dependencies:
   file_picker: ^4.6.1
   pdf: ^3.10.8
   url_launcher: ^6.2.5
+  camera: ^0.10.5+9
+  qr_code_scanner: ^1.0.1
 
 dev_dependencies:
   json_serializable: ^6.2.0

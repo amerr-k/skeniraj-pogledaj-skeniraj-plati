@@ -1,4 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
+import 'package:spsp_mobile/models/category.dart';
 
 part 'menu_item.g.dart';
 
@@ -12,10 +13,11 @@ class MenuItem {
   int? inStorage;
   String? image;
   int? categoryId;
+  Category? category;
   int? menuId;
 
   MenuItem(this.id, this.name, this.description, this.price, this.inStorage, this.code,
-      this.image, this.categoryId, this.menuId);
+      this.image, this.categoryId, this.menuId, this.category);
 
   /// A necessary factory constructor for creating a new User instance
   /// from a map. Pass the map to the generated `_$UserFromJson()` constructor.

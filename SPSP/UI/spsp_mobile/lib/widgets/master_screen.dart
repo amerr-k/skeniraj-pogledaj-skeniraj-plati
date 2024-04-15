@@ -1,10 +1,9 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
-import 'package:spsp_mobile/main.dart';
-import 'package:spsp_mobile/screens/menu_item_list_screen.dart';
-import 'package:spsp_mobile/screens/order_list_screen.dart';
+import 'package:spsp_mobile/screens/menu_item_list_customer_screen.dart';
 import 'package:spsp_mobile/screens/pos_screen.dart';
+import 'package:spsp_mobile/screens/qr_code_scanner_customer_screen.dart';
 
 class MasterScreenWidget extends StatefulWidget {
   String? title;
@@ -17,6 +16,34 @@ class MasterScreenWidget extends StatefulWidget {
 }
 
 class _MasterScreenWidgetState extends State<MasterScreenWidget> {
+  int currentIndex = 0;
+
+  void _onItemTapped(int index) async {
+    setState(() {
+      currentIndex = index;
+    });
+    if (currentIndex == 0) {
+      Navigator.pushNamed(context, MenuItemListCustomerScreen.routeName);
+    } else if (currentIndex == 1) {
+      // Open camera
+      //   final cameras = await availableCameras();
+      //   final firstCamera = cameras.last;
+      //   Navigator.push(
+      //     context,
+      //     MaterialPageRoute(
+      //       builder: (context) => CameraCustomerScreen(camera: firstCamera),
+      //     ),
+      //   );
+      // }
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => QRCodeScannerCustomerScreen(),
+        ),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -24,18 +51,11 @@ class _MasterScreenWidgetState extends State<MasterScreenWidget> {
       drawer: Drawer(
         child: ListView(
           children: [
-            // ListTile(
-            //   title: Text("LoginPage"),
-            //   onTap: () {
-            //     Navigator.of(context)
-            //         .push(MaterialPageRoute(builder: (context) => LoginPage()));
-            //   },
-            // ),
             ListTile(
               title: Text("Proizvodi"),
               onTap: () {
-                Navigator.of(context).push(
-                    MaterialPageRoute(builder: (context) => const MenuItemListScreen()));
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => const MenuItemListCustomerScreen()));
               },
             ),
             ListTile(
@@ -45,17 +65,32 @@ class _MasterScreenWidgetState extends State<MasterScreenWidget> {
                     .push(MaterialPageRoute(builder: (context) => POSScreen()));
               },
             ),
-            ListTile(
-              title: Text("Narudžbe"),
-              onTap: () {
-                Navigator.of(context)
-                    .push(MaterialPageRoute(builder: (context) => OrderListScreen()));
-              },
-            )
+            // ListTile(
+            //   title: Text("Narudžbe"),
+            //   onTap: () {
+            //     Navigator.of(context)
+            //         .push(MaterialPageRoute(builder: (context) => OrderListScreen()));
+            //   },
+            // )
           ],
         ),
       ),
       body: widget.child!,
+      bottomNavigationBar: BottomNavigationBar(
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'Meni',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.camera),
+            label: 'Skeniraj',
+          ),
+        ],
+        selectedItemColor: Colors.amber[800],
+        currentIndex: currentIndex,
+        onTap: _onItemTapped,
+      ),
     );
   }
 }

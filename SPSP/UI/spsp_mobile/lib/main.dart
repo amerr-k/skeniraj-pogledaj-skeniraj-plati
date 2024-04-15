@@ -1,18 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:spsp_mobile/models/menu.dart';
-import 'package:spsp_mobile/models/menu_item.dart';
 import 'package:spsp_mobile/providers/cart_provider.dart';
+import 'package:spsp_mobile/providers/category_provider.dart';
 import 'package:spsp_mobile/providers/menu_item_provider.dart';
+import 'package:spsp_mobile/providers/menu_provider.dart';
 import 'package:spsp_mobile/providers/order_provider.dart';
 import 'package:spsp_mobile/providers/user_provider.dart';
-import 'package:spsp_mobile/screens/menu_item_detail_screen.dart';
-import 'package:spsp_mobile/screens/menu_item_list_screen.dart';
+import 'package:spsp_mobile/screens/menu_item_details_customer_screen.dart';
+import 'package:spsp_mobile/screens/menu_item_list_customer_screen.dart';
 import 'package:spsp_mobile/utils/util.dart';
 
 void main() => runApp(MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => MenuItemProvider()),
+        ChangeNotifierProvider(create: (_) => MenuProvider()),
+        ChangeNotifierProvider(create: (_) => CategoryProvider()),
         ChangeNotifierProvider(create: (_) => UserProvider()),
         ChangeNotifierProvider(create: (_) => CartProvider()),
         ChangeNotifierProvider(create: (_) => OrderProvider()),
@@ -20,7 +22,6 @@ void main() => runApp(MultiProvider(
       child: MaterialApp(
         debugShowCheckedModeBanner: true,
         theme: ThemeData(
-          // Define the default brightness and colors.
           brightness: Brightness.light,
           primaryColor: Colors.deepPurple,
           textButtonTheme: TextButtonThemeData(
@@ -40,8 +41,9 @@ void main() => runApp(MultiProvider(
         ),
         home: HomePage(),
         onGenerateRoute: (settings) {
-          if (settings.name == MenuItemListScreen.routeName) {
-            return MaterialPageRoute(builder: ((context) => MenuItemListScreen()));
+          if (settings.name == MenuItemListCustomerScreen.routeName) {
+            return MaterialPageRoute(
+                builder: ((context) => MenuItemListCustomerScreen()));
           }
           // else if (settings.name == CartScreen.routeName) {
           //   return MaterialPageRoute(builder: ((context) => CartScreen()));
@@ -49,10 +51,10 @@ void main() => runApp(MultiProvider(
 
           var uri = Uri.parse(settings.name!);
           if (uri.pathSegments.length == 2 &&
-              "/${uri.pathSegments.first}" == MenuItemDetailScreen.routeName) {
+              "/${uri.pathSegments.first}" == MenuItemDetailsCustomerScreen.routeName) {
             var id = uri.pathSegments[1];
             return MaterialPageRoute(
-                builder: (context) => MenuItemDetailScreen(
+                builder: (context) => MenuItemDetailsCustomerScreen(
                       id: id,
                       // menuItem: MenuItem(
                       //     1, "name", "description", 1, 10, "code", "image", 1, 1),
@@ -84,26 +86,6 @@ class HomePage extends StatelessWidget {
                       image: AssetImage("assets/images/background.jpg"),
                       fit: BoxFit.fill)),
               child: Stack(children: [
-                // Positioned(
-                //     left: 110,
-                //     top: 0,
-                //     width: 90,
-                //     height: 120,
-                //     child: Container(
-                //         decoration: BoxDecoration(
-                //             image: DecorationImage(
-                //       image: AssetImage("assets/images/light-1.png"),
-                //     )))),
-                // Positioned(
-                //     right: 60,
-                //     top: 0,
-                //     width: 80,
-                //     height: 120,
-                //     child: Container(
-                //         decoration: BoxDecoration(
-                //             image: DecorationImage(
-                //       image: AssetImage("assets/images/clock.png"),
-                //     )))),
                 Container(
                   child: Center(
                     child: Container(
@@ -167,7 +149,7 @@ class HomePage extends StatelessWidget {
               margin: EdgeInsets.fromLTRB(40, 0, 40, 0),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),
-                gradient: LinearGradient(colors: [
+                gradient: const LinearGradient(colors: [
                   Color.fromRGBO(143, 148, 251, 1),
                   Color.fromRGBO(143, 148, 251, .6)
                 ]),
@@ -180,7 +162,7 @@ class HomePage extends StatelessWidget {
 
                     await _menuItemProvider.get();
 
-                    Navigator.pushNamed(context, MenuItemListScreen.routeName);
+                    Navigator.pushNamed(context, MenuItemListCustomerScreen.routeName);
                   } catch (e) {
                     showDialog(
                         context: context,

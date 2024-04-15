@@ -50,7 +50,7 @@ namespace SPSP.Services.Database.SeedData
                 new MenuItem
                 {
                     Id = 1,
-                    Code = "SKY_COLA",
+                    Code = "A000111",
                     MenuId = 1,
                     CategoryId = 3,
                     Name = "Sky Cola",
@@ -63,7 +63,7 @@ namespace SPSP.Services.Database.SeedData
                 new MenuItem
                 {
                     Id = 2,
-                    Code = "PREMINGER_PIVO",
+                    Code = "A000112",
                     MenuId = 1,
                     CategoryId = 2,
                     Name = "Preminger pivo",
@@ -76,7 +76,7 @@ namespace SPSP.Services.Database.SeedData
                 new MenuItem
                 {
                     Id = 3,
-                    Code = "SENZACIJA_KRUSKA",
+                    Code = "A000113",
                     MenuId = 1,
                     CategoryId = 3,
                     Name = "Senzacija Kruška",
@@ -89,7 +89,7 @@ namespace SPSP.Services.Database.SeedData
                 new MenuItem
                 {
                     Id = 4,
-                    Code = "SARAJEVSKO_PIVO",
+                    Code = "A000114",
                     MenuId = 1,
                     CategoryId = 2,
                     Name = "Sarajevsko pivo",
@@ -102,7 +102,7 @@ namespace SPSP.Services.Database.SeedData
                 new MenuItem
                 {
                     Id = 5,
-                    Code = "PEKARSKI_KROMPIR",
+                    Code = "A000115",
                     MenuId = 1,
                     CategoryId = 8,
                     Name = "Pekarski krompir",
@@ -115,7 +115,7 @@ namespace SPSP.Services.Database.SeedData
                 new MenuItem
                 {
                     Id = 6,
-                    Code = "LJUTE_KOBASICE",
+                    Code = "A000116",
                     MenuId = 1,
                     CategoryId = 8,
                     Name = "Ljute kobasice sa roštilja",
@@ -128,7 +128,7 @@ namespace SPSP.Services.Database.SeedData
                 new MenuItem
                 {
                     Id = 7,
-                    Code = "TUZLANSKI_PILSNER",
+                    Code = "A000117",
                     MenuId = 1,
                     CategoryId = 2,
                     Name = "Tuzlanski pilsner",
@@ -141,7 +141,7 @@ namespace SPSP.Services.Database.SeedData
                 new MenuItem
                 {
                     Id = 8,
-                    Code = "POMFRIT",
+                    Code = "A000118",
                     MenuId = 1,
                     CategoryId = 8,
                     Name = "Pomfrit",
@@ -154,7 +154,7 @@ namespace SPSP.Services.Database.SeedData
                 new MenuItem
                 {
                     Id = 9,
-                    Code = "MARTINI",
+                    Code = "A000119",
                     MenuId = 1,
                     CategoryId = 5,
                     Name = "Martini",
@@ -167,7 +167,7 @@ namespace SPSP.Services.Database.SeedData
                 new MenuItem
                 {
                     Id = 10,
-                    Code = "MOJITO",
+                    Code = "A000120",
                     MenuId = 1,
                     CategoryId = 5,
                     Name = "Mojito",
@@ -180,7 +180,7 @@ namespace SPSP.Services.Database.SeedData
                 new MenuItem
                 {
                     Id = 11,
-                    Code = "CAJ_OD_KAMILICA",
+                    Code = "A000121",
                     MenuId = 1,
                     CategoryId = 1,
                     Name = "Čaj od kamilice",
@@ -193,7 +193,7 @@ namespace SPSP.Services.Database.SeedData
                 new MenuItem
                 {
                     Id = 12,
-                    Code = "CAJ_OD_MENTE",
+                    Code = "A000122",
                     MenuId = 1,
                     CategoryId = 1,
                     Name = "Čaj od mente",
@@ -206,7 +206,7 @@ namespace SPSP.Services.Database.SeedData
                 new MenuItem
                 {
                     Id = 13,
-                    Code = "SOK_OD_NARANDZE",
+                    Code = "A000123",
                     MenuId = 1,
                     CategoryId = 4,
                     Name = "Sok od narandže",
@@ -219,7 +219,7 @@ namespace SPSP.Services.Database.SeedData
                 new MenuItem
                 {
                     Id = 14,
-                    Code = "SOK_OD_JABUKE",
+                    Code = "A000124",
                     MenuId = 1,
                     CategoryId = 4,
                     Name = "Sok od jabuke",
@@ -232,7 +232,7 @@ namespace SPSP.Services.Database.SeedData
                 new MenuItem
                 {
                     Id = 15,
-                    Code = "DRINA_OBICNA",
+                    Code = "A000125",
                     MenuId = 1,
                     CategoryId = 9,
                     Name = "Drina obična",
@@ -245,7 +245,7 @@ namespace SPSP.Services.Database.SeedData
                 new MenuItem
                 {
                     Id = 16,
-                    Code = "OBICNI_ESSPRESO",
+                    Code = "A000126",
                     MenuId = 1,
                     CategoryId = 1,
                     Name = "Obični espresso",
@@ -258,7 +258,7 @@ namespace SPSP.Services.Database.SeedData
                 new MenuItem
                 {
                     Id = 17,
-                    Code = "MACHIATO",
+                    Code = "A000127",
                     MenuId = 1,
                     CategoryId = 1,
                     Name = "Machiato",
@@ -271,7 +271,7 @@ namespace SPSP.Services.Database.SeedData
                 new MenuItem
                 {
                     Id = 18,
-                    Code = "ZDREPVECA_KRV",
+                    Code = "A000128",
                     MenuId = 1,
                     CategoryId = 7,
                     Name = "Ždrepčeva krv",
@@ -284,7 +284,7 @@ namespace SPSP.Services.Database.SeedData
                 new MenuItem
                 {
                     Id = 19,
-                    Code = "BIJELO_VINO",
+                    Code = "A000129",
                     MenuId = 1,
                     CategoryId = 7,
                     Name = "Bijelo vino",

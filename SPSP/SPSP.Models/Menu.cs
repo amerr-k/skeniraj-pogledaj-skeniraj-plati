@@ -13,6 +13,6 @@ namespace SPSP.Models
         public string? QRCode { get; set; }
         public bool? IsActive { get; set; }
         public bool? Valid { get; set; }
-        public virtual ICollection<MenuItem> MenuItems { get; set; }
+        //public virtual ICollection<MenuItem> MenuItems { get; set; }
     }
 }

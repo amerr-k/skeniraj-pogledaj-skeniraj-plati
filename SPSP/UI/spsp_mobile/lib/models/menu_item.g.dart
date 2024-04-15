@@ -16,6 +16,9 @@ MenuItem _$MenuItemFromJson(Map<String, dynamic> json) => MenuItem(
       json['image'] as String?,
       json['categoryId'] as int?,
       json['menuId'] as int?,
+      json['category'] == null
+          ? null
+          : Category.fromJson(json['category'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$MenuItemToJson(MenuItem instance) => <String, dynamic>{
@@ -27,5 +30,6 @@ Map<String, dynamic> _$MenuItemToJson(MenuItem instance) => <String, dynamic>{
       'inStorage': instance.inStorage,
       'image': instance.image,
       'categoryId': instance.categoryId,
+      'category': instance.category,
       'menuId': instance.menuId,
     };

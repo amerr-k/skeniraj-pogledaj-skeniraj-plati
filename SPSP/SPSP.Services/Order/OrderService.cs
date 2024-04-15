@@ -83,6 +83,12 @@ namespace SPSP.Services.Order
                 }
             }
 
+            if (search?.QRTableId != null)
+            {
+                query = query.Where(x => x.QRTableId == search.QRTableId);
+            }
+
+
             return base.AddFilter(query, search);
         }
 

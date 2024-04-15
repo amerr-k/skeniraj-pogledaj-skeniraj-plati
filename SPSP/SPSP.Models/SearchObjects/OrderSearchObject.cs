@@ -13,5 +13,7 @@ namespace SPSP.Models.SearchObjects
         public DateTime? orderDateTimeTo {  get; set; }
         public OrderStatusEnum? orderStatus {  get; set; }
         public bool? IsOrderItemsIncluded { get; set; }
+        public int? QRTableId { get; set; }
+        public string? Status { get; set; }
     }
 }

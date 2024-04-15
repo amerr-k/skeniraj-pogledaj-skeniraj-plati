@@ -14,7 +14,7 @@ namespace SPSP.Services.Database
         }
 
         public int Id { get; set; }
-        public string QRCode { get; set; }
+        public byte[]? QRCode { get; set; }
         public int? TableNumber { get; set; }
         public int? Capacity { get; set; }
         public string LocationDescription { get; set; }

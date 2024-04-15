@@ -27,6 +27,16 @@ namespace SPSP.Services.MenuItem
             //URADI NESTO SPECIFICNO ZA MENU ITEM SERVICE NPR DODAJ U ATRIBUT
         }
 
+        public override async Task<Models.MenuItem> GetById(int id)
+        {
+            var entity = await context.Set<Database.MenuItem>()
+                .Include(x => x.Category)
+                .Include(x => x.Menu)
+                .FirstOrDefaultAsync(x => x.Id == id);
+
+            return mapper.Map<Models.MenuItem>(entity);
+        }
+
 
 
         public override IQueryable<Database.MenuItem> AddFilter(IQueryable<Database.MenuItem> query, MenuItemSearchObject search)

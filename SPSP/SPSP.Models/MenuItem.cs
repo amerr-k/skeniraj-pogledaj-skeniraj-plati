@@ -19,5 +19,6 @@ namespace SPSP.Models
         public byte[]? Image { get; set; }
         public byte[]? ImageThumb { get; set; }
         public virtual Category Category { get; set; }
+        public virtual Menu Menu { get; set; }
     }
 }

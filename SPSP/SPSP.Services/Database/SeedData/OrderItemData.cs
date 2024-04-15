@@ -169,12 +169,13 @@ namespace SPSP.Services.Database.SeedData
                     Subtotal = 14,
                     Valid = true
                 },
+
                 new OrderItem
                 {
                     Id = 19,
                     OrderId = 10,
-                    MenuItemId = 15,
-                    Quantity = 1,
+                    MenuItemId = 16,
+                    Quantity = 2,
                     Subtotal = 5,
                     Valid = true
                 },
@@ -182,18 +183,18 @@ namespace SPSP.Services.Database.SeedData
                 {
                     Id = 20,
                     OrderId = 10,
-                    MenuItemId = 8,
+                    MenuItemId = 1,
                     Quantity = 2,
-                    Subtotal = 6,
+                    Subtotal = 5,
                     Valid = true
                 },
                 new OrderItem
                 {
                     Id = 21,
                     OrderId = 11,
-                    MenuItemId = 7,
-                    Quantity = 7,
-                    Subtotal = 14,
+                    MenuItemId = 9,
+                    Quantity = 2,
+                    Subtotal = 10,
                     Valid = true
                 },
                 new OrderItem
@@ -227,8 +228,8 @@ namespace SPSP.Services.Database.SeedData
                 {
                     Id = 25,
                     OrderId = 13,
-                    MenuItemId = 15,
-                    Quantity = 1,
+                    MenuItemId = 16,
+                    Quantity = 2,
                     Subtotal = 5,
                     Valid = true
                 },
@@ -236,18 +237,18 @@ namespace SPSP.Services.Database.SeedData
                 {
                     Id = 26,
                     OrderId = 13,
-                    MenuItemId = 8,
+                    MenuItemId = 1,
                     Quantity = 2,
-                    Subtotal = 6,
+                    Subtotal = 5,
                     Valid = true
                 },
                 new OrderItem
                 {
                     Id = 27,
                     OrderId = 14,
-                    MenuItemId = 7,
-                    Quantity = 7,
-                    Subtotal = 14,
+                    MenuItemId = 9,
+                    Quantity = 2,
+                    Subtotal = 10,
                     Valid = true
                 },
                 new OrderItem

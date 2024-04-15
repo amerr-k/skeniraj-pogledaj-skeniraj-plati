@@ -273,7 +273,8 @@ namespace SPSP.Services.Database
             {
                 entity.ToTable("QRTable");
 
-                entity.Property(e => e.QRCode).HasMaxLength(255);
+                entity.Property(e => e.QRCode)
+                    .HasColumnType("VARBINARY(MAX)");
 
                 entity.Property(e => e.Valid)
                     .IsRequired()
