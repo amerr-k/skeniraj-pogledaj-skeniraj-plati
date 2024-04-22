@@ -1,9 +1,6 @@
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
-using SPSP.Filters;
-using SPSP.Models.SearchObjects;
-using SPSP.Services.Base;
 using SPSP.Services.Reservation.StateMachine;
 using SPSP;
 using SPSP.Services.Customer;
@@ -11,30 +8,38 @@ using SPSP.Services.Database;
 using SPSP.Services.Category;
 using SPSP.Services.Employee;
 using SPSP.Services.Menu;
-using SPSP.Services.Order;
 using SPSP.Services.QRTable;
 using SPSP.Services.Reservation;
 using SPSP.Services.UserAccount;
 using SPSP.Services.MenuItem;
+using SPSP.Services.SaleInvoice;
+using SPSP.Services.SaleInvoiceItem;
+using SPSP.Services.PurchaseInvoice;
+using SPSP.Services.PurchaseInvoiceItem;
+using SPSP.Services.Order;
 using SPSP.Services.OrderItem;
+using SPSP.Services.PaymentGatewayData;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-
 builder.Services.AddTransient<IUserAccountService, UserAccountService>();
 builder.Services.AddTransient<ICustomerService, CustomerService>();
 builder.Services.AddTransient<IEmployeeService, EmployeeService>();
-
 
 //builder.Services.AddTransient
 //    <IService<SPSP.Models.Business, BaseSearchObject>,
 //    BaseService<SPSP.Models.Business, Business, BaseSearchObject>>();
 builder.Services.AddTransient<IMenuService, MenuService>();
 builder.Services.AddTransient<IMenuItemService, MenuItemService>();
+builder.Services.AddTransient<IPaymentGatewayDataService, PaymentGatewayDataService>();
 builder.Services.AddTransient<IOrderService, OrderService>();
 builder.Services.AddTransient<IOrderItemService, OrderItemService>();
+builder.Services.AddTransient<ISaleInvoiceService, SaleInvoiceService>();
+builder.Services.AddTransient<ISaleInvoiceItemService, SaleInvoiceItemService>();
+builder.Services.AddTransient<IPurchaseInvoiceService, PurchaseInvoiceService>();
+builder.Services.AddTransient<IPurchaseInvoiceItemService, PurchaseInvoiceItemService>();
 builder.Services.AddTransient<ICategoryService, CategoryService>();
 builder.Services.AddTransient<IQRTableService, QRTableService>();
 builder.Services.AddTransient<IReservationService, ReservationService>();

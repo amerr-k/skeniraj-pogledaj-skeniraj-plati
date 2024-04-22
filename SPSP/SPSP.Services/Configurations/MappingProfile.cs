@@ -1,10 +1,16 @@
 ﻿using AutoMapper;
+using SPSP.Models;
 using SPSP.Models.Request.Customer;
 using SPSP.Models.Request.Employee;
 using SPSP.Models.Request.MenuItem;
 using SPSP.Models.Request.Order;
 using SPSP.Models.Request.OrderItem;
+using SPSP.Models.Request.PaymentGatewayData;
+using SPSP.Models.Request.PurchaseInvoice;
+using SPSP.Models.Request.PurchaseInvoiceItem;
 using SPSP.Models.Request.Reservation;
+using SPSP.Models.Request.SaleInvoice;
+using SPSP.Models.Request.SaleInvoiceItem;
 using SPSP.Models.Request.UserAccount;
 
 namespace SPSP.Services.Configurations
@@ -47,8 +53,23 @@ namespace SPSP.Services.Configurations
             CreateMap<UserAccountCreateRequest, Database.UserAccount>();
             CreateMap<UserAccountUpdateRequest, Database.UserAccount>();
 
-            CreateMap<Database.UserAccountUserRole, Models.UserAccountUserRole>();
-            CreateMap<Database.UserRole, Models.UserRole>();
+            CreateMap<Database.UserAccountUserRole, UserAccountUserRole>();
+            CreateMap<Database.UserRole, UserRole>();
+
+            CreateMap<Database.SaleInvoice, Models.SaleInvoice>();
+            CreateMap<SaleInvoiceCreateRequest, Database.SaleInvoice>();
+
+            CreateMap<Database.SaleInvoiceItem, Models.SaleInvoiceItem>();
+            CreateMap<SaleInvoiceItemCreateRequest, Database.SaleInvoiceItem>();
+
+            CreateMap<Database.PurchaseInvoice, Models.PurchaseInvoice>();
+            CreateMap<PurchaseInvoiceCreateRequest, Database.PurchaseInvoice>();
+
+            CreateMap<Database.PurchaseInvoiceItem, Models.PurchaseInvoiceItem>();
+            CreateMap<PurchaseInvoiceItemCreateRequest, Database.PurchaseInvoiceItem>();
+
+            CreateMap<Database.PaymentGatewayData, Models.PaymentGatewayData>();
+            CreateMap<PaymentGatewayDataCreateRequest, Database.PaymentGatewayData>();
 
 
         }

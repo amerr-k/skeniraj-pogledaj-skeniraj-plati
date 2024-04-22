@@ -18,16 +18,17 @@ class Order {
   List<OrderItem> orderItems;
 
   Order(
-      this.id,
-      this.customerId,
-      this.orderDateTime,
-      this.totalAmount,
-      this.totalAmountWithVAT,
-      this.vat,
-      this.vatAmount,
-      this.status,
-      this.qrTableId,
-      this.orderItems);
+    this.orderItems, {
+    this.id,
+    this.customerId,
+    this.orderDateTime,
+    this.totalAmount,
+    this.totalAmountWithVAT,
+    this.vat,
+    this.vatAmount,
+    this.status,
+    this.qrTableId,
+  });
 
   factory Order.fromCart(Cart cart) {
     List<OrderItem> orderItems = cart.items.map((cartItem) {
@@ -42,15 +43,11 @@ class Order {
     }).toList();
 
     return Order(
-      null, // id
-      null, // customerId
-      DateTime.now(), // orderDateTime
-      cart.totalAmount, // totalAmount
-      cart.totalAmountWithVAT, // totalAmountWithVAT
-      cart.VAT, // VAT
-      null, // VATAmount
-      null, // status
-      cart.qrTable?.id,
+      orderDateTime: DateTime.now(),
+      totalAmount: cart.totalAmount,
+      totalAmountWithVAT: cart.totalAmountWithVAT,
+      vat: cart.VAT,
+      qrTableId: cart.qrTable?.id,
       orderItems,
     );
   }

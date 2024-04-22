@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using SPSP.Models;
 using SPSP.Models.SearchObjects;
 using SPSP.Services.Database;
 using SPSP.Services.Base;

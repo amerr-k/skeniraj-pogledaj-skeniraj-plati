@@ -344,7 +344,7 @@ class _OrderListScreenState extends State<OrderListScreen> {
 
                                     PdfApi.openFile(pdfFile);
                                   },
-                                  child: const Text("Kreiraj račun"),
+                                  child: const Text("Generiši račun"),
                                 )
                               ],
                             ),

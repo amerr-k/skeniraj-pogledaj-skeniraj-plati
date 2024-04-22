@@ -13,7 +13,7 @@ namespace SPSP.Services.Database.SeedData
                     PurchaseInvoiceId = 1,
                     MenuItemId = 1,
                     Quantity = 20,
-                    Price = 2,
+                    UnitPrice = 2,
                     Valid = true
                 },
                 new PurchaseInvoiceItem
@@ -22,7 +22,7 @@ namespace SPSP.Services.Database.SeedData
                     PurchaseInvoiceId = 1,
                     MenuItemId = 2,
                     Quantity = 10,
-                    Price = 2,
+                    UnitPrice = 2,
                     Valid = true
                 },
                 new PurchaseInvoiceItem
@@ -31,7 +31,7 @@ namespace SPSP.Services.Database.SeedData
                     PurchaseInvoiceId = 1,
                     MenuItemId = 3,
                     Quantity = 20,
-                    Price = 2,
+                    UnitPrice = 2,
                     Valid = true
                 },
                 new PurchaseInvoiceItem
@@ -40,7 +40,7 @@ namespace SPSP.Services.Database.SeedData
                     PurchaseInvoiceId = 2,
                     MenuItemId = 4,
                     Quantity = 5,
-                    Price = 2,
+                    UnitPrice = 2,
                     Valid = true
                 },
                 new PurchaseInvoiceItem
@@ -49,7 +49,7 @@ namespace SPSP.Services.Database.SeedData
                     PurchaseInvoiceId = 2,
                     MenuItemId = 5,
                     Quantity = 20,
-                    Price = 2,
+                    UnitPrice = 2,
                     Valid = true
                 },
                 new PurchaseInvoiceItem
@@ -58,7 +58,7 @@ namespace SPSP.Services.Database.SeedData
                     PurchaseInvoiceId = 2,
                     MenuItemId = 6,
                     Quantity = 20,
-                    Price = 2,
+                    UnitPrice = 2,
                     Valid = true
                 },
                 new PurchaseInvoiceItem
@@ -67,7 +67,7 @@ namespace SPSP.Services.Database.SeedData
                     PurchaseInvoiceId = 3,
                     MenuItemId = 7,
                     Quantity = 5,
-                    Price = 2,
+                    UnitPrice = 2,
                     Valid = true
                 },
                 new PurchaseInvoiceItem
@@ -76,7 +76,7 @@ namespace SPSP.Services.Database.SeedData
                     PurchaseInvoiceId = 3,
                     MenuItemId = 8,
                     Quantity = 10,
-                    Price = 2,
+                    UnitPrice = 2,
                     Valid = true
                 },
                 new PurchaseInvoiceItem
@@ -85,7 +85,7 @@ namespace SPSP.Services.Database.SeedData
                     PurchaseInvoiceId = 3,
                     MenuItemId = 9,
                     Quantity = 15,
-                    Price = 2,
+                    UnitPrice = 2,
                     Valid = true
                 }
             );

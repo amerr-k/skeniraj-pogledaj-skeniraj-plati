@@ -7,20 +7,20 @@ part of 'order.dart';
 // **************************************************************************
 
 Order _$OrderFromJson(Map<String, dynamic> json) => Order(
-      json['id'] as int?,
-      json['customerId'] as int?,
-      json['orderDateTime'] == null
-          ? null
-          : DateTime.parse(json['orderDateTime'] as String),
-      (json['totalAmount'] as num?)?.toDouble(),
-      (json['totalAmountWithVAT'] as num?)?.toDouble(),
-      (json['vat'] as num?)?.toDouble(),
-      (json['vatAmount'] as num?)?.toDouble(),
-      json['status'] as String?,
-      json['qrTableId'] as int?,
       (json['orderItems'] as List<dynamic>)
           .map((e) => OrderItem.fromJson(e as Map<String, dynamic>))
           .toList(),
+      id: json['id'] as int?,
+      customerId: json['customerId'] as int?,
+      orderDateTime: json['orderDateTime'] == null
+          ? null
+          : DateTime.parse(json['orderDateTime'] as String),
+      totalAmount: (json['totalAmount'] as num?)?.toDouble(),
+      totalAmountWithVAT: (json['totalAmountWithVAT'] as num?)?.toDouble(),
+      vat: (json['vat'] as num?)?.toDouble(),
+      vatAmount: (json['vatAmount'] as num?)?.toDouble(),
+      status: json['status'] as String?,
+      qrTableId: json['qrTableId'] as int?,
     );
 
 Map<String, dynamic> _$OrderToJson(Order instance) => <String, dynamic>{

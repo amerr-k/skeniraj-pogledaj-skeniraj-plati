@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using SPSP.Controllers.Base;
-using SPSP.Models;
 using SPSP.Models.Request.Employee;
 using SPSP.Models.SearchObjects;
 using SPSP.Services.Employee;
@@ -13,7 +12,7 @@ namespace SPSP.Controllers
         : BaseCRUDController<Models.Employee, EmployeeSearchObject, EmployeeCreateRequest, EmployeeUpdateRequest>
     {
 
-        public EmployeeController(ILogger<BaseCRUDController<Employee, EmployeeSearchObject, EmployeeCreateRequest, EmployeeUpdateRequest>> logger,
+        public EmployeeController(ILogger<BaseCRUDController<Models.Employee, EmployeeSearchObject, EmployeeCreateRequest, EmployeeUpdateRequest>> logger,
             IEmployeeService service)
             : base(logger, service)
         {

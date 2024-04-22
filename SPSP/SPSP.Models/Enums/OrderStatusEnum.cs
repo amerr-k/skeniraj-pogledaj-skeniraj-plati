@@ -10,7 +10,8 @@ namespace SPSP.Models.Enums
     {
         ACTIVE,
         COMPLETED,
-        CANCELED
+        CANCELED,
+        FAILED
     }
 
     public static class OrderStatusEnumExtension
@@ -20,11 +21,13 @@ namespace SPSP.Models.Enums
             switch (status)
             {
                 case OrderStatusEnum.ACTIVE:
-                    return "AKTIVNO";
+                    return "ACTIVE";
                 case OrderStatusEnum.COMPLETED:
-                    return "ZAVRŠENO";
+                    return "COMPLETED";
                 case OrderStatusEnum.CANCELED:
-                    return "OTKAZANO";
+                    return "CANCELED";
+                case OrderStatusEnum.FAILED:
+                    return "FAILED";
                 default:
                     throw new ArgumentException("Invalid OrderStatus");
             }

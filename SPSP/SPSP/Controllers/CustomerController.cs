@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using SPSP.Controllers.Base;
-using SPSP.Models;
 using SPSP.Models.Request.Customer;
 using SPSP.Models.SearchObjects;
 using SPSP.Services;
@@ -16,7 +15,7 @@ namespace SPSP.Controllers
         : BaseCRUDController<Models.Customer, CustomerSearchObject, CustomerCreateRequest, CustomerUpdateRequest>
     {
 
-        public CustomerController(ILogger<BaseCRUDController<Customer, CustomerSearchObject, CustomerCreateRequest, CustomerUpdateRequest>> logger,
+        public CustomerController(ILogger<BaseCRUDController<Models.Customer, CustomerSearchObject, CustomerCreateRequest, CustomerUpdateRequest>> logger,
             ICustomerService service)
             : base(logger, service)
         {

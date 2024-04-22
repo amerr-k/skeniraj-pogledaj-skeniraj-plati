@@ -1,8 +1,22 @@
+// ignore_for_file: prefer_const_constructors, non_constant_identifier_names, prefer_typing_uninitialized_variables
+
 import 'package:flutter/material.dart';
+import 'package:flutter_paypal_checkout/flutter_paypal_checkout.dart';
+import 'package:provider/provider.dart';
+import 'package:spsp_mobile/environment_config.dart';
 import 'package:spsp_mobile/models/enums/OrderStatus.dart';
 import 'package:spsp_mobile/models/order.dart';
+import 'package:spsp_mobile/models/paypal/amount.dart';
+import 'package:spsp_mobile/models/paypal/details.dart';
+import 'package:spsp_mobile/models/paypal/item_list.dart';
+import 'package:spsp_mobile/models/paypal/items.dart';
+import 'package:spsp_mobile/models/paypal/payment_gateway_data.dart';
+import 'package:spsp_mobile/models/paypal/transaction.dart';
+import 'package:spsp_mobile/models/sale_invoice/sale_invoice.dart';
 import 'package:spsp_mobile/models/search_result.dart';
 import 'package:spsp_mobile/providers/order_provider.dart';
+import 'package:spsp_mobile/providers/sale_invoice_provider.dart';
+import 'package:spsp_mobile/providers/transaction_provider.dart';
 
 class OrderListCheckOutCustomerScreen extends StatefulWidget {
   final String? qrTableId;
@@ -19,10 +33,18 @@ class _OrderListCheckOutCustomerScreenState
     extends State<OrderListCheckOutCustomerScreen> {
   RequestResult<Order>? orders;
   List<bool> _isChecked = [];
-
+  late TransactionProvider _transactionProvider = TransactionProvider();
+  late SaleInvoiceProvider _saleInvoiceProvider = SaleInvoiceProvider();
+  var CLIENT_ID_VALUE = String.fromEnvironment('CLIENT_ID_VALUE',
+      defaultValue: EnvironmentConfig.CLIENT_ID_VALUE);
+  var SECRET_KEY_VALUE = String.fromEnvironment('SECRET_KEY_VALUE',
+      defaultValue: EnvironmentConfig.SECRET_KEY_VALUE);
   @override
   void initState() {
     super.initState();
+    _transactionProvider = context.read<TransactionProvider>();
+    _saleInvoiceProvider = context.read<SaleInvoiceProvider>();
+
     _getOrders();
   }
 
@@ -45,20 +67,75 @@ class _OrderListCheckOutCustomerScreenState
       appBar: AppBar(
         title: Text('Lista narudžbi'),
       ),
-      body: orders != null ? _buildOrderList() : CircularProgressIndicator(),
+      body:
+          orders != null ? _buildOrderList() : Center(child: CircularProgressIndicator()),
       bottomNavigationBar: BottomAppBar(
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
             ElevatedButton(
               onPressed: () {
-                _payCheckedOrders();
+                _createCheckedTransactions();
               },
               child: Text('Plati odabrano'),
             ),
             ElevatedButton(
               onPressed: () {
-                _payAllOrders();
+                var transactions = _createAllTransactions();
+                if (!transactions.isEmpty) {
+                  Navigator.of(context).push(MaterialPageRoute(
+                    builder: (BuildContext context) => SafeArea(
+                      child: PaypalCheckout(
+                        sandboxMode: true,
+                        clientId: CLIENT_ID_VALUE,
+                        secretKey: SECRET_KEY_VALUE,
+                        returnURL: "success.snippetcoder.com",
+                        cancelURL: "cancel.snippetcoder.com",
+                        transactions: transactions,
+                        note: "Uživajte u vašem piću i dođite nam ponovo.",
+                        onSuccess: (Map params) async {
+                          var paymentGatewayData = PaymentGatewayData(
+                              params["data"].toString(),
+                              params["message"].toString(),
+                              params["error"]);
+                          var create = SaleInvoice.fromOrder(orders!.result[0]);
+
+                          _clearOrderItems();
+
+                          create.paymentGatewayData = paymentGatewayData;
+                          create.processed = true;
+
+                          await _saleInvoiceProvider.create(create);
+
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text(
+                                "Plaćanje je uspješno procesuirano",
+                                style: TextStyle(color: Colors.white), // Text color
+                              ),
+                              backgroundColor: Colors.green, // Background color
+                            ),
+                          );
+                          Navigator.pop(context);
+                        },
+                        onError: (error) {
+                          print(error);
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text(
+                                "Desila se greška prilikom procesuiranja plaćanja. Molimo kontaktirajte administratora",
+                                style: TextStyle(color: Colors.white), // Text color
+                              ),
+                              backgroundColor: Colors.red, // Background color
+                            ),
+                          );
+                          Navigator.pop(context);
+                        },
+                        onCancel: () {},
+                      ),
+                    ),
+                  ));
+                }
               },
               child: Text('Plati sve'),
             ),
@@ -109,17 +186,80 @@ class _OrderListCheckOutCustomerScreenState
     );
   }
 
-  void _payCheckedOrders() {
-    final checkedOrders = <Order>[];
+  List<Transaction> _createCheckedTransactions() {
+    // final checkedOrders = <Order>[];
+    List<Transaction> transactions = [];
+
     for (int i = 0; i < orders!.result.length; i++) {
+      var order = orders!.result[i];
       if (_isChecked[i]) {
-        checkedOrders.add(orders!.result[i]);
+        // checkedOrders.add(order);
+        var transaction = createNewTransaction(order);
+        transactions.add(transaction);
       }
     }
-    // Perform payment logic with checkedOrders
+    _transactionProvider.setTransactions(transactions);
+
+    return transactions;
   }
 
-  void _payAllOrders() {
-    // Perform payment logic with orders!.result
+  List<Transaction> _createAllTransactions() {
+    List<Transaction> transactions = [];
+    orders!.result.forEach((order) {
+      var transaction = createNewTransaction(order);
+      transactions.add(transaction);
+    });
+
+    _transactionProvider.setTransactions(transactions);
+    return transactions;
+  }
+
+  Transaction createNewTransaction(Order order) {
+    var total = order.totalAmountWithVAT!;
+    var currency = "USD";
+    var subtotal = order.totalAmountWithVAT!;
+    var details = Details(subtotal);
+    var amount = Amount(total, currency, details);
+
+    List<Items> items = [];
+    order.orderItems.forEach((orderItem) {
+      var item = Items(orderItem.menuItem!.name!, orderItem.quantity!,
+          orderItem.menuItem!.price!, currency);
+      items.add(item);
+    });
+
+    var itemList = ItemList(items);
+    var transaction = Transaction(amount, itemList, description: "Novo plaćanje");
+    print("transaction ${transaction.amount.total}");
+    return transaction;
+  }
+
+  _clearOrderItems() {
+    setState(() {
+      orders!.count = 0;
+      orders!.result = [];
+    });
+
+    _transactionProvider.setIsPaymentProcessed(true);
+  }
+
+  void _showPaymentSuccessAlert() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text("Success"),
+          content: Text("Your transaction has been processed successfully."),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: Text("OK"),
+            ),
+          ],
+        );
+      },
+    );
   }
 }

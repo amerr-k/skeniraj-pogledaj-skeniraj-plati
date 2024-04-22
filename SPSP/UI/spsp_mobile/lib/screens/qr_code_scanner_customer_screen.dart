@@ -83,6 +83,7 @@ class _QRCodeScannerCustomerScreenState extends State<QRCodeScannerCustomerScree
             ? ElevatedButton(
                 onPressed: () {
                   if (barcode != null) {
+                    // Navigator.pop(context);
                     Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(
@@ -94,7 +95,7 @@ class _QRCodeScannerCustomerScreenState extends State<QRCodeScannerCustomerScree
                 },
                 child: Text('Pogledaj narudžbu'),
               )
-            : Text('Skenirajte vaš QR kod na stolu', maxLines: 3));
+            : Center(child: Text('Skenirajte vaš QR kod na stolu', maxLines: 3)));
   }
 
   void _onQRViewCreated(QRViewController controller) {

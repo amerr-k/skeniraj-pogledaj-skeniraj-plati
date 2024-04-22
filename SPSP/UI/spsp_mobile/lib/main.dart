@@ -1,68 +1,72 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:provider/provider.dart';
 import 'package:spsp_mobile/providers/cart_provider.dart';
 import 'package:spsp_mobile/providers/category_provider.dart';
 import 'package:spsp_mobile/providers/menu_item_provider.dart';
 import 'package:spsp_mobile/providers/menu_provider.dart';
 import 'package:spsp_mobile/providers/order_provider.dart';
+import 'package:spsp_mobile/providers/sale_invoice_provider.dart';
+import 'package:spsp_mobile/providers/transaction_provider.dart';
 import 'package:spsp_mobile/providers/user_provider.dart';
 import 'package:spsp_mobile/screens/menu_item_details_customer_screen.dart';
 import 'package:spsp_mobile/screens/menu_item_list_customer_screen.dart';
 import 'package:spsp_mobile/utils/util.dart';
 
-void main() => runApp(MultiProvider(
-      providers: [
-        ChangeNotifierProvider(create: (_) => MenuItemProvider()),
-        ChangeNotifierProvider(create: (_) => MenuProvider()),
-        ChangeNotifierProvider(create: (_) => CategoryProvider()),
-        ChangeNotifierProvider(create: (_) => UserProvider()),
-        ChangeNotifierProvider(create: (_) => CartProvider()),
-        ChangeNotifierProvider(create: (_) => OrderProvider()),
-      ],
-      child: MaterialApp(
-        debugShowCheckedModeBanner: true,
-        theme: ThemeData(
-          brightness: Brightness.light,
-          primaryColor: Colors.deepPurple,
-          textButtonTheme: TextButtonThemeData(
-              style: TextButton.styleFrom(
-                  foregroundColor: Colors.deepPurple,
-                  textStyle: const TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                      fontStyle: FontStyle.italic))),
+void main() async {
+  await dotenv.load(fileName: ".env");
+  return runApp(MultiProvider(
+    providers: [
+      ChangeNotifierProvider(create: (_) => MenuItemProvider()),
+      ChangeNotifierProvider(create: (_) => MenuProvider()),
+      ChangeNotifierProvider(create: (_) => CategoryProvider()),
+      ChangeNotifierProvider(create: (_) => UserProvider()),
+      ChangeNotifierProvider(create: (_) => CartProvider()),
+      ChangeNotifierProvider(create: (_) => OrderProvider()),
+      ChangeNotifierProvider(create: (_) => TransactionProvider()),
+      ChangeNotifierProvider(create: (_) => SaleInvoiceProvider()),
+    ],
+    child: MaterialApp(
+      debugShowCheckedModeBanner: true,
+      theme: ThemeData(
+        brightness: Brightness.light,
+        primaryColor: Colors.deepPurple,
+        textButtonTheme: TextButtonThemeData(
+            style: TextButton.styleFrom(
+                foregroundColor: Colors.deepPurple,
+                textStyle: const TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                    fontStyle: FontStyle.italic))),
 
-          // Define the default `TextTheme`. Use this to specify the default
-          // text styling for headlines, titles, bodies of text, and more.
-          textTheme: const TextTheme(
-            headline1: TextStyle(fontSize: 72.0, fontWeight: FontWeight.bold),
-            headline6: TextStyle(fontSize: 36.0, fontStyle: FontStyle.italic),
-          ),
+        // Define the default `TextTheme`. Use this to specify the default
+        // text styling for headlines, titles, bodies of text, and more.
+        textTheme: const TextTheme(
+          headline1: TextStyle(fontSize: 72.0, fontWeight: FontWeight.bold),
+          headline6: TextStyle(fontSize: 36.0, fontStyle: FontStyle.italic),
         ),
-        home: HomePage(),
-        onGenerateRoute: (settings) {
-          if (settings.name == MenuItemListCustomerScreen.routeName) {
-            return MaterialPageRoute(
-                builder: ((context) => MenuItemListCustomerScreen()));
-          }
-          // else if (settings.name == CartScreen.routeName) {
-          //   return MaterialPageRoute(builder: ((context) => CartScreen()));
-          // }
-
-          var uri = Uri.parse(settings.name!);
-          if (uri.pathSegments.length == 2 &&
-              "/${uri.pathSegments.first}" == MenuItemDetailsCustomerScreen.routeName) {
-            var id = uri.pathSegments[1];
-            return MaterialPageRoute(
-                builder: (context) => MenuItemDetailsCustomerScreen(
-                      id: id,
-                      // menuItem: MenuItem(
-                      //     1, "name", "description", 1, 10, "code", "image", 1, 1),
-                    ));
-          }
-        },
       ),
-    ));
+      home: HomePage(),
+      onGenerateRoute: (settings) {
+        if (settings.name == MenuItemListCustomerScreen.routeName) {
+          return MaterialPageRoute(builder: ((context) => MenuItemListCustomerScreen()));
+        }
+
+        var uri = Uri.parse(settings.name!);
+        if (uri.pathSegments.length == 2 &&
+            "/${uri.pathSegments.first}" == MenuItemDetailsCustomerScreen.routeName) {
+          var id = uri.pathSegments[1];
+          return MaterialPageRoute(
+              builder: (context) => MenuItemDetailsCustomerScreen(
+                    id: id,
+                    // menuItem: MenuItem(
+                    //     1, "name", "description", 1, 10, "code", "image", 1, 1),
+                  ));
+        }
+      },
+    ),
+  ));
+}
 
 class HomePage extends StatelessWidget {
   TextEditingController _usernameController = TextEditingController();
@@ -164,18 +168,15 @@ class HomePage extends StatelessWidget {
 
                     Navigator.pushNamed(context, MenuItemListCustomerScreen.routeName);
                   } catch (e) {
-                    showDialog(
-                        context: context,
-                        builder: (BuildContext context) => AlertDialog(
-                              title: Text("Error"),
-                              content: Text(e.toString()),
-                              actions: [
-                                TextButton(
-                                  child: Text("Ok"),
-                                  onPressed: () => Navigator.pop(context),
-                                )
-                              ],
-                            ));
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text(
+                          e.toString(),
+                          style: TextStyle(color: Colors.white), // Text color
+                        ),
+                        backgroundColor: Colors.red, // Background color
+                      ),
+                    );
                   }
                 },
                 child: Center(child: Text("Login")),

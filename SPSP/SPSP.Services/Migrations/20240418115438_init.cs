@@ -45,6 +45,22 @@ namespace SPSP.Services.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "PaymentGatewayData",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Error = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Message = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Data = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Valid = table.Column<bool>(type: "bit", nullable: false, defaultValueSql: "((1))")
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PaymentGatewayData", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "QRTable",
                 columns: table => new
                 {
@@ -268,8 +284,9 @@ namespace SPSP.Services.Migrations
                     TotalAmountWithVAT = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     VAT = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
                     Note = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
-                    EmployeeId = table.Column<int>(type: "int", nullable: false),
-                    Valid = table.Column<bool>(type: "bit", nullable: false, defaultValueSql: "((1))")
+                    Valid = table.Column<bool>(type: "bit", nullable: false, defaultValueSql: "((1))"),
+                    PaymentGatewayDataId = table.Column<int>(type: "int", nullable: true),
+                    EmployeeId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -278,6 +295,11 @@ namespace SPSP.Services.Migrations
                         name: "FK_PurchaseInvoice_EmployeeId",
                         column: x => x.EmployeeId,
                         principalTable: "Employee",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_PurchaseInvoice_PaymentGatewayDataId",
+                        column: x => x.PaymentGatewayDataId,
+                        principalTable: "PaymentGatewayData",
                         principalColumn: "Id");
                 });
 
@@ -316,14 +338,14 @@ namespace SPSP.Services.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     InvoiceNumber = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
                     SaleDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Concluded = table.Column<bool>(type: "bit", nullable: true),
                     TotalAmount = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
                     TotalAmountWithVAT = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
                     VAT = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
                     VATAmount = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
-                    EmployeeId = table.Column<int>(type: "int", nullable: false),
+                    EmployeeId = table.Column<int>(type: "int", nullable: true),
                     CustomerId = table.Column<int>(type: "int", nullable: true),
                     OrderId = table.Column<int>(type: "int", nullable: false),
+                    Processed = table.Column<bool>(type: "bit", nullable: true),
                     Valid = table.Column<bool>(type: "bit", nullable: false, defaultValueSql: "((1))")
                 },
                 constraints: table =>
@@ -350,7 +372,8 @@ namespace SPSP.Services.Migrations
                     PurchaseInvoiceId = table.Column<int>(type: "int", nullable: false),
                     MenuItemId = table.Column<int>(type: "int", nullable: false),
                     Quantity = table.Column<int>(type: "int", nullable: false),
-                    Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    UnitPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    Subtotal = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     Valid = table.Column<bool>(type: "bit", nullable: false, defaultValueSql: "((1))")
                 },
                 constraints: table =>
@@ -505,31 +528,31 @@ namespace SPSP.Services.Migrations
                 columns: new[] { "Id", "CustomerId", "OrderDateTime", "QRTableId", "Status", "TotalAmount", "TotalAmountWithVAT", "VAT", "VATAmount", "Valid" },
                 values: new object[,]
                 {
-                    { 1, 1, new DateTime(2024, 4, 15, 13, 7, 26, 230, DateTimeKind.Local).AddTicks(4891), 3, "COMPLETED", 8.51m, 10m, 0.17m, 1.49m, true },
-                    { 2, 2, new DateTime(2024, 4, 15, 13, 7, 26, 230, DateTimeKind.Local).AddTicks(4930), 4, "COMPLETED", 12.82m, 15m, 0.17m, 2.18m, true },
-                    { 3, 3, new DateTime(2024, 4, 15, 13, 7, 26, 230, DateTimeKind.Local).AddTicks(4935), 5, "COMPLETED", 17.09m, 20m, 0.17m, 2.91m, true },
-                    { 4, 1, new DateTime(2024, 4, 15, 13, 7, 26, 230, DateTimeKind.Local).AddTicks(4939), 3, "COMPLETED", 8.51m, 10m, 0.17m, 1.49m, true },
-                    { 5, 2, new DateTime(2024, 4, 15, 13, 7, 26, 230, DateTimeKind.Local).AddTicks(4941), 4, "COMPLETED", 12.82m, 15m, 0.17m, 2.18m, true },
-                    { 6, 3, new DateTime(2024, 4, 15, 13, 7, 26, 230, DateTimeKind.Local).AddTicks(4944), 5, "COMPLETED", 17.09m, 20m, 0.17m, 2.91m, true },
-                    { 7, 1, new DateTime(2024, 4, 15, 13, 7, 26, 230, DateTimeKind.Local).AddTicks(4947), 3, "COMPLETED", 8.51m, 10m, 0.17m, 1.49m, true },
-                    { 8, 2, new DateTime(2024, 4, 15, 13, 7, 26, 230, DateTimeKind.Local).AddTicks(4950), 4, "COMPLETED", 12.82m, 15m, 0.17m, 2.18m, true },
-                    { 9, 3, new DateTime(2024, 4, 15, 13, 7, 26, 230, DateTimeKind.Local).AddTicks(4953), 5, "COMPLETED", 17.09m, 20m, 0.17m, 2.91m, true },
-                    { 10, 1, new DateTime(2024, 4, 15, 13, 7, 26, 230, DateTimeKind.Local).AddTicks(4957), 3, "ACTIVE", 8.51m, 10m, 0.17m, 1.49m, true },
-                    { 11, 2, new DateTime(2024, 4, 15, 13, 7, 26, 230, DateTimeKind.Local).AddTicks(4961), 4, "ACTIVE", 12.82m, 15m, 0.17m, 2.18m, true },
-                    { 12, 3, new DateTime(2024, 4, 15, 13, 7, 26, 230, DateTimeKind.Local).AddTicks(4964), 5, "ACTIVE", 17.09m, 20m, 0.17m, 2.91m, true },
-                    { 13, 1, new DateTime(2024, 4, 15, 13, 7, 26, 230, DateTimeKind.Local).AddTicks(4967), 3, "CANCELED", 8.51m, 10m, 0.17m, 1.49m, true },
-                    { 14, 2, new DateTime(2024, 4, 15, 13, 7, 26, 230, DateTimeKind.Local).AddTicks(5009), 4, "CANCELED", 12.82m, 15m, 0.17m, 2.18m, true },
-                    { 15, 3, new DateTime(2024, 4, 15, 13, 7, 26, 230, DateTimeKind.Local).AddTicks(5012), 5, "CANCELED", 17.09m, 20m, 0.17m, 2.91m, true }
+                    { 1, 1, new DateTime(2024, 4, 18, 13, 54, 38, 691, DateTimeKind.Local).AddTicks(8371), 3, "COMPLETED", 8.51m, 10m, 0.17m, 1.49m, true },
+                    { 2, 2, new DateTime(2024, 4, 18, 13, 54, 38, 691, DateTimeKind.Local).AddTicks(8449), 4, "COMPLETED", 12.82m, 15m, 0.17m, 2.18m, true },
+                    { 3, 3, new DateTime(2024, 4, 18, 13, 54, 38, 691, DateTimeKind.Local).AddTicks(8455), 5, "COMPLETED", 17.09m, 20m, 0.17m, 2.91m, true },
+                    { 4, 1, new DateTime(2024, 4, 18, 13, 54, 38, 691, DateTimeKind.Local).AddTicks(8462), 3, "COMPLETED", 8.51m, 10m, 0.17m, 1.49m, true },
+                    { 5, 2, new DateTime(2024, 4, 18, 13, 54, 38, 691, DateTimeKind.Local).AddTicks(8467), 4, "COMPLETED", 12.82m, 15m, 0.17m, 2.18m, true },
+                    { 6, 3, new DateTime(2024, 4, 18, 13, 54, 38, 691, DateTimeKind.Local).AddTicks(8470), 5, "COMPLETED", 17.09m, 20m, 0.17m, 2.91m, true },
+                    { 7, 1, new DateTime(2024, 4, 18, 13, 54, 38, 691, DateTimeKind.Local).AddTicks(8474), 3, "COMPLETED", 8.51m, 10m, 0.17m, 1.49m, true },
+                    { 8, 2, new DateTime(2024, 4, 18, 13, 54, 38, 691, DateTimeKind.Local).AddTicks(8477), 4, "COMPLETED", 12.82m, 15m, 0.17m, 2.18m, true },
+                    { 9, 3, new DateTime(2024, 4, 18, 13, 54, 38, 691, DateTimeKind.Local).AddTicks(8482), 5, "COMPLETED", 17.09m, 20m, 0.17m, 2.91m, true },
+                    { 10, 1, new DateTime(2024, 4, 18, 13, 54, 38, 691, DateTimeKind.Local).AddTicks(8488), 3, "ACTIVE", 8.51m, 10m, 0.17m, 1.49m, true },
+                    { 11, 2, new DateTime(2024, 4, 18, 13, 54, 38, 691, DateTimeKind.Local).AddTicks(8492), 4, "ACTIVE", 12.82m, 15m, 0.17m, 2.18m, true },
+                    { 12, 3, new DateTime(2024, 4, 18, 13, 54, 38, 691, DateTimeKind.Local).AddTicks(8495), 5, "ACTIVE", 17.09m, 20m, 0.17m, 2.91m, true },
+                    { 13, 1, new DateTime(2024, 4, 18, 13, 54, 38, 691, DateTimeKind.Local).AddTicks(8498), 3, "CANCELED", 8.51m, 10m, 0.17m, 1.49m, true },
+                    { 14, 2, new DateTime(2024, 4, 18, 13, 54, 38, 691, DateTimeKind.Local).AddTicks(8500), 4, "CANCELED", 12.82m, 15m, 0.17m, 2.18m, true },
+                    { 15, 3, new DateTime(2024, 4, 18, 13, 54, 38, 691, DateTimeKind.Local).AddTicks(8503), 5, "CANCELED", 17.09m, 20m, 0.17m, 2.91m, true }
                 });
 
             migrationBuilder.InsertData(
                 table: "PurchaseInvoice",
-                columns: new[] { "Id", "EmployeeId", "InvoiceNumber", "Note", "PurchaseDate", "TotalAmount", "TotalAmountWithVAT", "VAT", "Valid" },
+                columns: new[] { "Id", "EmployeeId", "InvoiceNumber", "Note", "PaymentGatewayDataId", "PurchaseDate", "TotalAmount", "TotalAmountWithVAT", "VAT", "Valid" },
                 values: new object[,]
                 {
-                    { 1, 1, "123456780", "Dostava stigla na vrijeme", new DateTime(2023, 2, 21, 10, 40, 0, 0, DateTimeKind.Unspecified), 83m, 100m, 0.17m, true },
-                    { 2, 1, "123456781", "Dostava stigla na vrijeme", new DateTime(2023, 3, 23, 12, 50, 0, 0, DateTimeKind.Unspecified), 74.7m, 90m, 0.17m, true },
-                    { 3, 2, "123456782", "Dostava kasnila", new DateTime(2023, 4, 24, 11, 30, 0, 0, DateTimeKind.Unspecified), 41.5m, 50m, 0.17m, true }
+                    { 1, 1, "123456780", "Dostava stigla na vrijeme", null, new DateTime(2023, 2, 21, 10, 40, 0, 0, DateTimeKind.Unspecified), 83m, 100m, 0.17m, true },
+                    { 2, 1, "123456781", "Dostava stigla na vrijeme", null, new DateTime(2023, 3, 23, 12, 50, 0, 0, DateTimeKind.Unspecified), 74.7m, 90m, 0.17m, true },
+                    { 3, 2, "123456782", "Dostava kasnila", null, new DateTime(2023, 4, 24, 11, 30, 0, 0, DateTimeKind.Unspecified), 41.5m, 50m, 0.17m, true }
                 });
 
             migrationBuilder.InsertData(
@@ -540,12 +563,12 @@ namespace SPSP.Services.Migrations
                     { 1, "123 123 123", 1, new DateTime(2024, 3, 29, 22, 0, 0, 0, DateTimeKind.Unspecified), 1, "Ništa posebno, samo nek je čisto", new DateTime(2024, 3, 29, 19, 0, 0, 0, DateTimeKind.Unspecified), "CANCELED", true },
                     { 2, "123 123 123", 2, new DateTime(2024, 3, 29, 22, 0, 0, 0, DateTimeKind.Unspecified), 3, "Ništa posebno, samo nek je čisto", new DateTime(2024, 3, 29, 19, 0, 0, 0, DateTimeKind.Unspecified), "CANCELED", true },
                     { 3, "123 123 123", 3, new DateTime(2024, 3, 29, 22, 0, 0, 0, DateTimeKind.Unspecified), 4, "Ništa posebno, samo nek je čisto", new DateTime(2024, 3, 29, 19, 0, 0, 0, DateTimeKind.Unspecified), "CANCELED", true },
-                    { 4, "123 123 123", 2, new DateTime(2024, 4, 15, 21, 0, 0, 0, DateTimeKind.Unspecified), 3, "Ništa posebno, samo nek je čisto", new DateTime(2024, 4, 15, 19, 0, 0, 0, DateTimeKind.Unspecified), "CONFIRMED", true },
-                    { 5, "123 123 123", 3, new DateTime(2024, 4, 15, 21, 0, 0, 0, DateTimeKind.Unspecified), 4, "Ništa posebno, samo nek je čisto", new DateTime(2024, 4, 15, 19, 0, 0, 0, DateTimeKind.Unspecified), "CONFIRMED", true },
-                    { 6, "123 123 123", 2, new DateTime(2024, 4, 15, 21, 0, 0, 0, DateTimeKind.Unspecified), 3, "Ništa posebno, samo nek je čisto", new DateTime(2024, 4, 15, 19, 0, 0, 0, DateTimeKind.Unspecified), "CONFIRMED", true },
-                    { 7, "123 123 123", 3, new DateTime(2024, 4, 15, 21, 0, 0, 0, DateTimeKind.Unspecified), 4, "Ništa posebno, samo nek je čisto", new DateTime(2024, 4, 15, 19, 0, 0, 0, DateTimeKind.Unspecified), "CONFIRMED", true },
-                    { 8, "123 123 123", 2, new DateTime(2024, 4, 17, 21, 0, 0, 0, DateTimeKind.Unspecified), 3, "Ništa posebno, samo nek je čisto", new DateTime(2024, 4, 17, 19, 0, 0, 0, DateTimeKind.Unspecified), "PENDING_CONFIRMATION", true },
-                    { 9, "123 123 123", 3, new DateTime(2024, 4, 17, 21, 0, 0, 0, DateTimeKind.Unspecified), 4, "Ništa posebno, samo nek je čisto", new DateTime(2024, 4, 17, 19, 0, 0, 0, DateTimeKind.Unspecified), "PENDING_CONFIRMATION", true }
+                    { 4, "123 123 123", 2, new DateTime(2024, 4, 18, 21, 0, 0, 0, DateTimeKind.Unspecified), 3, "Ništa posebno, samo nek je čisto", new DateTime(2024, 4, 18, 19, 0, 0, 0, DateTimeKind.Unspecified), "CONFIRMED", true },
+                    { 5, "123 123 123", 3, new DateTime(2024, 4, 18, 21, 0, 0, 0, DateTimeKind.Unspecified), 4, "Ništa posebno, samo nek je čisto", new DateTime(2024, 4, 18, 19, 0, 0, 0, DateTimeKind.Unspecified), "CONFIRMED", true },
+                    { 6, "123 123 123", 2, new DateTime(2024, 4, 18, 21, 0, 0, 0, DateTimeKind.Unspecified), 3, "Ništa posebno, samo nek je čisto", new DateTime(2024, 4, 18, 19, 0, 0, 0, DateTimeKind.Unspecified), "CONFIRMED", true },
+                    { 7, "123 123 123", 3, new DateTime(2024, 4, 18, 21, 0, 0, 0, DateTimeKind.Unspecified), 4, "Ništa posebno, samo nek je čisto", new DateTime(2024, 4, 18, 19, 0, 0, 0, DateTimeKind.Unspecified), "CONFIRMED", true },
+                    { 8, "123 123 123", 2, new DateTime(2024, 4, 20, 21, 0, 0, 0, DateTimeKind.Unspecified), 3, "Ništa posebno, samo nek je čisto", new DateTime(2024, 4, 20, 19, 0, 0, 0, DateTimeKind.Unspecified), "PENDING_CONFIRMATION", true },
+                    { 9, "123 123 123", 3, new DateTime(2024, 4, 20, 21, 0, 0, 0, DateTimeKind.Unspecified), 4, "Ništa posebno, samo nek je čisto", new DateTime(2024, 4, 20, 19, 0, 0, 0, DateTimeKind.Unspecified), "PENDING_CONFIRMATION", true }
                 });
 
             migrationBuilder.InsertData(
@@ -587,34 +610,34 @@ namespace SPSP.Services.Migrations
 
             migrationBuilder.InsertData(
                 table: "PurchaseInvoiceItem",
-                columns: new[] { "Id", "MenuItemId", "Price", "PurchaseInvoiceId", "Quantity", "Valid" },
+                columns: new[] { "Id", "MenuItemId", "PurchaseInvoiceId", "Quantity", "Subtotal", "UnitPrice", "Valid" },
                 values: new object[,]
                 {
-                    { 1, 1, 2m, 1, 20, true },
-                    { 2, 2, 2m, 1, 10, true },
-                    { 3, 3, 2m, 1, 20, true },
-                    { 4, 4, 2m, 2, 5, true },
-                    { 5, 5, 2m, 2, 20, true },
-                    { 6, 6, 2m, 2, 20, true },
-                    { 7, 7, 2m, 3, 5, true },
-                    { 8, 8, 2m, 3, 10, true },
-                    { 9, 9, 2m, 3, 15, true }
+                    { 1, 1, 1, 20, 0m, 2m, true },
+                    { 2, 2, 1, 10, 0m, 2m, true },
+                    { 3, 3, 1, 20, 0m, 2m, true },
+                    { 4, 4, 2, 5, 0m, 2m, true },
+                    { 5, 5, 2, 20, 0m, 2m, true },
+                    { 6, 6, 2, 20, 0m, 2m, true },
+                    { 7, 7, 3, 5, 0m, 2m, true },
+                    { 8, 8, 3, 10, 0m, 2m, true },
+                    { 9, 9, 3, 15, 0m, 2m, true }
                 });
 
             migrationBuilder.InsertData(
                 table: "SaleInvoice",
-                columns: new[] { "Id", "Concluded", "CustomerId", "EmployeeId", "InvoiceNumber", "OrderId", "SaleDate", "TotalAmount", "TotalAmountWithVAT", "VAT", "VATAmount", "Valid" },
+                columns: new[] { "Id", "CustomerId", "EmployeeId", "InvoiceNumber", "OrderId", "Processed", "SaleDate", "TotalAmount", "TotalAmountWithVAT", "VAT", "VATAmount", "Valid" },
                 values: new object[,]
                 {
-                    { 1, true, 1, 1, "123456701", 1, new DateTime(2024, 4, 15, 13, 7, 26, 230, DateTimeKind.Local).AddTicks(5078), 8.51m, 10m, 0.17m, 1.49m, true },
-                    { 2, true, 2, 1, "123456702", 1, new DateTime(2024, 4, 15, 13, 7, 26, 230, DateTimeKind.Local).AddTicks(5083), 12.82m, 15m, 0.17m, 2.18m, true },
-                    { 3, true, 3, 1, "123456703", 1, new DateTime(2024, 4, 15, 13, 7, 26, 230, DateTimeKind.Local).AddTicks(5087), 17.09m, 20m, 0.17m, 2.91m, true },
-                    { 4, true, 1, 1, "123456704", 1, new DateTime(2024, 4, 15, 13, 7, 26, 230, DateTimeKind.Local).AddTicks(5090), 8.51m, 10m, 0.17m, 1.49m, true },
-                    { 5, true, 2, 1, "123456705", 1, new DateTime(2024, 4, 15, 13, 7, 26, 230, DateTimeKind.Local).AddTicks(5093), 12.82m, 15m, 0.17m, 2.18m, true },
-                    { 6, true, 3, 1, "123456706", 1, new DateTime(2024, 4, 15, 13, 7, 26, 230, DateTimeKind.Local).AddTicks(5096), 17.09m, 20m, 0.17m, 2.91m, true },
-                    { 7, true, 1, 1, "123456707", 1, new DateTime(2024, 4, 15, 13, 7, 26, 230, DateTimeKind.Local).AddTicks(5099), 8.51m, 10m, 0.17m, 1.49m, true },
-                    { 8, true, 2, 1, "123456708", 1, new DateTime(2024, 4, 15, 13, 7, 26, 230, DateTimeKind.Local).AddTicks(5102), 12.82m, 15m, 0.17m, 2.18m, true },
-                    { 9, true, 3, 1, "123456709", 1, new DateTime(2024, 4, 15, 13, 7, 26, 230, DateTimeKind.Local).AddTicks(5104), 17.09m, 20m, 0.17m, 2.91m, true }
+                    { 1, 1, 1, "123456701", 1, true, new DateTime(2024, 4, 18, 13, 54, 38, 691, DateTimeKind.Local).AddTicks(8613), 8.51m, 10m, 0.17m, 1.49m, true },
+                    { 2, 2, 1, "123456702", 1, true, new DateTime(2024, 4, 18, 13, 54, 38, 691, DateTimeKind.Local).AddTicks(8619), 12.82m, 15m, 0.17m, 2.18m, true },
+                    { 3, 3, 1, "123456703", 1, true, new DateTime(2024, 4, 18, 13, 54, 38, 691, DateTimeKind.Local).AddTicks(8623), 17.09m, 20m, 0.17m, 2.91m, true },
+                    { 4, 1, 1, "123456704", 1, true, new DateTime(2024, 4, 18, 13, 54, 38, 691, DateTimeKind.Local).AddTicks(8626), 8.51m, 10m, 0.17m, 1.49m, true },
+                    { 5, 2, 1, "123456705", 1, true, new DateTime(2024, 4, 18, 13, 54, 38, 691, DateTimeKind.Local).AddTicks(8630), 12.82m, 15m, 0.17m, 2.18m, true },
+                    { 6, 3, 1, "123456706", 1, true, new DateTime(2024, 4, 18, 13, 54, 38, 691, DateTimeKind.Local).AddTicks(8636), 17.09m, 20m, 0.17m, 2.91m, true },
+                    { 7, 1, 1, "123456707", 1, true, new DateTime(2024, 4, 18, 13, 54, 38, 691, DateTimeKind.Local).AddTicks(8639), 8.51m, 10m, 0.17m, 1.49m, true },
+                    { 8, 2, 1, "123456708", 1, true, new DateTime(2024, 4, 18, 13, 54, 38, 691, DateTimeKind.Local).AddTicks(8642), 12.82m, 15m, 0.17m, 2.18m, true },
+                    { 9, 3, 1, "123456709", 1, true, new DateTime(2024, 4, 18, 13, 54, 38, 691, DateTimeKind.Local).AddTicks(8645), 17.09m, 20m, 0.17m, 2.91m, true }
                 });
 
             migrationBuilder.InsertData(
@@ -693,6 +716,11 @@ namespace SPSP.Services.Migrations
                 name: "IX_PurchaseInvoice_EmployeeId",
                 table: "PurchaseInvoice",
                 column: "EmployeeId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PurchaseInvoice_PaymentGatewayDataId",
+                table: "PurchaseInvoice",
+                column: "PaymentGatewayDataId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_PurchaseInvoiceItem_MenuItemId",
@@ -799,6 +827,9 @@ namespace SPSP.Services.Migrations
 
             migrationBuilder.DropTable(
                 name: "UserRole");
+
+            migrationBuilder.DropTable(
+                name: "PaymentGatewayData");
 
             migrationBuilder.DropTable(
                 name: "Category");

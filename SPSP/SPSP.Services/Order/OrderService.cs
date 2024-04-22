@@ -10,6 +10,8 @@ using SPSP.Models.Request.Employee;
 using SPSP.Services.UserAccount;
 using SPSP.Services.OrderItem;
 using SPSP.Services.QRTable;
+using SPSP.Models;
+using SPSP.Models.Enums;
 
 namespace SPSP.Services.Order
 {
@@ -41,7 +43,7 @@ namespace SPSP.Services.Order
         public override async Task<Models.Order> Create(OrderCreateRequest create)
         {
             var orderEntity = mapper.Map<Database.Order>(create);
-            orderEntity.Status = "ACTIVE";
+            orderEntity.Status = OrderStatusEnumExtension.GetValue(OrderStatusEnum.ACTIVE);
 
             context.Orders.Add(orderEntity);
             await context.SaveChangesAsync();
@@ -90,6 +92,19 @@ namespace SPSP.Services.Order
 
 
             return base.AddFilter(query, search);
+        }
+
+        public async Task<Models.Order> UpdateStatus(int orderId, OrderStatusEnum orderStatus)
+        {
+            var orderEntity = await context.Orders.FindAsync(orderId);
+            if (orderEntity != null)
+            {
+                orderEntity.Status = OrderStatusEnumExtension.GetValue(orderStatus);
+            }
+
+            await context.SaveChangesAsync();
+
+            return mapper.Map<Models.Order>(orderEntity);
         }
 
     }

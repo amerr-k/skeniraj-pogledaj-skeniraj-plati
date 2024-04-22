@@ -19,10 +19,12 @@ namespace SPSP.Services.Database
         public decimal TotalAmountWithVAT { get; set; }
         public decimal? VAT { get; set; }
         public string Note { get; set; }
-        public int EmployeeId { get; set; }
-        public bool? Valid { get; set; }
 
-        public virtual Employee Employee { get; set; }
+        public bool? Valid { get; set; }
+        public int? PaymentGatewayDataId { get; set; }
+        public virtual PaymentGatewayData? PaymentGatewayData {  get; set; }
+        public int? EmployeeId { get; set; }
+        public virtual Employee? Employee { get; set; }
         public virtual ICollection<PurchaseInvoiceItem> PurchaseInvoiceItems { get; set; }
     }
 }

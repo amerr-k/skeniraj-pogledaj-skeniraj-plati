@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using SPSP.Controllers.Base;
-using SPSP.Models;
 using SPSP.Models.Request.MenuItem;
 using SPSP.Models.SearchObjects;
 using SPSP.Services.MenuItem;
@@ -13,7 +12,7 @@ namespace SPSP.Controllers
         : BaseCRUDController<Models.MenuItem, MenuItemSearchObject, MenuItemCreateRequest, MenuItemUpdateRequest>
     {
 
-        public MenuItemController(ILogger<BaseCRUDController<MenuItem, MenuItemSearchObject, MenuItemCreateRequest, MenuItemUpdateRequest>> logger,
+        public MenuItemController(ILogger<BaseCRUDController<Models.MenuItem, MenuItemSearchObject, MenuItemCreateRequest, MenuItemUpdateRequest>> logger,
             IMenuItemService service)
             : base(logger, service)
         {

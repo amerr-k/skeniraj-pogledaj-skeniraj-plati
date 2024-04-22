@@ -1,10 +1,7 @@
 ﻿using AutoMapper;
-using Microsoft.EntityFrameworkCore;
 using SPSP.Models.SearchObjects;
 using SPSP.Services.Database;
-using System.Linq;
 using SPSP.Services.Base;
-using SPSP.Models.Request.Order;
 using SPSP.Models.Request.OrderItem;
 
 namespace SPSP.Services.OrderItem

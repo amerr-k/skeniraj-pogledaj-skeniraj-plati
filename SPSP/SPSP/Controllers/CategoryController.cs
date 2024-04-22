@@ -8,7 +8,7 @@ using SPSP.Services.Category;
 namespace SPSP.Controllers
 {
     [ApiController]
-    public class CategoryController : BaseController<Models.Category, BaseSearchObject>
+    public class CategoryController : BaseController<Category, BaseSearchObject>
     {
 
         public CategoryController(ILogger<BaseController<Category, BaseSearchObject>> logger,

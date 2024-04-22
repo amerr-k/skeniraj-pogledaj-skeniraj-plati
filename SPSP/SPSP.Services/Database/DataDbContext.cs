@@ -24,6 +24,7 @@ namespace SPSP.Services.Database
         public virtual DbSet<OrderItem> OrderItems { get; set; }
         public virtual DbSet<PurchaseInvoice> PurchaseInvoices { get; set; }
         public virtual DbSet<PurchaseInvoiceItem> PurchaseInvoiceItems { get; set; }
+        public virtual DbSet<PaymentGatewayData> PaymentGatewayDatas { get; set; }
         public virtual DbSet<QRTable> QRTables { get; set; }
         public virtual DbSet<Reservation> Reservations { get; set; }
         public virtual DbSet<SaleInvoice> SaleInvoices { get; set; }
@@ -235,6 +236,11 @@ namespace SPSP.Services.Database
                     .IsRequired()
                     .HasDefaultValueSql("((1))");
 
+                entity.HasOne(d => d.PaymentGatewayData)
+                    .WithMany(p => p.PurchaseInvoices)
+                    .HasForeignKey(d => d.PaymentGatewayDataId)
+                    .HasConstraintName("FK_PurchaseInvoice_PaymentGatewayDataId");
+
                 entity.HasOne(d => d.Employee)
                     .WithMany(p => p.PurchaseInvoices)
                     .HasForeignKey(d => d.EmployeeId)
@@ -250,7 +256,7 @@ namespace SPSP.Services.Database
 
                 entity.HasIndex(e => e.PurchaseInvoiceId, "IX_PurchaseInvoiceItem_PurchaseInvoiceId");
 
-                entity.Property(e => e.Price).HasColumnType("decimal(18, 2)");
+                entity.Property(e => e.UnitPrice).HasColumnType("decimal(18, 2)");
 
                 entity.Property(e => e.Valid)
                     .IsRequired()
@@ -267,6 +273,17 @@ namespace SPSP.Services.Database
                     .HasForeignKey(d => d.PurchaseInvoiceId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_PurchaseInvoiceItem_PurchaseInvoiceId");
+            });
+
+            modelBuilder.Entity<PaymentGatewayData>(entity =>
+            {
+                entity.ToTable("PaymentGatewayData");
+
+                entity.Property(e => e.Valid)
+                    .IsRequired()
+                    .HasDefaultValueSql("((1))");
+
+
             });
 
             modelBuilder.Entity<QRTable>(entity =>

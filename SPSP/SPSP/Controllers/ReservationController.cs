@@ -16,7 +16,7 @@ namespace SPSP.Controllers
     {
         protected new readonly IReservationService service;
 
-        public ReservationController(ILogger<BaseCRUDController<Reservation, BaseSearchObject, ReservationCreateRequest, ReservationUpdateRequest>> logger,
+        public ReservationController(ILogger<BaseCRUDController<Models.Reservation, BaseSearchObject, ReservationCreateRequest, ReservationUpdateRequest>> logger,
             IReservationService service)
             : base(logger, service)
         {
@@ -46,7 +46,7 @@ namespace SPSP.Controllers
         }
 
         [HttpPost("pendingConfirmation")]
-        public virtual async Task<Models.Reservation> SwitchToPendingConfirmation(int id)
+        public virtual async Task<Reservation> SwitchToPendingConfirmation(int id)
         {
             return await service.SwitchToPendingConfirmation(id);
         }

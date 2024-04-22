@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
-using SPSP.Models;
 using SPSP.Models.SearchObjects;
 using SPSP.Services.Database;
 using System.Threading.Tasks;

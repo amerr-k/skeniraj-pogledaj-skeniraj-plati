@@ -13,7 +13,7 @@ namespace SPSP.Controllers
     [ApiController]
     [AllowAnonymous]
     public class UserAccountController
-        : BaseCRUDController<Models.UserAccount, UserAccountSearchObject, UserAccountCreateRequest, UserAccountUpdateRequest>
+        : BaseCRUDController<UserAccount, UserAccountSearchObject, UserAccountCreateRequest, UserAccountUpdateRequest>
     {
 
         public UserAccountController(ILogger<BaseCRUDController<UserAccount, UserAccountSearchObject, UserAccountCreateRequest, UserAccountUpdateRequest>> logger,
