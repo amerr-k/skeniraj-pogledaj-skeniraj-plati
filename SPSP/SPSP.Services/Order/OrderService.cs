@@ -12,6 +12,8 @@ using SPSP.Services.OrderItem;
 using SPSP.Services.QRTable;
 using SPSP.Models;
 using SPSP.Models.Enums;
+using SPSP.Services.OrderEmailPublisher;
+using SPSP.Services.SaleInvoice;
 
 namespace SPSP.Services.Order
 {
@@ -106,6 +108,7 @@ namespace SPSP.Services.Order
 
             return mapper.Map<Models.Order>(orderEntity);
         }
+
 
     }
 }

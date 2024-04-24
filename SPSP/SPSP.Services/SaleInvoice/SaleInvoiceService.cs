@@ -8,6 +8,7 @@ using SPSP.Services.SaleInvoiceItem;
 using SPSP.Services.PaymentGatewayData;
 using SPSP.Services.Order;
 using SPSP.Models.Enums;
+using SPSP.Services.OrderEmailPublisher;
 
 namespace SPSP.Services.SaleInvoice
 {
@@ -17,13 +18,15 @@ namespace SPSP.Services.SaleInvoice
         protected readonly ISaleInvoiceItemService saleInvoiceItemService;
         protected readonly IPaymentGatewayDataService paymentGatewayDataService;
         protected readonly IOrderService orderService;
+        protected readonly IEmailPublisherService emailPublisherService;
 
-        public SaleInvoiceService(DataDbContext context, IMapper mapper, ISaleInvoiceItemService saleInvoiceItemService, IPaymentGatewayDataService paymentGatewayDataService, IOrderService orderService) 
+        public SaleInvoiceService(DataDbContext context, IMapper mapper, ISaleInvoiceItemService saleInvoiceItemService, IPaymentGatewayDataService paymentGatewayDataService, IOrderService orderService, IEmailPublisherService emailPublisherService) 
             : base(context, mapper)
         {
             this.saleInvoiceItemService = saleInvoiceItemService;
             this.paymentGatewayDataService = paymentGatewayDataService;
             this.orderService = orderService;
+            this.emailPublisherService = emailPublisherService;
         }
 
         public override IQueryable<Database.SaleInvoice> AddInclude(IQueryable<Database.SaleInvoice> query, SaleInvoiceSearchObject search = null)
@@ -56,8 +59,6 @@ namespace SPSP.Services.SaleInvoice
                 saleInvoice.SaleInvoiceItems = saleInvoiceItems;
             }
 
-            //Models.PaymentGatewayData paymentGatewayData;
-
             if (create.PaymentGatewayData != null)
             {
                 var paymentGatewayData = await paymentGatewayDataService.Create(create.PaymentGatewayData);
@@ -77,6 +78,8 @@ namespace SPSP.Services.SaleInvoice
                 await orderService.UpdateStatus(saleInvoiceEntity.OrderId, OrderStatusEnum.FAILED);
             }
 
+            createSaleInvoiceEmail(create.PdfInvoice);
+
             return saleInvoice;
         }
 
@@ -92,5 +95,16 @@ namespace SPSP.Services.SaleInvoice
             return base.AddFilter(query, search);
         }
 
+        private void createSaleInvoiceEmail(byte[] PdfInvoice)
+        {
+            var emailMessage = new Models.EmailMessage {
+                Subject = "Skeniraj - pogledaj - skeniraj - plati",
+                Body = "Hvala vam na povjerenju. Dođite nam opet", 
+                PdfAttachment = PdfInvoice
+            };
+
+            emailPublisherService.PublishSaleInvoiceEmail(emailMessage);
+
+        }
     }
 }

@@ -21,3 +21,5 @@ flutter pub run build_runner build --delete-conflicting-outputs
 flutter pub run build_runner watch --delete-conflicting-outputs
 
 flutter run -d windows
+
+flutter run -d emulator-5554

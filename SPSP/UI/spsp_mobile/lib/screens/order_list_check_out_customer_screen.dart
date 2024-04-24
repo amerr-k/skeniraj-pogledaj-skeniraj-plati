@@ -5,6 +5,7 @@ import 'package:flutter_paypal_checkout/flutter_paypal_checkout.dart';
 import 'package:provider/provider.dart';
 import 'package:spsp_mobile/environment_config.dart';
 import 'package:spsp_mobile/models/enums/OrderStatus.dart';
+import 'package:spsp_mobile/models/invoice.dart';
 import 'package:spsp_mobile/models/order.dart';
 import 'package:spsp_mobile/models/paypal/amount.dart';
 import 'package:spsp_mobile/models/paypal/details.dart';
@@ -14,6 +15,8 @@ import 'package:spsp_mobile/models/paypal/payment_gateway_data.dart';
 import 'package:spsp_mobile/models/paypal/transaction.dart';
 import 'package:spsp_mobile/models/sale_invoice/sale_invoice.dart';
 import 'package:spsp_mobile/models/search_result.dart';
+import 'package:spsp_mobile/models/supplier.dart';
+import 'package:spsp_mobile/pdf_utils/pdf_invoice_api.dart';
 import 'package:spsp_mobile/providers/order_provider.dart';
 import 'package:spsp_mobile/providers/sale_invoice_provider.dart';
 import 'package:spsp_mobile/providers/transaction_provider.dart';
@@ -46,6 +49,14 @@ class _OrderListCheckOutCustomerScreenState
     _saleInvoiceProvider = context.read<SaleInvoiceProvider>();
 
     _getOrders();
+  }
+
+  late ScaffoldMessengerState _scaffoldMessengerState;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _scaffoldMessengerState = ScaffoldMessenger.of(context);
   }
 
   Future<void> _getOrders() async {
@@ -99,7 +110,7 @@ class _OrderListCheckOutCustomerScreenState
                               params["message"].toString(),
                               params["error"]);
                           var create = SaleInvoice.fromOrder(orders!.result[0]);
-
+                          create.pdfInvoice = await _createPdfInvoice(orders!.result[0]);
                           _clearOrderItems();
 
                           create.paymentGatewayData = paymentGatewayData;
@@ -107,7 +118,7 @@ class _OrderListCheckOutCustomerScreenState
 
                           await _saleInvoiceProvider.create(create);
 
-                          ScaffoldMessenger.of(context).showSnackBar(
+                          _scaffoldMessengerState.showSnackBar(
                             const SnackBar(
                               content: Text(
                                 "Plaćanje je uspješno procesuirano",
@@ -116,7 +127,17 @@ class _OrderListCheckOutCustomerScreenState
                               backgroundColor: Colors.green, // Background color
                             ),
                           );
-                          Navigator.pop(context);
+
+                          // ScaffoldMessenger.of(context).showSnackBar(
+                          //   const SnackBar(
+                          //     content: Text(
+                          //       "Plaćanje je uspješno procesuirano",
+                          //       style: TextStyle(color: Colors.white), // Text color
+                          //     ),
+                          //     backgroundColor: Colors.green, // Background color
+                          //   ),
+                          // );
+                          // Navigator.pop(context);
                         },
                         onError: (error) {
                           print(error);
@@ -139,6 +160,33 @@ class _OrderListCheckOutCustomerScreenState
               },
               child: Text('Plati sve'),
             ),
+            // ElevatedButton(
+            //   onPressed: () async {
+            //     var transactions = _createAllTransactions();
+            //     if (!transactions.isEmpty) {
+            //       var paymentGatewayData = PaymentGatewayData("test", "test", false);
+            //       var create = SaleInvoice.fromOrder(orders!.result[0]);
+            //       create.pdfInvoice = await _createPdfInvoice(orders!.result[0]);
+            //       _clearOrderItems();
+
+            //       create.paymentGatewayData = paymentGatewayData;
+            //       create.processed = true;
+
+            //       await _saleInvoiceProvider.create(create);
+
+            //       ScaffoldMessenger.of(context).showSnackBar(
+            //         const SnackBar(
+            //           content: Text(
+            //             "Plaćanje je uspješno procesuirano",
+            //             style: TextStyle(color: Colors.white), // Text color
+            //           ),
+            //           backgroundColor: Colors.green, // Background color
+            //         ),
+            //       );
+            //     }
+            //   },
+            //   child: Text('TEST'),
+            // ),
           ],
         ),
       ),
@@ -163,8 +211,7 @@ class _OrderListCheckOutCustomerScreenState
               },
             ),
             ExpansionTile(
-              title: Text('Detalji',
-                  style: TextStyle(fontSize: 12)), // Adjust the font size as needed
+              title: Text('Detalji', style: TextStyle(fontSize: 12)),
               children: order.orderItems.map((item) {
                 return Padding(
                   padding: const EdgeInsets.all(8.0),
@@ -261,5 +308,37 @@ class _OrderListCheckOutCustomerScreenState
         );
       },
     );
+  }
+
+  Future<String> _createPdfInvoice(Order x) async {
+    final items = x.orderItems.map((orderItem) {
+      final name = orderItem.menuItem?.name ?? '';
+      final unitPrice = orderItem.menuItem?.price ?? 0.0;
+      final subtotal = orderItem.subtotal ?? 0.0;
+      final quantity = orderItem.quantity ?? 0;
+
+      return InvoiceItem(
+          name: name, quantity: quantity, unitPrice: unitPrice, subtotal: subtotal);
+    }).toList();
+
+    final invoice = Invoice(
+      supplier: Supplier(
+          name: 'Caffe Pub - Skeniraj Plati',
+          address: 'ul. Abdulaha Sidrana, Sarajevo, BiH',
+          contactInfo: "+387 62 123 321"),
+      info: InvoiceInfo(
+        date: x.orderDateTime!,
+        number: x.id.toString(),
+      ),
+      orderDateTime: x.orderDateTime!,
+      totalAmount: x.totalAmount!,
+      totalAmountWithVAT: x.totalAmountWithVAT!,
+      vat: x.vat!,
+      items: items,
+    );
+
+    final pdfFileBytes = await PdfInvoiceApi.generateAsBytes(invoice);
+
+    return await PdfInvoiceApi.bytesToBase64(pdfFileBytes);
   }
 }

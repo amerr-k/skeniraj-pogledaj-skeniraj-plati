@@ -19,10 +19,13 @@ using SPSP.Services.PurchaseInvoiceItem;
 using SPSP.Services.Order;
 using SPSP.Services.OrderItem;
 using SPSP.Services.PaymentGatewayData;
+using SPSP.Services.OrderEmailPublisher;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+
+builder.Services.AddTransient<IEmailPublisherService, EmailPublisherService>();
 
 builder.Services.AddTransient<IUserAccountService, UserAccountService>();
 builder.Services.AddTransient<ICustomerService, CustomerService>();

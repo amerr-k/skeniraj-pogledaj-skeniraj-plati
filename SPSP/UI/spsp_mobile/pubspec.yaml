@@ -48,6 +48,7 @@ dependencies:
   http: 0.13.6
   currency_converter: ^0.0.2
   flutter_dotenv: ^5.1.0
+
   # flutter_paypal: ^0.2.0
 
 dev_dependencies:

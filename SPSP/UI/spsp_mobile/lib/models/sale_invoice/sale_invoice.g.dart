@@ -9,8 +9,9 @@ part of 'sale_invoice.dart';
 SaleInvoice _$SaleInvoiceFromJson(Map<String, dynamic> json) => SaleInvoice(
       id: json['id'] as int?,
       invoiceNumber: json['invoiceNumber'] as String?,
-      saleDate:
-          json['saleDate'] == null ? null : DateTime.parse(json['saleDate'] as String),
+      saleDate: json['saleDate'] == null
+          ? null
+          : DateTime.parse(json['saleDate'] as String),
       totalAmount: (json['totalAmount'] as num).toDouble(),
       totalAmountWithVAT: (json['totalAmountWithVAT'] as num).toDouble(),
       vat: (json['vat'] as num?)?.toDouble(),
@@ -25,9 +26,11 @@ SaleInvoice _$SaleInvoiceFromJson(Map<String, dynamic> json) => SaleInvoice(
       saleInvoiceItems: (json['saleInvoiceItems'] as List<dynamic>)
           .map((e) => SaleInvoiceItem.fromJson(e as Map<String, dynamic>))
           .toList(),
+      pdfInvoice: json['pdfInvoice'] as String?,
     );
 
-Map<String, dynamic> _$SaleInvoiceToJson(SaleInvoice instance) => <String, dynamic>{
+Map<String, dynamic> _$SaleInvoiceToJson(SaleInvoice instance) =>
+    <String, dynamic>{
       'id': instance.id,
       'invoiceNumber': instance.invoiceNumber,
       'saleDate': instance.saleDate?.toIso8601String(),
@@ -40,4 +43,5 @@ Map<String, dynamic> _$SaleInvoiceToJson(SaleInvoice instance) => <String, dynam
       'paymentGatewayData': instance.paymentGatewayData,
       'orderId': instance.orderId,
       'saleInvoiceItems': instance.saleInvoiceItems,
+      'pdfInvoice': instance.pdfInvoice,
     };
