@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:provider/provider.dart';
+import 'package:spsp_mobile/models/user_auth_info.dart';
+import 'package:spsp_mobile/providers/auth_provider.dart';
 import 'package:spsp_mobile/providers/cart_provider.dart';
 import 'package:spsp_mobile/providers/category_provider.dart';
 import 'package:spsp_mobile/providers/menu_item_provider.dart';
@@ -17,6 +19,7 @@ void main() async {
   await dotenv.load(fileName: ".env");
   return runApp(MultiProvider(
     providers: [
+      ChangeNotifierProvider(create: (_) => AuthProvider()),
       ChangeNotifierProvider(create: (_) => MenuItemProvider()),
       ChangeNotifierProvider(create: (_) => MenuProvider()),
       ChangeNotifierProvider(create: (_) => CategoryProvider()),
@@ -72,12 +75,14 @@ class HomePage extends StatelessWidget {
   TextEditingController _usernameController = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
   late UserProvider _userProvider;
-  late MenuItemProvider _menuItemProvider;
+  // late MenuItemProvider _menuItemProvider;
+  late AuthProvider _authProvider;
 
   @override
   Widget build(BuildContext context) {
     // _userProvider = Provider.of<UserProvider>(context, listen: false);
-    _menuItemProvider = Provider.of<MenuItemProvider>(context, listen: false);
+    // _menuItemProvider = Provider.of<MenuItemProvider>(context, listen: false);
+    _authProvider = Provider.of<AuthProvider>(context, listen: false);
 
     return Scaffold(
       body: SingleChildScrollView(
@@ -164,7 +169,7 @@ class HomePage extends StatelessWidget {
                     Authorization.username = _usernameController.text;
                     Authorization.password = _passwordController.text;
 
-                    await _menuItemProvider.get();
+                    await _authProvider.login();
 
                     Navigator.pushNamed(context, MenuItemListCustomerScreen.routeName);
                   } catch (e) {

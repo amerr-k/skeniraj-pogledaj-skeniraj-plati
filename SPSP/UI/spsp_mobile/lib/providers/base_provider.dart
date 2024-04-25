@@ -5,6 +5,8 @@ import 'package:flutter/foundation.dart';
 import 'package:http/http.dart';
 import 'package:http/io_client.dart';
 import 'package:spsp_mobile/models/search_result.dart';
+import 'package:spsp_mobile/models/user_auth_info.dart';
+import 'package:spsp_mobile/providers/user_auth_info_provider.dart';
 import 'package:spsp_mobile/utils/util.dart';
 
 abstract class BaseProvider<T> with ChangeNotifier {
@@ -14,6 +16,10 @@ abstract class BaseProvider<T> with ChangeNotifier {
   HttpClient client = new HttpClient();
   IOClient? http;
 
+  static String? get baseUrl => _baseUrl;
+
+  String? get endpoint => _endpoint;
+
   BaseProvider(String endpoint) {
     _baseUrl =
         const String.fromEnvironment("baseUrl", defaultValue: "https://10.0.2.2:7011/");
@@ -22,11 +28,64 @@ abstract class BaseProvider<T> with ChangeNotifier {
     if (_baseUrl!.endsWith("/") == false) {
       _baseUrl = _baseUrl! + "/";
     }
-
     _endpoint = endpoint;
     client.badCertificateCallback = (cert, host, port) => true;
     http = IOClient(client);
   }
+
+  Future<UserAuthInfo?> login() async {
+    var url = "${BaseProvider.baseUrl}${endpoint}/login";
+    var uri = Uri.parse(url);
+    // Map<String, String> headers = createAuthHeaders();
+
+    String username = Authorization.username ?? "";
+    String password = Authorization.password ?? "";
+
+    Map<String, dynamic> loginRequest = {
+      'username': username,
+      'password': password,
+    };
+    var headers = {"Content-Type": "application/json"};
+
+    var jsonRequest = jsonEncode(loginRequest);
+    var response = await http!.post(uri, headers: headers, body: jsonRequest);
+    print(response);
+
+    if (isValidResponseCode(response)) {
+      print(response.body);
+      var data = jsonDecode(response.body);
+
+      var userAccountInfo = fromJson(data) as UserAuthInfo;
+      Authorization.token = userAccountInfo.token;
+      // userAuthInfoProvider.setUserAuthInfo(userAccountInfo as UserAuthInfo);
+
+      return userAccountInfo;
+    } else {
+      print(response.body);
+      throw Exception("Failed to login: ${response.statusCode}");
+    }
+  }
+
+  // Map<String, String> createHeaders() {
+  //   var contentType = "application/json";
+  //   if (userAuthInfoProvider.userAuthInfo != null) {
+  //     return {
+  //       "Content-Type": contentType,
+  //       "Authorization": "Bearer ${userAuthInfoProvider.userAuthInfo!.token}",
+  //     };
+  //   } else {
+  //     var username = Authorization.username ?? "";
+  //     var password = Authorization.password ?? "";
+  //     var basicAuth = "Basic ${base64Encode(
+  //       utf8.encode('$username:$password'),
+  //     )}";
+
+  //     return {
+  //       "Content-Type": contentType,
+  //       "Authorization": basicAuth,
+  //     };
+  //   }
+  // }
 
   Future<T> getById(String id, [dynamic additionalData]) async {
     var url = Uri.parse("$_baseUrl$_endpoint/$id");
@@ -120,16 +179,23 @@ abstract class BaseProvider<T> with ChangeNotifier {
   }
 
   Map<String, String> createHeaders() {
-    String username = Authorization.username ?? "";
-    String password = Authorization.password ?? "";
+    if (Authorization.token != null) {
+      return {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer ${Authorization.token}",
+      };
+    } else {
+      var username = Authorization.username ?? "";
+      var password = Authorization.password ?? "";
+      var basicAuth = "Basic ${base64Encode(
+        utf8.encode('$username:$password'),
+      )}";
 
-    String basicAuth = "Basic ${base64Encode(
-      utf8.encode('$username:$password'),
-    )}";
-
-    var headers = {"Content-Type": "application/json", "Authorization": basicAuth};
-
-    return headers;
+      return {
+        "Content-Type": "application/json",
+        "Authorization": basicAuth,
+      };
+    }
   }
 
   T fromJson(data) {

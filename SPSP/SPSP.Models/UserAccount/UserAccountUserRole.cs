@@ -12,7 +12,7 @@ namespace SPSP.Models
         public int UserRoleId { get; set; }
         public bool? Valid { get; set; }
 
-        public virtual UserAccount UserAccount { get; set; }
+        //public virtual UserAccount UserAccount { get; set; }
         public virtual UserRole UserRole { get; set; }
     }
 }

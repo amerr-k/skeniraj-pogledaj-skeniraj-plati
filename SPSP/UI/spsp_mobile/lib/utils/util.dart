@@ -6,6 +6,7 @@ import 'package:intl/intl.dart';
 class Authorization {
   static String? username;
   static String? password;
+  static String? token;
 }
 
 Image? imageFromBase64String(String base64Image) {
@@ -25,6 +26,6 @@ String formatNumber(dynamic) {
 }
 
 class Utils {
-  static formatPrice(double price) => '\$ ${price.toStringAsFixed(2)}';
+  static formatPrice(double price) => '\KM ${price.toStringAsFixed(2)}';
   static formatDate(DateTime date) => DateFormat("dd.MM.yyyy");
 }

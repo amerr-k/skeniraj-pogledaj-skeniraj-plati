@@ -10,6 +10,7 @@ namespace SPSP.Services.UserAccount
     public interface IUserAccountService 
         : ICRUDService<Models.UserAccount, UserAccountSearchObject, UserAccountCreateRequest, UserAccountUpdateRequest>
     {
-        public Task<Models.UserAccount> Login(string username, string password);
+        public Task<Models.UserAccount> GetAuthenticatedUserAccount(string username, string password);
+        public Task<Models.UserAuthInfo> Login(string username, string password);
     }
 }

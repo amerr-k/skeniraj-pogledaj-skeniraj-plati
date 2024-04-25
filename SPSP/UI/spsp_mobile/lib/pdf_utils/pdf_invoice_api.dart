@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
+import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart';
@@ -12,25 +13,22 @@ import 'package:spsp_mobile/utils/util.dart';
 
 class PdfInvoiceApi {
   static Future<File> generateAsFile(Invoice invoice) async {
-    final pdf = Document();
-
-    pdf.addPage(MultiPage(
-      build: (context) => [
-        buildHeader(invoice),
-        SizedBox(height: 3 * PdfPageFormat.cm),
-        buildTitle(invoice),
-        buildInvoice(invoice),
-        Divider(),
-        buildTotal(invoice),
-      ],
-      footer: (context) => buildFooter(invoice),
-    ));
-
+    var pdf = await generatePdfDocument(invoice);
     return PdfApi.saveDocument(name: 'invoice_.pdf', pdf: pdf);
   }
 
   static Future<Uint8List> generateAsBytes(Invoice invoice) async {
-    final pdf = Document();
+    var pdf = await generatePdfDocument(invoice);
+    return PdfApi.generatePdfBytes(pdf: pdf);
+  }
+
+  static Future<Document> generatePdfDocument(Invoice invoice) async {
+    final pdf = Document(
+        theme: ThemeData.withFont(
+      base: Font.ttf(await rootBundle.load("assets/fonts/Roboto-Regular.ttf")),
+      bold: Font.ttf(await rootBundle.load("assets/fonts/Roboto-Bold.ttf")),
+      italic: Font.ttf(await rootBundle.load("assets/fonts/Roboto-Italic.ttf")),
+    ));
 
     pdf.addPage(MultiPage(
       build: (context) => [
@@ -43,8 +41,7 @@ class PdfInvoiceApi {
       ],
       footer: (context) => buildFooter(invoice),
     ));
-
-    return PdfApi.generatePdfBytes(pdf: pdf);
+    return pdf;
   }
 
   static Future<String> bytesToBase64(Uint8List bytes) async {
@@ -92,7 +89,7 @@ class PdfInvoiceApi {
       );
 
   static Widget buildInvoiceInfo(InvoiceInfo info) {
-    final titles = <String>['Broj racuna:', 'Datum narudzbe:'];
+    final titles = <String>['Broj računa:', 'Datum narudžbe:'];
     final data = <String>[info.number, DateFormat('dd.MM.yyyy').format(info.date)];
 
     return Column(
@@ -119,7 +116,7 @@ class PdfInvoiceApi {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            "RACUN:  ${invoice.info.number}",
+            "RAČUN:  ${invoice.info.number}",
             style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
           ),
           SizedBox(height: 0.8 * PdfPageFormat.cm),
@@ -128,7 +125,7 @@ class PdfInvoiceApi {
       );
 
   static Widget buildInvoice(Invoice invoice) {
-    final headers = ['Naziv', 'Cijena', 'Kolicina', 'Ukupna cijena'];
+    final headers = ['Naziv', 'Cijena', 'Količina', 'Ukupna cijena'];
     final data = invoice.items.map((item) {
       return [
         item.name,
@@ -168,7 +165,7 @@ class PdfInvoiceApi {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 buildText(
-                  title: 'Vrijeme narudzbe',
+                  title: 'Vrijeme narudžbe',
                   value: DateFormat('dd.MM.yyyy').format(invoice.orderDateTime),
                   unite: true,
                 ),
@@ -178,8 +175,8 @@ class PdfInvoiceApi {
                   unite: true,
                 ),
                 buildText(
-                  title: 'PDV ${invoice.vat * 100} %',
-                  value: Utils.formatPrice(invoice.vat * 100).toString(),
+                  title: 'PDV ${(invoice.vat * 100).toInt()} %',
+                  value: "",
                   unite: true,
                 ),
                 Divider(),

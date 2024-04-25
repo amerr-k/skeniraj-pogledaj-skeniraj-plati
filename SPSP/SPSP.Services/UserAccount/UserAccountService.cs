@@ -1,16 +1,16 @@
 ﻿using AutoMapper;
 using SPSP.Models.SearchObjects;
 using SPSP.Services.Database;
-using System.Linq;
-using System.Threading.Tasks;
 using SPSP.Services.Base;
-using SPSP.Models.Request.Reservation;
 using SPSP.Models.Request.UserAccount;
 using System.Security.Cryptography;
 using System;
 using System.Text;
 using Microsoft.EntityFrameworkCore;
-using SPSP.Models.Request.Customer;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using SPSP.Models;
 
 namespace SPSP.Services.UserAccount
 {
@@ -18,10 +18,10 @@ namespace SPSP.Services.UserAccount
     public class UserAccountService : BaseCRUDService<Models.UserAccount, Database.UserAccount, UserAccountSearchObject, UserAccountCreateRequest, UserAccountUpdateRequest>, IUserAccountService
     {
 
-        public UserAccountService(DataDbContext context, IMapper mapper) 
+        public UserAccountService(DataDbContext context, IMapper mapper)
             : base(context, mapper)
         {
-            
+
         }
 
         //public override async Task<Models.UserAccount> Create(UserAccountCreateRequest create)
@@ -73,7 +73,7 @@ namespace SPSP.Services.UserAccount
             }
             return base.AddInclude(query, search);
         }
-        public async Task<Models.UserAccount> Login(string username, string password)
+        public async Task<Models.UserAccount> GetAuthenticatedUserAccount(string username, string password)
         {
             var entity = await context.UserAccounts.Include("UserAccountUserRoles.UserRole").FirstOrDefaultAsync(x => x.Username == username);
 
@@ -92,5 +92,36 @@ namespace SPSP.Services.UserAccount
             return mapper.Map<Models.UserAccount>(entity);
         }
 
+        public async Task<Models.UserAuthInfo> Login(string username, string password)
+        {
+            //SHOULD RETURN TOKEN AFTER LOGIN
+
+            var userAccount = await GetAuthenticatedUserAccount(username, password);
+
+            var jwtToken = GenerateJwtToken(userAccount);
+
+            return new UserAuthInfo(userAccount, jwtToken);
+        }
+
+        public string GenerateJwtToken(Models.UserAccount userAccount)
+        {
+            var claims = new[]
+            {
+                new Claim(ClaimTypes.Name, userAccount.Username),
+                new Claim(ClaimTypes.Email, userAccount.Email),
+             };
+
+            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("mojkljucstavigauappsettingsmojkljucstavigauappsettings"));
+            var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
+
+            var token = new JwtSecurityToken(
+                issuer: "spspIssuer",
+                audience: "spspAudience",
+                claims: claims,
+                expires: DateTime.UtcNow.AddDays(7),
+                signingCredentials: credentials);
+
+            return new JwtSecurityTokenHandler().WriteToken(token);
+        }
     }
 }

@@ -20,6 +20,9 @@ using SPSP.Services.Order;
 using SPSP.Services.OrderItem;
 using SPSP.Services.PaymentGatewayData;
 using SPSP.Services.OrderEmailPublisher;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -59,7 +62,6 @@ builder.Services.AddControllers(x =>
     //x.Filters.Add<ErrorFilter>();
 });
 
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
@@ -78,6 +80,8 @@ builder.Services.AddSwaggerGen(c =>
             },
             new string[]{}
     } });
+
+
 });
 
 
@@ -86,8 +90,34 @@ builder.Services.AddDbContext<DataDbContext>(options =>
     options.UseSqlServer(connectionString));
 
 builder.Services.AddAutoMapper(typeof(ICustomerService));
-builder.Services.AddAuthentication("BasicAuthentication")
-    .AddScheme<AuthenticationSchemeOptions, BasicAuthenticationHandler>("BasicAuthentication", null);
+//builder.Services.AddAuthentication("BasicAuthentication")
+//    .AddScheme<AuthenticationSchemeOptions, BasicAuthenticationHandler>("BasicAuthentication", null);
+
+builder.Services.AddAuthentication(options =>
+{
+    // Define default authentication scheme
+    options.DefaultAuthenticateScheme = "BasicAuthentication"; // Set BasicAuthentication as default
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme; // Use JwtBearer for challenges
+})
+.AddScheme<AuthenticationSchemeOptions, BasicAuthenticationHandler>("BasicAuthentication", null)
+.AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options =>
+{
+    // Configure JWT authentication options here
+    // For example:
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuer = true,
+        ValidateAudience = true,
+        ValidateIssuerSigningKey = true,
+        ValidIssuer = "spspIssuer",
+        ValidAudience = "spspAudience",
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("mojkljucstavigauappsettingsmojkljucstavigauappsettings")),
+        ClockSkew = TimeSpan.Zero
+    };
+});
+
+
+
 
 var app = builder.Build();
 
