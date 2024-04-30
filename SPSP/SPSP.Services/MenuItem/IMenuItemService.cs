@@ -4,9 +4,9 @@ using SPSP.Services.Base;
 
 namespace SPSP.Services.MenuItem
 {
-    public interface IMenuItemService 
+    public interface IMenuItemService
         : ICRUDService<Models.MenuItem, MenuItemSearchObject, MenuItemCreateRequest, MenuItemUpdateRequest>
     {
-        
+
     }
 }

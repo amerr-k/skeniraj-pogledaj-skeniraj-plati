@@ -8,6 +8,7 @@ import 'package:spsp_mobile/providers/category_provider.dart';
 import 'package:spsp_mobile/providers/menu_item_provider.dart';
 import 'package:spsp_mobile/providers/menu_provider.dart';
 import 'package:spsp_mobile/providers/order_provider.dart';
+import 'package:spsp_mobile/providers/prediction_menu_item_provider.dart';
 import 'package:spsp_mobile/providers/sale_invoice_provider.dart';
 import 'package:spsp_mobile/providers/transaction_provider.dart';
 import 'package:spsp_mobile/providers/user_provider.dart';
@@ -28,6 +29,7 @@ void main() async {
       ChangeNotifierProvider(create: (_) => OrderProvider()),
       ChangeNotifierProvider(create: (_) => TransactionProvider()),
       ChangeNotifierProvider(create: (_) => SaleInvoiceProvider()),
+      ChangeNotifierProvider(create: (_) => MenuItemPredictionProvider()),
     ],
     child: MaterialApp(
       debugShowCheckedModeBanner: true,

@@ -23,10 +23,48 @@ using SPSP.Services.OrderEmailPublisher;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using SPSP.Services.RecommenderService;
+using Microsoft.ML;
+using Quartz.Impl;
+using Quartz.Spi;
+using Quartz;
+using SPSP.Services.Base;
+using static Quartz.Logging.OperationName;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+//add here ml context
+builder.Services.AddScoped<MLContext>();
+//builder.Services.AddScoped<ITransformer>();
+builder.Services.AddScoped<IRecommenderService, RecommenderService>();
+
+builder.Services.AddQuartz(options =>
+{
+    options.UseMicrosoftDependencyInjectionJobFactory();
+
+    var jobKey = JobKey.Create(nameof(RecommenderJob));
+
+    // JOB KOJI ÆE SE IZVRŠAVATI SVAKA 24 SATA, 
+    // ZA POTREBE TESTIRANJA, JOB ÆE IZVRŠITI SAMO JEDNOM I 
+    // POPUNITI TABELU MenuItemPrediction I TrainedData
+    //options.AddJob<RecommenderJob>(jobKey)
+    //    .AddTrigger(trigger => trigger.ForJob(jobKey)
+    //        .WithSimpleSchedule(schedule => schedule
+    //            .WithIntervalInHours(24)
+    //            .RepeatForever()
+    //        )
+    //    );
+
+    options.AddJob<RecommenderJob>(jobKey)
+    .AddTrigger(trigger => trigger.ForJob(jobKey)
+        .WithSimpleSchedule(schedule => schedule
+            .WithIntervalInSeconds(60)
+        )
+    );
+});
+
+builder.Services.AddQuartzHostedService();
 
 builder.Services.AddTransient<IEmailPublisherService, EmailPublisherService>();
 
@@ -39,6 +77,7 @@ builder.Services.AddTransient<IEmployeeService, EmployeeService>();
 //    BaseService<SPSP.Models.Business, Business, BaseSearchObject>>();
 builder.Services.AddTransient<IMenuService, MenuService>();
 builder.Services.AddTransient<IMenuItemService, MenuItemService>();
+builder.Services.AddTransient<IMenuItemPredictionService, MenuItemPredictionService>();
 builder.Services.AddTransient<IPaymentGatewayDataService, PaymentGatewayDataService>();
 builder.Services.AddTransient<IOrderService, OrderService>();
 builder.Services.AddTransient<IOrderItemService, OrderItemService>();
@@ -95,15 +134,12 @@ builder.Services.AddAutoMapper(typeof(ICustomerService));
 
 builder.Services.AddAuthentication(options =>
 {
-    // Define default authentication scheme
     options.DefaultAuthenticateScheme = "BasicAuthentication"; // Set BasicAuthentication as default
     options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme; // Use JwtBearer for challenges
 })
 .AddScheme<AuthenticationSchemeOptions, BasicAuthenticationHandler>("BasicAuthentication", null)
 .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options =>
 {
-    // Configure JWT authentication options here
-    // For example:
     options.TokenValidationParameters = new TokenValidationParameters
     {
         ValidateIssuer = true,

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 
 #nullable disable
 
@@ -30,5 +31,7 @@ namespace SPSP.Services.Database
         public virtual ICollection<OrderItem> OrderItems { get; set; }
         public virtual ICollection<PurchaseInvoiceItem> PurchaseInvoiceItems { get; set; }
         public virtual ICollection<SaleInvoiceItem> SaleInvoiceItems { get; set; }
+        public virtual ICollection<MenuItemPrediction> MainMenuItems { get; set; }
+        public virtual ICollection<MenuItemPrediction> RecommendedMenuItems { get; set; }
     }
 }

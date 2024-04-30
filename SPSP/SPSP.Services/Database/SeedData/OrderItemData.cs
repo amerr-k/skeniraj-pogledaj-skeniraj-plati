@@ -277,6 +277,358 @@ namespace SPSP.Services.Database.SeedData
                     Quantity = 7,
                     Subtotal = 14,
                     Valid = true
+                },
+                //bitno za recommender: kola
+                new OrderItem
+                {
+                    Id = 31,
+                    OrderId = 16,
+                    MenuItemId = 1,
+                    Quantity = 1,
+                    Subtotal = (decimal)2.5,
+                    Valid = true
+                },
+                //kola i pomfrit:
+                new OrderItem
+                {
+                    Id = 32,
+                    OrderId = 17,
+                    MenuItemId = 1,
+                    Quantity = 1,
+                    Subtotal = (decimal)2.5,
+                    Valid = true
+                },
+                new OrderItem
+                {
+                    Id = 33,
+                    OrderId = 17,
+                    MenuItemId = 8,
+                    Quantity = 1,
+                    Subtotal = 3,
+                    Valid = true
+                },
+                //kola i vino
+                new OrderItem
+                {
+                    Id = 34,
+                    OrderId = 18,
+                    MenuItemId = 1,
+                    Quantity = 1,
+                    Subtotal = (decimal)2.5,
+                    Valid = true
+                },
+                new OrderItem
+                {
+                    Id = 35,
+                    OrderId = 18,
+                    MenuItemId = 18,
+                    Quantity = 1,
+                    Subtotal = (decimal)3.5,
+                    Valid = true
+                },
+                //kola i pomfrit:
+                new OrderItem
+                {
+                    Id = 36,
+                    OrderId = 19,
+                    MenuItemId = 1,
+                    Quantity = 1,
+                    Subtotal = (decimal)2.5,
+                    Valid = true
+                },
+                new OrderItem
+                {
+                    Id = 37,
+                    OrderId = 19,
+                    MenuItemId = 8,
+                    Quantity = 1,
+                    Subtotal = 3,
+                    Valid = true
+                },
+                //kola i vino
+                new OrderItem
+                {
+                    Id = 38,
+                    OrderId = 20,
+                    MenuItemId = 1,
+                    Quantity = 1,
+                    Subtotal = (decimal)2.5,
+                    Valid = true
+                },
+                new OrderItem
+                {
+                    Id = 39,
+                    OrderId = 20,
+                    MenuItemId = 18,
+                    Quantity = 1,
+                    Subtotal = (decimal)3.5,
+                    Valid = true
+                },
+                //kola i pomfrit:
+                new OrderItem
+                {
+                    Id = 40,
+                    OrderId = 21,
+                    MenuItemId = 1,
+                    Quantity = 1,
+                    Subtotal = (decimal)2.5,
+                    Valid = true
+                },
+                new OrderItem
+                {
+                    Id = 41,
+                    OrderId = 21,
+                    MenuItemId = 8,
+                    Quantity = 1,
+                    Subtotal = 3,
+                    Valid = true
+                },
+                //kola i vino
+                new OrderItem
+                {
+                    Id = 42,
+                    OrderId = 22,
+                    MenuItemId = 1,
+                    Quantity = 1,
+                    Subtotal = (decimal)2.5,
+                    Valid = true
+                },
+                new OrderItem
+                {
+                    Id = 43,
+                    OrderId = 22,
+                    MenuItemId = 18,
+                    Quantity = 1,
+                    Subtotal = (decimal)3.5,
+                    Valid = true
+                },
+                //kola i pomfrit:
+                new OrderItem
+                {
+                    Id = 44,
+                    OrderId = 23,
+                    MenuItemId = 1,
+                    Quantity = 1,
+                    Subtotal = (decimal)2.5,
+                    Valid = true
+                },
+                new OrderItem
+                {
+                    Id = 45,
+                    OrderId = 23,
+                    MenuItemId = 8,
+                    Quantity = 1,
+                    Subtotal = 3,
+                    Valid = true
+                },
+                //kola i vino
+                new OrderItem
+                {
+                    Id = 46,
+                    OrderId = 24,
+                    MenuItemId = 1,
+                    Quantity = 1,
+                    Subtotal = (decimal)2.5,
+                    Valid = true
+                },
+                new OrderItem
+                {
+                    Id = 47,
+                    OrderId = 24,
+                    MenuItemId = 18,
+                    Quantity = 1,
+                    Subtotal = (decimal)3.5,
+                    Valid = true
+                },
+                //kola i pomfrit:
+                new OrderItem
+                {
+                    Id = 48,
+                    OrderId = 25,
+                    MenuItemId = 1,
+                    Quantity = 1,
+                    Subtotal = (decimal)2.5,
+                    Valid = true
+                },
+                new OrderItem
+                {
+                    Id = 49,
+                    OrderId = 25,
+                    MenuItemId = 8,
+                    Quantity = 1,
+                    Subtotal = 3,
+                    Valid = true
+                },
+                //kola i vino
+                new OrderItem
+                {
+                    Id = 50,
+                    OrderId = 26,
+                    MenuItemId = 1,
+                    Quantity = 1,
+                    Subtotal = (decimal)2.5,
+                    Valid = true
+                },
+                new OrderItem
+                {
+                    Id = 51,
+                    OrderId = 26,
+                    MenuItemId = 18,
+                    Quantity = 1,
+                    Subtotal = (decimal)3.5,
+                    Valid = true
+                },
+                //kola i pomfrit:
+                new OrderItem
+                {
+                    Id = 52,
+                    OrderId = 27,
+                    MenuItemId = 1,
+                    Quantity = 1,
+                    Subtotal = (decimal)2.5,
+                    Valid = true
+                },
+                new OrderItem
+                {
+                    Id = 53,
+                    OrderId = 27,
+                    MenuItemId = 8,
+                    Quantity = 1,
+                    Subtotal = 3,
+                    Valid = true
+                },
+                //kola i vino
+                new OrderItem
+                {
+                    Id = 54,
+                    OrderId = 28,
+                    MenuItemId = 1,
+                    Quantity = 1,
+                    Subtotal = (decimal)2.5,
+                    Valid = true
+                },
+                new OrderItem
+                {
+                    Id = 55,
+                    OrderId = 28,
+                    MenuItemId = 18,
+                    Quantity = 1,
+                    Subtotal = (decimal)3.5,
+                    Valid = true
+                },
+                //kola i pomfrit:
+                new OrderItem
+                {
+                    Id = 56,
+                    OrderId = 29,
+                    MenuItemId = 1,
+                    Quantity = 1,
+                    Subtotal = (decimal)2.5,
+                    Valid = true
+                },
+                new OrderItem
+                {
+                    Id = 57,
+                    OrderId = 29,
+                    MenuItemId = 8,
+                    Quantity = 1,
+                    Subtotal = 3,
+                    Valid = true
+                },
+                //kola i vino
+                new OrderItem
+                {
+                    Id = 58,
+                    OrderId = 30,
+                    MenuItemId = 1,
+                    Quantity = 1,
+                    Subtotal = (decimal)2.5,
+                    Valid = true
+                },
+                new OrderItem
+                {
+                    Id = 59,
+                    OrderId = 30,
+                    MenuItemId = 18,
+                    Quantity = 1,
+                    Subtotal = (decimal)3.5,
+                    Valid = true
+                },
+                //kola i pomfrit:
+                new OrderItem
+                {
+                    Id = 60,
+                    OrderId = 31,
+                    MenuItemId = 1,
+                    Quantity = 1,
+                    Subtotal = (decimal)2.5,
+                    Valid = true
+                },
+                new OrderItem
+                {
+                    Id = 61,
+                    OrderId = 31,
+                    MenuItemId = 8,
+                    Quantity = 1,
+                    Subtotal = 3,
+                    Valid = true
+                },
+                //kola i vino
+                new OrderItem
+                {
+                    Id = 62,
+                    OrderId = 32,
+                    MenuItemId = 1,
+                    Quantity = 1,
+                    Subtotal = (decimal)2.5,
+                    Valid = true
+                },
+                new OrderItem
+                {
+                    Id = 63,
+                    OrderId = 32,
+                    MenuItemId = 18,
+                    Quantity = 1,
+                    Subtotal = (decimal)3.5,
+                    Valid = true
+                },
+                //kola i pomfrit:
+                new OrderItem
+                {
+                    Id = 64,
+                    OrderId = 33,
+                    MenuItemId = 1,
+                    Quantity = 1,
+                    Subtotal = (decimal)2.5,
+                    Valid = true
+                },
+                new OrderItem
+                {
+                    Id = 65,
+                    OrderId = 33,
+                    MenuItemId = 8,
+                    Quantity = 1,
+                    Subtotal = 3,
+                    Valid = true
+                },
+                //kola i vino
+                new OrderItem
+                {
+                    Id = 66,
+                    OrderId = 34,
+                    MenuItemId = 1,
+                    Quantity = 1,
+                    Subtotal = (decimal)2.5,
+                    Valid = true
+                },
+                new OrderItem
+                {
+                    Id = 67,
+                    OrderId = 34,
+                    MenuItemId = 18,
+                    Quantity = 1,
+                    Subtotal = (decimal)3.5,
+                    Valid = true
                 }
             );
         }

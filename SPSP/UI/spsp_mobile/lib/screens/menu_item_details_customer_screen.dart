@@ -4,14 +4,15 @@ import 'dart:io';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:spsp_mobile/models/category.dart';
-import 'package:spsp_mobile/models/menu.dart';
 import 'package:spsp_mobile/models/menu_item.dart';
+import 'package:spsp_mobile/models/menu_item_prediction.dart';
 import 'package:spsp_mobile/models/search_result.dart';
-import 'package:spsp_mobile/providers/category_provider.dart';
 import 'package:spsp_mobile/providers/menu_item_provider.dart';
 import 'package:spsp_mobile/providers/menu_provider.dart';
+import 'package:spsp_mobile/providers/prediction_menu_item_provider.dart';
 import 'package:spsp_mobile/utils/util.dart';
 import 'package:spsp_mobile/widgets/master_screen.dart';
 
@@ -35,10 +36,12 @@ class _MenuItemDetailsCustomerScreenState extends State<MenuItemDetailsCustomerS
   Map<String, dynamic> _initialValue = {};
   late MenuProvider _menuProvider;
   late MenuItemProvider _menuItemProvider;
+  late MenuItemPredictionProvider _menuItemPredictionProvider;
   RequestResult<Category>? categoryResult;
   bool isLoading = true;
   String? previewImage;
   MenuItem? menuItemRequestResult;
+  List<MenuItemPrediction>? menuItemPredictions;
 
   @override
   void initState() {
@@ -56,6 +59,7 @@ class _MenuItemDetailsCustomerScreenState extends State<MenuItemDetailsCustomerS
 
     _menuItemProvider = context.read<MenuItemProvider>();
     _menuProvider = context.read<MenuProvider>();
+    _menuItemPredictionProvider = context.read<MenuItemPredictionProvider>();
 
     initForm();
   }
@@ -68,6 +72,9 @@ class _MenuItemDetailsCustomerScreenState extends State<MenuItemDetailsCustomerS
   Future<void> initForm() async {
     if (widget.id != null) {
       var result = await MenuItemProvider().getById(widget.id!);
+
+      var recommendedMenuItemsResult =
+          await MenuItemPredictionProvider().getByMainMenuItemId(widget.id!);
 
       if (widget.id != null) {
         var result = await MenuItemProvider().getById(widget.id!);
@@ -89,6 +96,7 @@ class _MenuItemDetailsCustomerScreenState extends State<MenuItemDetailsCustomerS
 
       setState(() {
         menuItemRequestResult = result;
+        menuItemPredictions = recommendedMenuItemsResult.result;
         isLoading = false;
       });
     }
@@ -97,7 +105,7 @@ class _MenuItemDetailsCustomerScreenState extends State<MenuItemDetailsCustomerS
   @override
   Widget build(BuildContext context) {
     return MasterScreenWidget(
-      title: "Product details",
+      title: "Detalji proizvoda",
       child: Column(
         children: [
           isLoading
@@ -132,6 +140,47 @@ class _MenuItemDetailsCustomerScreenState extends State<MenuItemDetailsCustomerS
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
+            Container(
+              decoration: BoxDecoration(
+                color: Colors.yellow,
+                border: Border.all(
+                  color: Colors.black,
+                  width: 1.0,
+                ),
+              ),
+              child: menuItemPredictions != null
+                  ? ListTile(
+                      onTap: () => {
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => MenuItemDetailsCustomerScreen(
+                                id: menuItemPredictions![0]
+                                    .recommendedMenuItem!
+                                    .id!
+                                    .toString()),
+                          ),
+                        )
+                      },
+                      subtitle: Text(
+                        menuItemPredictions![0].recommendedMenuItem!.name!,
+                        style: TextStyle(
+                          fontStyle: FontStyle.italic,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      title: Text("Tražili ste uz ovaj proizvod!"),
+                      trailing: Text(
+                        "ZA SAMO ${formatNumber(menuItemPredictions![0].recommendedMenuItem!.price)} BAM",
+                        style: TextStyle(
+                          fontStyle: FontStyle.italic,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    )
+                  : Text(""),
+            ),
+            SizedBox(height: 10),
             Container(
               width: 300,
               height: 300,
@@ -173,6 +222,47 @@ class _MenuItemDetailsCustomerScreenState extends State<MenuItemDetailsCustomerS
                 name: "category",
                 enabled: false,
                 style: const TextStyle(color: Colors.black)),
+            SizedBox(height: 10),
+            Container(
+              decoration: BoxDecoration(
+                color: Colors.yellow,
+                border: Border.all(
+                  color: Colors.black,
+                  width: 1.0,
+                ),
+              ),
+              child: menuItemPredictions != null
+                  ? ListTile(
+                      onTap: () => {
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => MenuItemDetailsCustomerScreen(
+                                id: menuItemPredictions![1]
+                                    .recommendedMenuItem!
+                                    .id!
+                                    .toString()),
+                          ),
+                        )
+                      },
+                      subtitle: Text(
+                        menuItemPredictions![1].recommendedMenuItem!.name!,
+                        style: TextStyle(
+                          fontStyle: FontStyle.italic,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      title: Text("Tražili ste uz ovaj proizvod!"),
+                      trailing: Text(
+                        "ZA SAMO ${formatNumber(menuItemPredictions![1].recommendedMenuItem!.price)} BAM",
+                        style: TextStyle(
+                          fontStyle: FontStyle.italic,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    )
+                  : Text(""),
+            ),
           ],
         ),
       ),

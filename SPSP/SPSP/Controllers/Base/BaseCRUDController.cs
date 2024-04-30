@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using SPSP.Models;
 using SPSP.Models.Request.Order;
@@ -10,6 +11,7 @@ using System.Threading.Tasks;
 namespace SPSP.Controllers.Base
 {
     [Route("[controller]")]
+    [Authorize]
     public class BaseCRUDController<T, TSearch, TCreate, TUpdate> 
         : BaseController<T, TSearch> 
         where T : class where TSearch : class where TCreate : class where TUpdate : class

@@ -12,7 +12,7 @@ using SPSP.Services.Database;
 namespace SPSP.Services.Migrations
 {
     [DbContext(typeof(DataDbContext))]
-    [Migration("20240418115438_init")]
+    [Migration("20240427094949_init")]
     partial class init
     {
         /// <inheritdoc />
@@ -565,6 +565,29 @@ namespace SPSP.Services.Migrations
                         });
                 });
 
+            modelBuilder.Entity("SPSP.Services.Database.MenuItemPrediction", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("MainMenuItemId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("RecommendedMenuItemId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("MainMenuItemId");
+
+                    b.HasIndex("RecommendedMenuItemId");
+
+                    b.ToTable("MenuItemPrediction", (string)null);
+                });
+
             modelBuilder.Entity("SPSP.Services.Database.Order", b =>
                 {
                     b.Property<int>("Id")
@@ -618,7 +641,7 @@ namespace SPSP.Services.Migrations
                         {
                             Id = 1,
                             CustomerId = 1,
-                            OrderDateTime = new DateTime(2024, 4, 18, 13, 54, 38, 691, DateTimeKind.Local).AddTicks(8371),
+                            OrderDateTime = new DateTime(2024, 4, 26, 0, 0, 0, 0, DateTimeKind.Local),
                             QRTableId = 3,
                             Status = "COMPLETED",
                             TotalAmount = 8.51m,
@@ -631,7 +654,7 @@ namespace SPSP.Services.Migrations
                         {
                             Id = 2,
                             CustomerId = 2,
-                            OrderDateTime = new DateTime(2024, 4, 18, 13, 54, 38, 691, DateTimeKind.Local).AddTicks(8449),
+                            OrderDateTime = new DateTime(2024, 4, 26, 0, 0, 0, 0, DateTimeKind.Local),
                             QRTableId = 4,
                             Status = "COMPLETED",
                             TotalAmount = 12.82m,
@@ -644,7 +667,7 @@ namespace SPSP.Services.Migrations
                         {
                             Id = 3,
                             CustomerId = 3,
-                            OrderDateTime = new DateTime(2024, 4, 18, 13, 54, 38, 691, DateTimeKind.Local).AddTicks(8455),
+                            OrderDateTime = new DateTime(2024, 4, 26, 0, 0, 0, 0, DateTimeKind.Local),
                             QRTableId = 5,
                             Status = "COMPLETED",
                             TotalAmount = 17.09m,
@@ -657,7 +680,7 @@ namespace SPSP.Services.Migrations
                         {
                             Id = 4,
                             CustomerId = 1,
-                            OrderDateTime = new DateTime(2024, 4, 18, 13, 54, 38, 691, DateTimeKind.Local).AddTicks(8462),
+                            OrderDateTime = new DateTime(2024, 4, 26, 0, 0, 0, 0, DateTimeKind.Local),
                             QRTableId = 3,
                             Status = "COMPLETED",
                             TotalAmount = 8.51m,
@@ -670,7 +693,7 @@ namespace SPSP.Services.Migrations
                         {
                             Id = 5,
                             CustomerId = 2,
-                            OrderDateTime = new DateTime(2024, 4, 18, 13, 54, 38, 691, DateTimeKind.Local).AddTicks(8467),
+                            OrderDateTime = new DateTime(2024, 4, 26, 0, 0, 0, 0, DateTimeKind.Local),
                             QRTableId = 4,
                             Status = "COMPLETED",
                             TotalAmount = 12.82m,
@@ -683,7 +706,7 @@ namespace SPSP.Services.Migrations
                         {
                             Id = 6,
                             CustomerId = 3,
-                            OrderDateTime = new DateTime(2024, 4, 18, 13, 54, 38, 691, DateTimeKind.Local).AddTicks(8470),
+                            OrderDateTime = new DateTime(2024, 4, 26, 0, 0, 0, 0, DateTimeKind.Local),
                             QRTableId = 5,
                             Status = "COMPLETED",
                             TotalAmount = 17.09m,
@@ -696,7 +719,7 @@ namespace SPSP.Services.Migrations
                         {
                             Id = 7,
                             CustomerId = 1,
-                            OrderDateTime = new DateTime(2024, 4, 18, 13, 54, 38, 691, DateTimeKind.Local).AddTicks(8474),
+                            OrderDateTime = new DateTime(2024, 4, 26, 0, 0, 0, 0, DateTimeKind.Local),
                             QRTableId = 3,
                             Status = "COMPLETED",
                             TotalAmount = 8.51m,
@@ -709,7 +732,7 @@ namespace SPSP.Services.Migrations
                         {
                             Id = 8,
                             CustomerId = 2,
-                            OrderDateTime = new DateTime(2024, 4, 18, 13, 54, 38, 691, DateTimeKind.Local).AddTicks(8477),
+                            OrderDateTime = new DateTime(2024, 4, 26, 0, 0, 0, 0, DateTimeKind.Local),
                             QRTableId = 4,
                             Status = "COMPLETED",
                             TotalAmount = 12.82m,
@@ -722,7 +745,7 @@ namespace SPSP.Services.Migrations
                         {
                             Id = 9,
                             CustomerId = 3,
-                            OrderDateTime = new DateTime(2024, 4, 18, 13, 54, 38, 691, DateTimeKind.Local).AddTicks(8482),
+                            OrderDateTime = new DateTime(2024, 4, 26, 0, 0, 0, 0, DateTimeKind.Local),
                             QRTableId = 5,
                             Status = "COMPLETED",
                             TotalAmount = 17.09m,
@@ -735,7 +758,7 @@ namespace SPSP.Services.Migrations
                         {
                             Id = 10,
                             CustomerId = 1,
-                            OrderDateTime = new DateTime(2024, 4, 18, 13, 54, 38, 691, DateTimeKind.Local).AddTicks(8488),
+                            OrderDateTime = new DateTime(2024, 4, 26, 0, 0, 0, 0, DateTimeKind.Local),
                             QRTableId = 3,
                             Status = "ACTIVE",
                             TotalAmount = 8.51m,
@@ -748,7 +771,7 @@ namespace SPSP.Services.Migrations
                         {
                             Id = 11,
                             CustomerId = 2,
-                            OrderDateTime = new DateTime(2024, 4, 18, 13, 54, 38, 691, DateTimeKind.Local).AddTicks(8492),
+                            OrderDateTime = new DateTime(2024, 4, 26, 0, 0, 0, 0, DateTimeKind.Local),
                             QRTableId = 4,
                             Status = "ACTIVE",
                             TotalAmount = 12.82m,
@@ -761,7 +784,7 @@ namespace SPSP.Services.Migrations
                         {
                             Id = 12,
                             CustomerId = 3,
-                            OrderDateTime = new DateTime(2024, 4, 18, 13, 54, 38, 691, DateTimeKind.Local).AddTicks(8495),
+                            OrderDateTime = new DateTime(2024, 4, 26, 0, 0, 0, 0, DateTimeKind.Local),
                             QRTableId = 5,
                             Status = "ACTIVE",
                             TotalAmount = 17.09m,
@@ -774,7 +797,7 @@ namespace SPSP.Services.Migrations
                         {
                             Id = 13,
                             CustomerId = 1,
-                            OrderDateTime = new DateTime(2024, 4, 18, 13, 54, 38, 691, DateTimeKind.Local).AddTicks(8498),
+                            OrderDateTime = new DateTime(2024, 4, 26, 0, 0, 0, 0, DateTimeKind.Local),
                             QRTableId = 3,
                             Status = "CANCELED",
                             TotalAmount = 8.51m,
@@ -787,7 +810,7 @@ namespace SPSP.Services.Migrations
                         {
                             Id = 14,
                             CustomerId = 2,
-                            OrderDateTime = new DateTime(2024, 4, 18, 13, 54, 38, 691, DateTimeKind.Local).AddTicks(8500),
+                            OrderDateTime = new DateTime(2024, 4, 26, 0, 0, 0, 0, DateTimeKind.Local),
                             QRTableId = 4,
                             Status = "CANCELED",
                             TotalAmount = 12.82m,
@@ -800,13 +823,260 @@ namespace SPSP.Services.Migrations
                         {
                             Id = 15,
                             CustomerId = 3,
-                            OrderDateTime = new DateTime(2024, 4, 18, 13, 54, 38, 691, DateTimeKind.Local).AddTicks(8503),
+                            OrderDateTime = new DateTime(2024, 4, 26, 0, 0, 0, 0, DateTimeKind.Local),
                             QRTableId = 5,
                             Status = "CANCELED",
                             TotalAmount = 17.09m,
                             TotalAmountWithVAT = 20m,
                             VAT = 0.17m,
                             VATAmount = 2.91m,
+                            Valid = true
+                        },
+                        new
+                        {
+                            Id = 16,
+                            CustomerId = 1,
+                            OrderDateTime = new DateTime(2024, 4, 27, 11, 49, 49, 455, DateTimeKind.Local).AddTicks(2997),
+                            QRTableId = 5,
+                            Status = "COMPLETED",
+                            TotalAmount = 2.1m,
+                            TotalAmountWithVAT = 2.5m,
+                            VAT = 0.17m,
+                            VATAmount = 0.4m,
+                            Valid = true
+                        },
+                        new
+                        {
+                            Id = 17,
+                            CustomerId = 2,
+                            OrderDateTime = new DateTime(2024, 4, 26, 0, 0, 0, 0, DateTimeKind.Local),
+                            QRTableId = 5,
+                            Status = "COMPLETED",
+                            TotalAmount = 4.7m,
+                            TotalAmountWithVAT = 5.5m,
+                            VAT = 0.17m,
+                            VATAmount = 0.8m,
+                            Valid = true
+                        },
+                        new
+                        {
+                            Id = 18,
+                            CustomerId = 3,
+                            OrderDateTime = new DateTime(2024, 4, 26, 0, 0, 0, 0, DateTimeKind.Local),
+                            QRTableId = 5,
+                            Status = "COMPLETED",
+                            TotalAmount = 5.1m,
+                            TotalAmountWithVAT = 6m,
+                            VAT = 0.17m,
+                            VATAmount = 0.9m,
+                            Valid = true
+                        },
+                        new
+                        {
+                            Id = 19,
+                            CustomerId = 2,
+                            OrderDateTime = new DateTime(2024, 4, 26, 0, 0, 0, 0, DateTimeKind.Local),
+                            QRTableId = 5,
+                            Status = "COMPLETED",
+                            TotalAmount = 4.7m,
+                            TotalAmountWithVAT = 5.5m,
+                            VAT = 0.17m,
+                            VATAmount = 0.8m,
+                            Valid = true
+                        },
+                        new
+                        {
+                            Id = 20,
+                            CustomerId = 3,
+                            OrderDateTime = new DateTime(2024, 4, 26, 0, 0, 0, 0, DateTimeKind.Local),
+                            QRTableId = 5,
+                            Status = "COMPLETED",
+                            TotalAmount = 5.1m,
+                            TotalAmountWithVAT = 6m,
+                            VAT = 0.17m,
+                            VATAmount = 0.9m,
+                            Valid = true
+                        },
+                        new
+                        {
+                            Id = 21,
+                            CustomerId = 2,
+                            OrderDateTime = new DateTime(2024, 4, 26, 0, 0, 0, 0, DateTimeKind.Local),
+                            QRTableId = 5,
+                            Status = "COMPLETED",
+                            TotalAmount = 4.7m,
+                            TotalAmountWithVAT = 5.5m,
+                            VAT = 0.17m,
+                            VATAmount = 0.8m,
+                            Valid = true
+                        },
+                        new
+                        {
+                            Id = 22,
+                            CustomerId = 3,
+                            OrderDateTime = new DateTime(2024, 4, 26, 0, 0, 0, 0, DateTimeKind.Local),
+                            QRTableId = 5,
+                            Status = "COMPLETED",
+                            TotalAmount = 5.1m,
+                            TotalAmountWithVAT = 6m,
+                            VAT = 0.17m,
+                            VATAmount = 0.9m,
+                            Valid = true
+                        },
+                        new
+                        {
+                            Id = 23,
+                            CustomerId = 2,
+                            OrderDateTime = new DateTime(2024, 4, 26, 0, 0, 0, 0, DateTimeKind.Local),
+                            QRTableId = 5,
+                            Status = "COMPLETED",
+                            TotalAmount = 4.7m,
+                            TotalAmountWithVAT = 5.5m,
+                            VAT = 0.17m,
+                            VATAmount = 0.8m,
+                            Valid = true
+                        },
+                        new
+                        {
+                            Id = 24,
+                            CustomerId = 3,
+                            OrderDateTime = new DateTime(2024, 4, 26, 0, 0, 0, 0, DateTimeKind.Local),
+                            QRTableId = 5,
+                            Status = "COMPLETED",
+                            TotalAmount = 5.1m,
+                            TotalAmountWithVAT = 6m,
+                            VAT = 0.17m,
+                            VATAmount = 0.9m,
+                            Valid = true
+                        },
+                        new
+                        {
+                            Id = 25,
+                            CustomerId = 2,
+                            OrderDateTime = new DateTime(2024, 4, 26, 0, 0, 0, 0, DateTimeKind.Local),
+                            QRTableId = 5,
+                            Status = "COMPLETED",
+                            TotalAmount = 4.7m,
+                            TotalAmountWithVAT = 5.5m,
+                            VAT = 0.17m,
+                            VATAmount = 0.8m,
+                            Valid = true
+                        },
+                        new
+                        {
+                            Id = 26,
+                            CustomerId = 3,
+                            OrderDateTime = new DateTime(2024, 4, 26, 0, 0, 0, 0, DateTimeKind.Local),
+                            QRTableId = 5,
+                            Status = "COMPLETED",
+                            TotalAmount = 5.1m,
+                            TotalAmountWithVAT = 6m,
+                            VAT = 0.17m,
+                            VATAmount = 0.9m,
+                            Valid = true
+                        },
+                        new
+                        {
+                            Id = 27,
+                            CustomerId = 2,
+                            OrderDateTime = new DateTime(2024, 4, 26, 0, 0, 0, 0, DateTimeKind.Local),
+                            QRTableId = 5,
+                            Status = "COMPLETED",
+                            TotalAmount = 4.7m,
+                            TotalAmountWithVAT = 5.5m,
+                            VAT = 0.17m,
+                            VATAmount = 0.8m,
+                            Valid = true
+                        },
+                        new
+                        {
+                            Id = 28,
+                            CustomerId = 3,
+                            OrderDateTime = new DateTime(2024, 4, 26, 0, 0, 0, 0, DateTimeKind.Local),
+                            QRTableId = 5,
+                            Status = "COMPLETED",
+                            TotalAmount = 5.1m,
+                            TotalAmountWithVAT = 6m,
+                            VAT = 0.17m,
+                            VATAmount = 0.9m,
+                            Valid = true
+                        },
+                        new
+                        {
+                            Id = 29,
+                            CustomerId = 2,
+                            OrderDateTime = new DateTime(2024, 4, 26, 0, 0, 0, 0, DateTimeKind.Local),
+                            QRTableId = 5,
+                            Status = "COMPLETED",
+                            TotalAmount = 4.7m,
+                            TotalAmountWithVAT = 5.5m,
+                            VAT = 0.17m,
+                            VATAmount = 0.8m,
+                            Valid = true
+                        },
+                        new
+                        {
+                            Id = 30,
+                            CustomerId = 3,
+                            OrderDateTime = new DateTime(2024, 4, 26, 0, 0, 0, 0, DateTimeKind.Local),
+                            QRTableId = 5,
+                            Status = "COMPLETED",
+                            TotalAmount = 5.1m,
+                            TotalAmountWithVAT = 6m,
+                            VAT = 0.17m,
+                            VATAmount = 0.9m,
+                            Valid = true
+                        },
+                        new
+                        {
+                            Id = 31,
+                            CustomerId = 2,
+                            OrderDateTime = new DateTime(2024, 4, 26, 0, 0, 0, 0, DateTimeKind.Local),
+                            QRTableId = 5,
+                            Status = "COMPLETED",
+                            TotalAmount = 4.7m,
+                            TotalAmountWithVAT = 5.5m,
+                            VAT = 0.17m,
+                            VATAmount = 0.8m,
+                            Valid = true
+                        },
+                        new
+                        {
+                            Id = 32,
+                            CustomerId = 3,
+                            OrderDateTime = new DateTime(2024, 4, 26, 0, 0, 0, 0, DateTimeKind.Local),
+                            QRTableId = 5,
+                            Status = "COMPLETED",
+                            TotalAmount = 5.1m,
+                            TotalAmountWithVAT = 6m,
+                            VAT = 0.17m,
+                            VATAmount = 0.9m,
+                            Valid = true
+                        },
+                        new
+                        {
+                            Id = 33,
+                            CustomerId = 2,
+                            OrderDateTime = new DateTime(2024, 4, 26, 0, 0, 0, 0, DateTimeKind.Local),
+                            QRTableId = 5,
+                            Status = "COMPLETED",
+                            TotalAmount = 4.7m,
+                            TotalAmountWithVAT = 5.5m,
+                            VAT = 0.17m,
+                            VATAmount = 0.8m,
+                            Valid = true
+                        },
+                        new
+                        {
+                            Id = 34,
+                            CustomerId = 3,
+                            OrderDateTime = new DateTime(2024, 4, 26, 0, 0, 0, 0, DateTimeKind.Local),
+                            QRTableId = 5,
+                            Status = "COMPLETED",
+                            TotalAmount = 5.1m,
+                            TotalAmountWithVAT = 6m,
+                            VAT = 0.17m,
+                            VATAmount = 0.9m,
                             Valid = true
                         });
                 });
@@ -1114,6 +1384,339 @@ namespace SPSP.Services.Migrations
                             OrderId = 15,
                             Quantity = 7,
                             Subtotal = 14m,
+                            Valid = true
+                        },
+                        new
+                        {
+                            Id = 31,
+                            MenuItemId = 1,
+                            OrderId = 16,
+                            Quantity = 1,
+                            Subtotal = 2.5m,
+                            Valid = true
+                        },
+                        new
+                        {
+                            Id = 32,
+                            MenuItemId = 1,
+                            OrderId = 17,
+                            Quantity = 1,
+                            Subtotal = 2.5m,
+                            Valid = true
+                        },
+                        new
+                        {
+                            Id = 33,
+                            MenuItemId = 8,
+                            OrderId = 17,
+                            Quantity = 1,
+                            Subtotal = 3m,
+                            Valid = true
+                        },
+                        new
+                        {
+                            Id = 34,
+                            MenuItemId = 1,
+                            OrderId = 18,
+                            Quantity = 1,
+                            Subtotal = 2.5m,
+                            Valid = true
+                        },
+                        new
+                        {
+                            Id = 35,
+                            MenuItemId = 18,
+                            OrderId = 18,
+                            Quantity = 1,
+                            Subtotal = 3.5m,
+                            Valid = true
+                        },
+                        new
+                        {
+                            Id = 36,
+                            MenuItemId = 1,
+                            OrderId = 19,
+                            Quantity = 1,
+                            Subtotal = 2.5m,
+                            Valid = true
+                        },
+                        new
+                        {
+                            Id = 37,
+                            MenuItemId = 8,
+                            OrderId = 19,
+                            Quantity = 1,
+                            Subtotal = 3m,
+                            Valid = true
+                        },
+                        new
+                        {
+                            Id = 38,
+                            MenuItemId = 1,
+                            OrderId = 20,
+                            Quantity = 1,
+                            Subtotal = 2.5m,
+                            Valid = true
+                        },
+                        new
+                        {
+                            Id = 39,
+                            MenuItemId = 18,
+                            OrderId = 20,
+                            Quantity = 1,
+                            Subtotal = 3.5m,
+                            Valid = true
+                        },
+                        new
+                        {
+                            Id = 40,
+                            MenuItemId = 1,
+                            OrderId = 21,
+                            Quantity = 1,
+                            Subtotal = 2.5m,
+                            Valid = true
+                        },
+                        new
+                        {
+                            Id = 41,
+                            MenuItemId = 8,
+                            OrderId = 21,
+                            Quantity = 1,
+                            Subtotal = 3m,
+                            Valid = true
+                        },
+                        new
+                        {
+                            Id = 42,
+                            MenuItemId = 1,
+                            OrderId = 22,
+                            Quantity = 1,
+                            Subtotal = 2.5m,
+                            Valid = true
+                        },
+                        new
+                        {
+                            Id = 43,
+                            MenuItemId = 18,
+                            OrderId = 22,
+                            Quantity = 1,
+                            Subtotal = 3.5m,
+                            Valid = true
+                        },
+                        new
+                        {
+                            Id = 44,
+                            MenuItemId = 1,
+                            OrderId = 23,
+                            Quantity = 1,
+                            Subtotal = 2.5m,
+                            Valid = true
+                        },
+                        new
+                        {
+                            Id = 45,
+                            MenuItemId = 8,
+                            OrderId = 23,
+                            Quantity = 1,
+                            Subtotal = 3m,
+                            Valid = true
+                        },
+                        new
+                        {
+                            Id = 46,
+                            MenuItemId = 1,
+                            OrderId = 24,
+                            Quantity = 1,
+                            Subtotal = 2.5m,
+                            Valid = true
+                        },
+                        new
+                        {
+                            Id = 47,
+                            MenuItemId = 18,
+                            OrderId = 24,
+                            Quantity = 1,
+                            Subtotal = 3.5m,
+                            Valid = true
+                        },
+                        new
+                        {
+                            Id = 48,
+                            MenuItemId = 1,
+                            OrderId = 25,
+                            Quantity = 1,
+                            Subtotal = 2.5m,
+                            Valid = true
+                        },
+                        new
+                        {
+                            Id = 49,
+                            MenuItemId = 8,
+                            OrderId = 25,
+                            Quantity = 1,
+                            Subtotal = 3m,
+                            Valid = true
+                        },
+                        new
+                        {
+                            Id = 50,
+                            MenuItemId = 1,
+                            OrderId = 26,
+                            Quantity = 1,
+                            Subtotal = 2.5m,
+                            Valid = true
+                        },
+                        new
+                        {
+                            Id = 51,
+                            MenuItemId = 18,
+                            OrderId = 26,
+                            Quantity = 1,
+                            Subtotal = 3.5m,
+                            Valid = true
+                        },
+                        new
+                        {
+                            Id = 52,
+                            MenuItemId = 1,
+                            OrderId = 27,
+                            Quantity = 1,
+                            Subtotal = 2.5m,
+                            Valid = true
+                        },
+                        new
+                        {
+                            Id = 53,
+                            MenuItemId = 8,
+                            OrderId = 27,
+                            Quantity = 1,
+                            Subtotal = 3m,
+                            Valid = true
+                        },
+                        new
+                        {
+                            Id = 54,
+                            MenuItemId = 1,
+                            OrderId = 28,
+                            Quantity = 1,
+                            Subtotal = 2.5m,
+                            Valid = true
+                        },
+                        new
+                        {
+                            Id = 55,
+                            MenuItemId = 18,
+                            OrderId = 28,
+                            Quantity = 1,
+                            Subtotal = 3.5m,
+                            Valid = true
+                        },
+                        new
+                        {
+                            Id = 56,
+                            MenuItemId = 1,
+                            OrderId = 29,
+                            Quantity = 1,
+                            Subtotal = 2.5m,
+                            Valid = true
+                        },
+                        new
+                        {
+                            Id = 57,
+                            MenuItemId = 8,
+                            OrderId = 29,
+                            Quantity = 1,
+                            Subtotal = 3m,
+                            Valid = true
+                        },
+                        new
+                        {
+                            Id = 58,
+                            MenuItemId = 1,
+                            OrderId = 30,
+                            Quantity = 1,
+                            Subtotal = 2.5m,
+                            Valid = true
+                        },
+                        new
+                        {
+                            Id = 59,
+                            MenuItemId = 18,
+                            OrderId = 30,
+                            Quantity = 1,
+                            Subtotal = 3.5m,
+                            Valid = true
+                        },
+                        new
+                        {
+                            Id = 60,
+                            MenuItemId = 1,
+                            OrderId = 31,
+                            Quantity = 1,
+                            Subtotal = 2.5m,
+                            Valid = true
+                        },
+                        new
+                        {
+                            Id = 61,
+                            MenuItemId = 8,
+                            OrderId = 31,
+                            Quantity = 1,
+                            Subtotal = 3m,
+                            Valid = true
+                        },
+                        new
+                        {
+                            Id = 62,
+                            MenuItemId = 1,
+                            OrderId = 32,
+                            Quantity = 1,
+                            Subtotal = 2.5m,
+                            Valid = true
+                        },
+                        new
+                        {
+                            Id = 63,
+                            MenuItemId = 18,
+                            OrderId = 32,
+                            Quantity = 1,
+                            Subtotal = 3.5m,
+                            Valid = true
+                        },
+                        new
+                        {
+                            Id = 64,
+                            MenuItemId = 1,
+                            OrderId = 33,
+                            Quantity = 1,
+                            Subtotal = 2.5m,
+                            Valid = true
+                        },
+                        new
+                        {
+                            Id = 65,
+                            MenuItemId = 8,
+                            OrderId = 33,
+                            Quantity = 1,
+                            Subtotal = 3m,
+                            Valid = true
+                        },
+                        new
+                        {
+                            Id = 66,
+                            MenuItemId = 1,
+                            OrderId = 34,
+                            Quantity = 1,
+                            Subtotal = 2.5m,
+                            Valid = true
+                        },
+                        new
+                        {
+                            Id = 67,
+                            MenuItemId = 18,
+                            OrderId = 34,
+                            Quantity = 1,
+                            Subtotal = 3.5m,
                             Valid = true
                         });
                 });
@@ -1541,10 +2144,10 @@ namespace SPSP.Services.Migrations
                             Id = 4,
                             ContactInfo = "123 123 123",
                             CustomerId = 2,
-                            EndTime = new DateTime(2024, 4, 18, 21, 0, 0, 0, DateTimeKind.Unspecified),
+                            EndTime = new DateTime(2024, 4, 27, 21, 0, 0, 0, DateTimeKind.Unspecified),
                             QRTableId = 3,
                             SpecialRequest = "Ništa posebno, samo nek je čisto",
-                            StartTime = new DateTime(2024, 4, 18, 19, 0, 0, 0, DateTimeKind.Unspecified),
+                            StartTime = new DateTime(2024, 4, 27, 19, 0, 0, 0, DateTimeKind.Unspecified),
                             Status = "CONFIRMED",
                             Valid = true
                         },
@@ -1553,10 +2156,10 @@ namespace SPSP.Services.Migrations
                             Id = 5,
                             ContactInfo = "123 123 123",
                             CustomerId = 3,
-                            EndTime = new DateTime(2024, 4, 18, 21, 0, 0, 0, DateTimeKind.Unspecified),
+                            EndTime = new DateTime(2024, 4, 27, 21, 0, 0, 0, DateTimeKind.Unspecified),
                             QRTableId = 4,
                             SpecialRequest = "Ništa posebno, samo nek je čisto",
-                            StartTime = new DateTime(2024, 4, 18, 19, 0, 0, 0, DateTimeKind.Unspecified),
+                            StartTime = new DateTime(2024, 4, 27, 19, 0, 0, 0, DateTimeKind.Unspecified),
                             Status = "CONFIRMED",
                             Valid = true
                         },
@@ -1565,10 +2168,10 @@ namespace SPSP.Services.Migrations
                             Id = 6,
                             ContactInfo = "123 123 123",
                             CustomerId = 2,
-                            EndTime = new DateTime(2024, 4, 18, 21, 0, 0, 0, DateTimeKind.Unspecified),
+                            EndTime = new DateTime(2024, 4, 27, 21, 0, 0, 0, DateTimeKind.Unspecified),
                             QRTableId = 3,
                             SpecialRequest = "Ništa posebno, samo nek je čisto",
-                            StartTime = new DateTime(2024, 4, 18, 19, 0, 0, 0, DateTimeKind.Unspecified),
+                            StartTime = new DateTime(2024, 4, 27, 19, 0, 0, 0, DateTimeKind.Unspecified),
                             Status = "CONFIRMED",
                             Valid = true
                         },
@@ -1577,10 +2180,10 @@ namespace SPSP.Services.Migrations
                             Id = 7,
                             ContactInfo = "123 123 123",
                             CustomerId = 3,
-                            EndTime = new DateTime(2024, 4, 18, 21, 0, 0, 0, DateTimeKind.Unspecified),
+                            EndTime = new DateTime(2024, 4, 27, 21, 0, 0, 0, DateTimeKind.Unspecified),
                             QRTableId = 4,
                             SpecialRequest = "Ništa posebno, samo nek je čisto",
-                            StartTime = new DateTime(2024, 4, 18, 19, 0, 0, 0, DateTimeKind.Unspecified),
+                            StartTime = new DateTime(2024, 4, 27, 19, 0, 0, 0, DateTimeKind.Unspecified),
                             Status = "CONFIRMED",
                             Valid = true
                         },
@@ -1589,10 +2192,10 @@ namespace SPSP.Services.Migrations
                             Id = 8,
                             ContactInfo = "123 123 123",
                             CustomerId = 2,
-                            EndTime = new DateTime(2024, 4, 20, 21, 0, 0, 0, DateTimeKind.Unspecified),
+                            EndTime = new DateTime(2024, 4, 29, 21, 0, 0, 0, DateTimeKind.Unspecified),
                             QRTableId = 3,
                             SpecialRequest = "Ništa posebno, samo nek je čisto",
-                            StartTime = new DateTime(2024, 4, 20, 19, 0, 0, 0, DateTimeKind.Unspecified),
+                            StartTime = new DateTime(2024, 4, 29, 19, 0, 0, 0, DateTimeKind.Unspecified),
                             Status = "PENDING_CONFIRMATION",
                             Valid = true
                         },
@@ -1601,10 +2204,10 @@ namespace SPSP.Services.Migrations
                             Id = 9,
                             ContactInfo = "123 123 123",
                             CustomerId = 3,
-                            EndTime = new DateTime(2024, 4, 20, 21, 0, 0, 0, DateTimeKind.Unspecified),
+                            EndTime = new DateTime(2024, 4, 29, 21, 0, 0, 0, DateTimeKind.Unspecified),
                             QRTableId = 4,
                             SpecialRequest = "Ništa posebno, samo nek je čisto",
-                            StartTime = new DateTime(2024, 4, 20, 19, 0, 0, 0, DateTimeKind.Unspecified),
+                            StartTime = new DateTime(2024, 4, 29, 19, 0, 0, 0, DateTimeKind.Unspecified),
                             Status = "PENDING_CONFIRMATION",
                             Valid = true
                         });
@@ -1673,7 +2276,7 @@ namespace SPSP.Services.Migrations
                             InvoiceNumber = "123456701",
                             OrderId = 1,
                             Processed = true,
-                            SaleDate = new DateTime(2024, 4, 18, 13, 54, 38, 691, DateTimeKind.Local).AddTicks(8613),
+                            SaleDate = new DateTime(2024, 4, 27, 11, 49, 49, 455, DateTimeKind.Local).AddTicks(3135),
                             TotalAmount = 8.51m,
                             TotalAmountWithVAT = 10m,
                             VAT = 0.17m,
@@ -1688,7 +2291,7 @@ namespace SPSP.Services.Migrations
                             InvoiceNumber = "123456702",
                             OrderId = 1,
                             Processed = true,
-                            SaleDate = new DateTime(2024, 4, 18, 13, 54, 38, 691, DateTimeKind.Local).AddTicks(8619),
+                            SaleDate = new DateTime(2024, 4, 27, 11, 49, 49, 455, DateTimeKind.Local).AddTicks(3145),
                             TotalAmount = 12.82m,
                             TotalAmountWithVAT = 15m,
                             VAT = 0.17m,
@@ -1703,7 +2306,7 @@ namespace SPSP.Services.Migrations
                             InvoiceNumber = "123456703",
                             OrderId = 1,
                             Processed = true,
-                            SaleDate = new DateTime(2024, 4, 18, 13, 54, 38, 691, DateTimeKind.Local).AddTicks(8623),
+                            SaleDate = new DateTime(2024, 4, 27, 11, 49, 49, 455, DateTimeKind.Local).AddTicks(3149),
                             TotalAmount = 17.09m,
                             TotalAmountWithVAT = 20m,
                             VAT = 0.17m,
@@ -1718,7 +2321,7 @@ namespace SPSP.Services.Migrations
                             InvoiceNumber = "123456704",
                             OrderId = 1,
                             Processed = true,
-                            SaleDate = new DateTime(2024, 4, 18, 13, 54, 38, 691, DateTimeKind.Local).AddTicks(8626),
+                            SaleDate = new DateTime(2024, 4, 27, 11, 49, 49, 455, DateTimeKind.Local).AddTicks(3152),
                             TotalAmount = 8.51m,
                             TotalAmountWithVAT = 10m,
                             VAT = 0.17m,
@@ -1733,7 +2336,7 @@ namespace SPSP.Services.Migrations
                             InvoiceNumber = "123456705",
                             OrderId = 1,
                             Processed = true,
-                            SaleDate = new DateTime(2024, 4, 18, 13, 54, 38, 691, DateTimeKind.Local).AddTicks(8630),
+                            SaleDate = new DateTime(2024, 4, 27, 11, 49, 49, 455, DateTimeKind.Local).AddTicks(3155),
                             TotalAmount = 12.82m,
                             TotalAmountWithVAT = 15m,
                             VAT = 0.17m,
@@ -1748,7 +2351,7 @@ namespace SPSP.Services.Migrations
                             InvoiceNumber = "123456706",
                             OrderId = 1,
                             Processed = true,
-                            SaleDate = new DateTime(2024, 4, 18, 13, 54, 38, 691, DateTimeKind.Local).AddTicks(8636),
+                            SaleDate = new DateTime(2024, 4, 27, 11, 49, 49, 455, DateTimeKind.Local).AddTicks(3158),
                             TotalAmount = 17.09m,
                             TotalAmountWithVAT = 20m,
                             VAT = 0.17m,
@@ -1763,7 +2366,7 @@ namespace SPSP.Services.Migrations
                             InvoiceNumber = "123456707",
                             OrderId = 1,
                             Processed = true,
-                            SaleDate = new DateTime(2024, 4, 18, 13, 54, 38, 691, DateTimeKind.Local).AddTicks(8639),
+                            SaleDate = new DateTime(2024, 4, 27, 11, 49, 49, 455, DateTimeKind.Local).AddTicks(3161),
                             TotalAmount = 8.51m,
                             TotalAmountWithVAT = 10m,
                             VAT = 0.17m,
@@ -1778,7 +2381,7 @@ namespace SPSP.Services.Migrations
                             InvoiceNumber = "123456708",
                             OrderId = 1,
                             Processed = true,
-                            SaleDate = new DateTime(2024, 4, 18, 13, 54, 38, 691, DateTimeKind.Local).AddTicks(8642),
+                            SaleDate = new DateTime(2024, 4, 27, 11, 49, 49, 455, DateTimeKind.Local).AddTicks(3164),
                             TotalAmount = 12.82m,
                             TotalAmountWithVAT = 15m,
                             VAT = 0.17m,
@@ -1793,7 +2396,7 @@ namespace SPSP.Services.Migrations
                             InvoiceNumber = "123456709",
                             OrderId = 1,
                             Processed = true,
-                            SaleDate = new DateTime(2024, 4, 18, 13, 54, 38, 691, DateTimeKind.Local).AddTicks(8645),
+                            SaleDate = new DateTime(2024, 4, 27, 11, 49, 49, 455, DateTimeKind.Local).AddTicks(3167),
                             TotalAmount = 17.09m,
                             TotalAmountWithVAT = 20m,
                             VAT = 0.17m,
@@ -2020,6 +2623,26 @@ namespace SPSP.Services.Migrations
                             SaleInvoiceId = 9,
                             Valid = true
                         });
+                });
+
+            modelBuilder.Entity("SPSP.Services.Database.TrainedData", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<byte[]>("Data")
+                        .IsRequired()
+                        .HasColumnType("varbinary(max)");
+
+                    b.Property<DateTime>("TrainedDateTime")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("TrainedData", (string)null);
                 });
 
             modelBuilder.Entity("SPSP.Services.Database.UserAccount", b =>
@@ -2269,6 +2892,25 @@ namespace SPSP.Services.Migrations
                     b.Navigation("Menu");
                 });
 
+            modelBuilder.Entity("SPSP.Services.Database.MenuItemPrediction", b =>
+                {
+                    b.HasOne("SPSP.Services.Database.MenuItem", "MainMenuItem")
+                        .WithMany("MainMenuItems")
+                        .HasForeignKey("MainMenuItemId")
+                        .IsRequired()
+                        .HasConstraintName("FK_MenuItemPrediction_MainMenuItemId");
+
+                    b.HasOne("SPSP.Services.Database.MenuItem", "RecommendedMenuItem")
+                        .WithMany("RecommendedMenuItems")
+                        .HasForeignKey("RecommendedMenuItemId")
+                        .IsRequired()
+                        .HasConstraintName("FK_MenuItemPrediction_RecommendedMenuItemId");
+
+                    b.Navigation("MainMenuItem");
+
+                    b.Navigation("RecommendedMenuItem");
+                });
+
             modelBuilder.Entity("SPSP.Services.Database.Order", b =>
                 {
                     b.HasOne("SPSP.Services.Database.Customer", "Customer")
@@ -2443,9 +3085,13 @@ namespace SPSP.Services.Migrations
 
             modelBuilder.Entity("SPSP.Services.Database.MenuItem", b =>
                 {
+                    b.Navigation("MainMenuItems");
+
                     b.Navigation("OrderItems");
 
                     b.Navigation("PurchaseInvoiceItems");
+
+                    b.Navigation("RecommendedMenuItems");
 
                     b.Navigation("SaleInvoiceItems");
                 });

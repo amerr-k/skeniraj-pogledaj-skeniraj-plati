@@ -79,6 +79,20 @@ namespace SPSP.Services.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "TrainedData",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Data = table.Column<byte[]>(type: "varbinary(max)", nullable: false),
+                    TrainedDateTime = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_TrainedData", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "UserAccount",
                 columns: table => new
                 {
@@ -208,6 +222,30 @@ namespace SPSP.Services.Migrations
                         name: "FK_UserAccountUserRole_UserRoleId",
                         column: x => x.UserRoleId,
                         principalTable: "UserRole",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "MenuItemPrediction",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    MainMenuItemId = table.Column<int>(type: "int", nullable: false),
+                    RecommendedMenuItemId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_MenuItemPrediction", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_MenuItemPrediction_MainMenuItemId",
+                        column: x => x.MainMenuItemId,
+                        principalTable: "MenuItem",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_MenuItemPrediction_RecommendedMenuItemId",
+                        column: x => x.RecommendedMenuItemId,
+                        principalTable: "MenuItem",
                         principalColumn: "Id");
                 });
 
@@ -528,21 +566,40 @@ namespace SPSP.Services.Migrations
                 columns: new[] { "Id", "CustomerId", "OrderDateTime", "QRTableId", "Status", "TotalAmount", "TotalAmountWithVAT", "VAT", "VATAmount", "Valid" },
                 values: new object[,]
                 {
-                    { 1, 1, new DateTime(2024, 4, 18, 13, 54, 38, 691, DateTimeKind.Local).AddTicks(8371), 3, "COMPLETED", 8.51m, 10m, 0.17m, 1.49m, true },
-                    { 2, 2, new DateTime(2024, 4, 18, 13, 54, 38, 691, DateTimeKind.Local).AddTicks(8449), 4, "COMPLETED", 12.82m, 15m, 0.17m, 2.18m, true },
-                    { 3, 3, new DateTime(2024, 4, 18, 13, 54, 38, 691, DateTimeKind.Local).AddTicks(8455), 5, "COMPLETED", 17.09m, 20m, 0.17m, 2.91m, true },
-                    { 4, 1, new DateTime(2024, 4, 18, 13, 54, 38, 691, DateTimeKind.Local).AddTicks(8462), 3, "COMPLETED", 8.51m, 10m, 0.17m, 1.49m, true },
-                    { 5, 2, new DateTime(2024, 4, 18, 13, 54, 38, 691, DateTimeKind.Local).AddTicks(8467), 4, "COMPLETED", 12.82m, 15m, 0.17m, 2.18m, true },
-                    { 6, 3, new DateTime(2024, 4, 18, 13, 54, 38, 691, DateTimeKind.Local).AddTicks(8470), 5, "COMPLETED", 17.09m, 20m, 0.17m, 2.91m, true },
-                    { 7, 1, new DateTime(2024, 4, 18, 13, 54, 38, 691, DateTimeKind.Local).AddTicks(8474), 3, "COMPLETED", 8.51m, 10m, 0.17m, 1.49m, true },
-                    { 8, 2, new DateTime(2024, 4, 18, 13, 54, 38, 691, DateTimeKind.Local).AddTicks(8477), 4, "COMPLETED", 12.82m, 15m, 0.17m, 2.18m, true },
-                    { 9, 3, new DateTime(2024, 4, 18, 13, 54, 38, 691, DateTimeKind.Local).AddTicks(8482), 5, "COMPLETED", 17.09m, 20m, 0.17m, 2.91m, true },
-                    { 10, 1, new DateTime(2024, 4, 18, 13, 54, 38, 691, DateTimeKind.Local).AddTicks(8488), 3, "ACTIVE", 8.51m, 10m, 0.17m, 1.49m, true },
-                    { 11, 2, new DateTime(2024, 4, 18, 13, 54, 38, 691, DateTimeKind.Local).AddTicks(8492), 4, "ACTIVE", 12.82m, 15m, 0.17m, 2.18m, true },
-                    { 12, 3, new DateTime(2024, 4, 18, 13, 54, 38, 691, DateTimeKind.Local).AddTicks(8495), 5, "ACTIVE", 17.09m, 20m, 0.17m, 2.91m, true },
-                    { 13, 1, new DateTime(2024, 4, 18, 13, 54, 38, 691, DateTimeKind.Local).AddTicks(8498), 3, "CANCELED", 8.51m, 10m, 0.17m, 1.49m, true },
-                    { 14, 2, new DateTime(2024, 4, 18, 13, 54, 38, 691, DateTimeKind.Local).AddTicks(8500), 4, "CANCELED", 12.82m, 15m, 0.17m, 2.18m, true },
-                    { 15, 3, new DateTime(2024, 4, 18, 13, 54, 38, 691, DateTimeKind.Local).AddTicks(8503), 5, "CANCELED", 17.09m, 20m, 0.17m, 2.91m, true }
+                    { 1, 1, new DateTime(2024, 4, 26, 0, 0, 0, 0, DateTimeKind.Local), 3, "COMPLETED", 8.51m, 10m, 0.17m, 1.49m, true },
+                    { 2, 2, new DateTime(2024, 4, 26, 0, 0, 0, 0, DateTimeKind.Local), 4, "COMPLETED", 12.82m, 15m, 0.17m, 2.18m, true },
+                    { 3, 3, new DateTime(2024, 4, 26, 0, 0, 0, 0, DateTimeKind.Local), 5, "COMPLETED", 17.09m, 20m, 0.17m, 2.91m, true },
+                    { 4, 1, new DateTime(2024, 4, 26, 0, 0, 0, 0, DateTimeKind.Local), 3, "COMPLETED", 8.51m, 10m, 0.17m, 1.49m, true },
+                    { 5, 2, new DateTime(2024, 4, 26, 0, 0, 0, 0, DateTimeKind.Local), 4, "COMPLETED", 12.82m, 15m, 0.17m, 2.18m, true },
+                    { 6, 3, new DateTime(2024, 4, 26, 0, 0, 0, 0, DateTimeKind.Local), 5, "COMPLETED", 17.09m, 20m, 0.17m, 2.91m, true },
+                    { 7, 1, new DateTime(2024, 4, 26, 0, 0, 0, 0, DateTimeKind.Local), 3, "COMPLETED", 8.51m, 10m, 0.17m, 1.49m, true },
+                    { 8, 2, new DateTime(2024, 4, 26, 0, 0, 0, 0, DateTimeKind.Local), 4, "COMPLETED", 12.82m, 15m, 0.17m, 2.18m, true },
+                    { 9, 3, new DateTime(2024, 4, 26, 0, 0, 0, 0, DateTimeKind.Local), 5, "COMPLETED", 17.09m, 20m, 0.17m, 2.91m, true },
+                    { 10, 1, new DateTime(2024, 4, 26, 0, 0, 0, 0, DateTimeKind.Local), 3, "ACTIVE", 8.51m, 10m, 0.17m, 1.49m, true },
+                    { 11, 2, new DateTime(2024, 4, 26, 0, 0, 0, 0, DateTimeKind.Local), 4, "ACTIVE", 12.82m, 15m, 0.17m, 2.18m, true },
+                    { 12, 3, new DateTime(2024, 4, 26, 0, 0, 0, 0, DateTimeKind.Local), 5, "ACTIVE", 17.09m, 20m, 0.17m, 2.91m, true },
+                    { 13, 1, new DateTime(2024, 4, 26, 0, 0, 0, 0, DateTimeKind.Local), 3, "CANCELED", 8.51m, 10m, 0.17m, 1.49m, true },
+                    { 14, 2, new DateTime(2024, 4, 26, 0, 0, 0, 0, DateTimeKind.Local), 4, "CANCELED", 12.82m, 15m, 0.17m, 2.18m, true },
+                    { 15, 3, new DateTime(2024, 4, 26, 0, 0, 0, 0, DateTimeKind.Local), 5, "CANCELED", 17.09m, 20m, 0.17m, 2.91m, true },
+                    { 16, 1, new DateTime(2024, 4, 27, 11, 49, 49, 455, DateTimeKind.Local).AddTicks(2997), 5, "COMPLETED", 2.1m, 2.5m, 0.17m, 0.4m, true },
+                    { 17, 2, new DateTime(2024, 4, 26, 0, 0, 0, 0, DateTimeKind.Local), 5, "COMPLETED", 4.7m, 5.5m, 0.17m, 0.8m, true },
+                    { 18, 3, new DateTime(2024, 4, 26, 0, 0, 0, 0, DateTimeKind.Local), 5, "COMPLETED", 5.1m, 6m, 0.17m, 0.9m, true },
+                    { 19, 2, new DateTime(2024, 4, 26, 0, 0, 0, 0, DateTimeKind.Local), 5, "COMPLETED", 4.7m, 5.5m, 0.17m, 0.8m, true },
+                    { 20, 3, new DateTime(2024, 4, 26, 0, 0, 0, 0, DateTimeKind.Local), 5, "COMPLETED", 5.1m, 6m, 0.17m, 0.9m, true },
+                    { 21, 2, new DateTime(2024, 4, 26, 0, 0, 0, 0, DateTimeKind.Local), 5, "COMPLETED", 4.7m, 5.5m, 0.17m, 0.8m, true },
+                    { 22, 3, new DateTime(2024, 4, 26, 0, 0, 0, 0, DateTimeKind.Local), 5, "COMPLETED", 5.1m, 6m, 0.17m, 0.9m, true },
+                    { 23, 2, new DateTime(2024, 4, 26, 0, 0, 0, 0, DateTimeKind.Local), 5, "COMPLETED", 4.7m, 5.5m, 0.17m, 0.8m, true },
+                    { 24, 3, new DateTime(2024, 4, 26, 0, 0, 0, 0, DateTimeKind.Local), 5, "COMPLETED", 5.1m, 6m, 0.17m, 0.9m, true },
+                    { 25, 2, new DateTime(2024, 4, 26, 0, 0, 0, 0, DateTimeKind.Local), 5, "COMPLETED", 4.7m, 5.5m, 0.17m, 0.8m, true },
+                    { 26, 3, new DateTime(2024, 4, 26, 0, 0, 0, 0, DateTimeKind.Local), 5, "COMPLETED", 5.1m, 6m, 0.17m, 0.9m, true },
+                    { 27, 2, new DateTime(2024, 4, 26, 0, 0, 0, 0, DateTimeKind.Local), 5, "COMPLETED", 4.7m, 5.5m, 0.17m, 0.8m, true },
+                    { 28, 3, new DateTime(2024, 4, 26, 0, 0, 0, 0, DateTimeKind.Local), 5, "COMPLETED", 5.1m, 6m, 0.17m, 0.9m, true },
+                    { 29, 2, new DateTime(2024, 4, 26, 0, 0, 0, 0, DateTimeKind.Local), 5, "COMPLETED", 4.7m, 5.5m, 0.17m, 0.8m, true },
+                    { 30, 3, new DateTime(2024, 4, 26, 0, 0, 0, 0, DateTimeKind.Local), 5, "COMPLETED", 5.1m, 6m, 0.17m, 0.9m, true },
+                    { 31, 2, new DateTime(2024, 4, 26, 0, 0, 0, 0, DateTimeKind.Local), 5, "COMPLETED", 4.7m, 5.5m, 0.17m, 0.8m, true },
+                    { 32, 3, new DateTime(2024, 4, 26, 0, 0, 0, 0, DateTimeKind.Local), 5, "COMPLETED", 5.1m, 6m, 0.17m, 0.9m, true },
+                    { 33, 2, new DateTime(2024, 4, 26, 0, 0, 0, 0, DateTimeKind.Local), 5, "COMPLETED", 4.7m, 5.5m, 0.17m, 0.8m, true },
+                    { 34, 3, new DateTime(2024, 4, 26, 0, 0, 0, 0, DateTimeKind.Local), 5, "COMPLETED", 5.1m, 6m, 0.17m, 0.9m, true }
                 });
 
             migrationBuilder.InsertData(
@@ -563,12 +620,12 @@ namespace SPSP.Services.Migrations
                     { 1, "123 123 123", 1, new DateTime(2024, 3, 29, 22, 0, 0, 0, DateTimeKind.Unspecified), 1, "Ništa posebno, samo nek je čisto", new DateTime(2024, 3, 29, 19, 0, 0, 0, DateTimeKind.Unspecified), "CANCELED", true },
                     { 2, "123 123 123", 2, new DateTime(2024, 3, 29, 22, 0, 0, 0, DateTimeKind.Unspecified), 3, "Ništa posebno, samo nek je čisto", new DateTime(2024, 3, 29, 19, 0, 0, 0, DateTimeKind.Unspecified), "CANCELED", true },
                     { 3, "123 123 123", 3, new DateTime(2024, 3, 29, 22, 0, 0, 0, DateTimeKind.Unspecified), 4, "Ništa posebno, samo nek je čisto", new DateTime(2024, 3, 29, 19, 0, 0, 0, DateTimeKind.Unspecified), "CANCELED", true },
-                    { 4, "123 123 123", 2, new DateTime(2024, 4, 18, 21, 0, 0, 0, DateTimeKind.Unspecified), 3, "Ništa posebno, samo nek je čisto", new DateTime(2024, 4, 18, 19, 0, 0, 0, DateTimeKind.Unspecified), "CONFIRMED", true },
-                    { 5, "123 123 123", 3, new DateTime(2024, 4, 18, 21, 0, 0, 0, DateTimeKind.Unspecified), 4, "Ništa posebno, samo nek je čisto", new DateTime(2024, 4, 18, 19, 0, 0, 0, DateTimeKind.Unspecified), "CONFIRMED", true },
-                    { 6, "123 123 123", 2, new DateTime(2024, 4, 18, 21, 0, 0, 0, DateTimeKind.Unspecified), 3, "Ništa posebno, samo nek je čisto", new DateTime(2024, 4, 18, 19, 0, 0, 0, DateTimeKind.Unspecified), "CONFIRMED", true },
-                    { 7, "123 123 123", 3, new DateTime(2024, 4, 18, 21, 0, 0, 0, DateTimeKind.Unspecified), 4, "Ništa posebno, samo nek je čisto", new DateTime(2024, 4, 18, 19, 0, 0, 0, DateTimeKind.Unspecified), "CONFIRMED", true },
-                    { 8, "123 123 123", 2, new DateTime(2024, 4, 20, 21, 0, 0, 0, DateTimeKind.Unspecified), 3, "Ništa posebno, samo nek je čisto", new DateTime(2024, 4, 20, 19, 0, 0, 0, DateTimeKind.Unspecified), "PENDING_CONFIRMATION", true },
-                    { 9, "123 123 123", 3, new DateTime(2024, 4, 20, 21, 0, 0, 0, DateTimeKind.Unspecified), 4, "Ništa posebno, samo nek je čisto", new DateTime(2024, 4, 20, 19, 0, 0, 0, DateTimeKind.Unspecified), "PENDING_CONFIRMATION", true }
+                    { 4, "123 123 123", 2, new DateTime(2024, 4, 27, 21, 0, 0, 0, DateTimeKind.Unspecified), 3, "Ništa posebno, samo nek je čisto", new DateTime(2024, 4, 27, 19, 0, 0, 0, DateTimeKind.Unspecified), "CONFIRMED", true },
+                    { 5, "123 123 123", 3, new DateTime(2024, 4, 27, 21, 0, 0, 0, DateTimeKind.Unspecified), 4, "Ništa posebno, samo nek je čisto", new DateTime(2024, 4, 27, 19, 0, 0, 0, DateTimeKind.Unspecified), "CONFIRMED", true },
+                    { 6, "123 123 123", 2, new DateTime(2024, 4, 27, 21, 0, 0, 0, DateTimeKind.Unspecified), 3, "Ništa posebno, samo nek je čisto", new DateTime(2024, 4, 27, 19, 0, 0, 0, DateTimeKind.Unspecified), "CONFIRMED", true },
+                    { 7, "123 123 123", 3, new DateTime(2024, 4, 27, 21, 0, 0, 0, DateTimeKind.Unspecified), 4, "Ništa posebno, samo nek je čisto", new DateTime(2024, 4, 27, 19, 0, 0, 0, DateTimeKind.Unspecified), "CONFIRMED", true },
+                    { 8, "123 123 123", 2, new DateTime(2024, 4, 29, 21, 0, 0, 0, DateTimeKind.Unspecified), 3, "Ništa posebno, samo nek je čisto", new DateTime(2024, 4, 29, 19, 0, 0, 0, DateTimeKind.Unspecified), "PENDING_CONFIRMATION", true },
+                    { 9, "123 123 123", 3, new DateTime(2024, 4, 29, 21, 0, 0, 0, DateTimeKind.Unspecified), 4, "Ništa posebno, samo nek je čisto", new DateTime(2024, 4, 29, 19, 0, 0, 0, DateTimeKind.Unspecified), "PENDING_CONFIRMATION", true }
                 });
 
             migrationBuilder.InsertData(
@@ -605,7 +662,44 @@ namespace SPSP.Services.Migrations
                     { 27, 9, 14, 2, 10m, true },
                     { 28, 15, 14, 1, 5m, true },
                     { 29, 8, 15, 2, 6m, true },
-                    { 30, 7, 15, 7, 14m, true }
+                    { 30, 7, 15, 7, 14m, true },
+                    { 31, 1, 16, 1, 2.5m, true },
+                    { 32, 1, 17, 1, 2.5m, true },
+                    { 33, 8, 17, 1, 3m, true },
+                    { 34, 1, 18, 1, 2.5m, true },
+                    { 35, 18, 18, 1, 3.5m, true },
+                    { 36, 1, 19, 1, 2.5m, true },
+                    { 37, 8, 19, 1, 3m, true },
+                    { 38, 1, 20, 1, 2.5m, true },
+                    { 39, 18, 20, 1, 3.5m, true },
+                    { 40, 1, 21, 1, 2.5m, true },
+                    { 41, 8, 21, 1, 3m, true },
+                    { 42, 1, 22, 1, 2.5m, true },
+                    { 43, 18, 22, 1, 3.5m, true },
+                    { 44, 1, 23, 1, 2.5m, true },
+                    { 45, 8, 23, 1, 3m, true },
+                    { 46, 1, 24, 1, 2.5m, true },
+                    { 47, 18, 24, 1, 3.5m, true },
+                    { 48, 1, 25, 1, 2.5m, true },
+                    { 49, 8, 25, 1, 3m, true },
+                    { 50, 1, 26, 1, 2.5m, true },
+                    { 51, 18, 26, 1, 3.5m, true },
+                    { 52, 1, 27, 1, 2.5m, true },
+                    { 53, 8, 27, 1, 3m, true },
+                    { 54, 1, 28, 1, 2.5m, true },
+                    { 55, 18, 28, 1, 3.5m, true },
+                    { 56, 1, 29, 1, 2.5m, true },
+                    { 57, 8, 29, 1, 3m, true },
+                    { 58, 1, 30, 1, 2.5m, true },
+                    { 59, 18, 30, 1, 3.5m, true },
+                    { 60, 1, 31, 1, 2.5m, true },
+                    { 61, 8, 31, 1, 3m, true },
+                    { 62, 1, 32, 1, 2.5m, true },
+                    { 63, 18, 32, 1, 3.5m, true },
+                    { 64, 1, 33, 1, 2.5m, true },
+                    { 65, 8, 33, 1, 3m, true },
+                    { 66, 1, 34, 1, 2.5m, true },
+                    { 67, 18, 34, 1, 3.5m, true }
                 });
 
             migrationBuilder.InsertData(
@@ -629,15 +723,15 @@ namespace SPSP.Services.Migrations
                 columns: new[] { "Id", "CustomerId", "EmployeeId", "InvoiceNumber", "OrderId", "Processed", "SaleDate", "TotalAmount", "TotalAmountWithVAT", "VAT", "VATAmount", "Valid" },
                 values: new object[,]
                 {
-                    { 1, 1, 1, "123456701", 1, true, new DateTime(2024, 4, 18, 13, 54, 38, 691, DateTimeKind.Local).AddTicks(8613), 8.51m, 10m, 0.17m, 1.49m, true },
-                    { 2, 2, 1, "123456702", 1, true, new DateTime(2024, 4, 18, 13, 54, 38, 691, DateTimeKind.Local).AddTicks(8619), 12.82m, 15m, 0.17m, 2.18m, true },
-                    { 3, 3, 1, "123456703", 1, true, new DateTime(2024, 4, 18, 13, 54, 38, 691, DateTimeKind.Local).AddTicks(8623), 17.09m, 20m, 0.17m, 2.91m, true },
-                    { 4, 1, 1, "123456704", 1, true, new DateTime(2024, 4, 18, 13, 54, 38, 691, DateTimeKind.Local).AddTicks(8626), 8.51m, 10m, 0.17m, 1.49m, true },
-                    { 5, 2, 1, "123456705", 1, true, new DateTime(2024, 4, 18, 13, 54, 38, 691, DateTimeKind.Local).AddTicks(8630), 12.82m, 15m, 0.17m, 2.18m, true },
-                    { 6, 3, 1, "123456706", 1, true, new DateTime(2024, 4, 18, 13, 54, 38, 691, DateTimeKind.Local).AddTicks(8636), 17.09m, 20m, 0.17m, 2.91m, true },
-                    { 7, 1, 1, "123456707", 1, true, new DateTime(2024, 4, 18, 13, 54, 38, 691, DateTimeKind.Local).AddTicks(8639), 8.51m, 10m, 0.17m, 1.49m, true },
-                    { 8, 2, 1, "123456708", 1, true, new DateTime(2024, 4, 18, 13, 54, 38, 691, DateTimeKind.Local).AddTicks(8642), 12.82m, 15m, 0.17m, 2.18m, true },
-                    { 9, 3, 1, "123456709", 1, true, new DateTime(2024, 4, 18, 13, 54, 38, 691, DateTimeKind.Local).AddTicks(8645), 17.09m, 20m, 0.17m, 2.91m, true }
+                    { 1, 1, 1, "123456701", 1, true, new DateTime(2024, 4, 27, 11, 49, 49, 455, DateTimeKind.Local).AddTicks(3135), 8.51m, 10m, 0.17m, 1.49m, true },
+                    { 2, 2, 1, "123456702", 1, true, new DateTime(2024, 4, 27, 11, 49, 49, 455, DateTimeKind.Local).AddTicks(3145), 12.82m, 15m, 0.17m, 2.18m, true },
+                    { 3, 3, 1, "123456703", 1, true, new DateTime(2024, 4, 27, 11, 49, 49, 455, DateTimeKind.Local).AddTicks(3149), 17.09m, 20m, 0.17m, 2.91m, true },
+                    { 4, 1, 1, "123456704", 1, true, new DateTime(2024, 4, 27, 11, 49, 49, 455, DateTimeKind.Local).AddTicks(3152), 8.51m, 10m, 0.17m, 1.49m, true },
+                    { 5, 2, 1, "123456705", 1, true, new DateTime(2024, 4, 27, 11, 49, 49, 455, DateTimeKind.Local).AddTicks(3155), 12.82m, 15m, 0.17m, 2.18m, true },
+                    { 6, 3, 1, "123456706", 1, true, new DateTime(2024, 4, 27, 11, 49, 49, 455, DateTimeKind.Local).AddTicks(3158), 17.09m, 20m, 0.17m, 2.91m, true },
+                    { 7, 1, 1, "123456707", 1, true, new DateTime(2024, 4, 27, 11, 49, 49, 455, DateTimeKind.Local).AddTicks(3161), 8.51m, 10m, 0.17m, 1.49m, true },
+                    { 8, 2, 1, "123456708", 1, true, new DateTime(2024, 4, 27, 11, 49, 49, 455, DateTimeKind.Local).AddTicks(3164), 12.82m, 15m, 0.17m, 2.18m, true },
+                    { 9, 3, 1, "123456709", 1, true, new DateTime(2024, 4, 27, 11, 49, 49, 455, DateTimeKind.Local).AddTicks(3167), 17.09m, 20m, 0.17m, 2.91m, true }
                 });
 
             migrationBuilder.InsertData(
@@ -691,6 +785,16 @@ namespace SPSP.Services.Migrations
                 table: "MenuItem",
                 columns: new[] { "MenuId", "Code" },
                 unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_MenuItemPrediction_MainMenuItemId",
+                table: "MenuItemPrediction",
+                column: "MainMenuItemId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_MenuItemPrediction_RecommendedMenuItemId",
+                table: "MenuItemPrediction",
+                column: "RecommendedMenuItemId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Order_CustomerId",
@@ -802,6 +906,9 @@ namespace SPSP.Services.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "MenuItemPrediction");
+
+            migrationBuilder.DropTable(
                 name: "OrderItem");
 
             migrationBuilder.DropTable(
@@ -812,6 +919,9 @@ namespace SPSP.Services.Migrations
 
             migrationBuilder.DropTable(
                 name: "SaleInvoiceItem");
+
+            migrationBuilder.DropTable(
+                name: "TrainedData");
 
             migrationBuilder.DropTable(
                 name: "UserAccountUserRole");

@@ -12,5 +12,6 @@ namespace SPSP.Models.SearchObjects
         public string? FTS { get; set; }
         public bool? IsCategoryIncluded { get; set; }
         public bool? IsMenuIncluded { get; set; }
+        public bool? IsRecommendedIncluded {  get; set; }
     }
 }

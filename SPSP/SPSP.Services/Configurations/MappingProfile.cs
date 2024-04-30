@@ -25,6 +25,11 @@ namespace SPSP.Services.Configurations
             CreateMap<MenuItemCreateRequest, Database.MenuItem>();
             CreateMap<MenuItemUpdateRequest, Database.MenuItem>();
 
+
+            CreateMap<Database.MenuItemPrediction, Models.MenuItemPrediction>();
+            //CreateMap<MenuItemCreateRequest, Database.MenuItem>();
+            //CreateMap<MenuItemUpdateRequest, Database.MenuItem>();
+
             CreateMap<Database.Order, Models.Order>();
             CreateMap<OrderCreateRequest, Database.Order>();
             CreateMap<OrderUpdateRequest, Database.Order>();

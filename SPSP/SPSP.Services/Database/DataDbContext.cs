@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SPSP.Services.Database.SeedData;
+using System.Text.RegularExpressions;
 
 #nullable disable
 
@@ -32,6 +33,8 @@ namespace SPSP.Services.Database
         public virtual DbSet<UserAccount> UserAccounts { get; set; }
         public virtual DbSet<UserAccountUserRole> UserAccountUserRoles { get; set; }
         public virtual DbSet<UserRole> UserRoles { get; set; }
+        public virtual DbSet<TrainedData> TrainedDatas { get; set; }
+        public virtual DbSet<MenuItemPrediction> MenuItemPredictions { get; set; }
 
         //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         //{
@@ -477,6 +480,32 @@ namespace SPSP.Services.Database
                 entity.Property(e => e.Valid)
                 .IsRequired()
                     .HasDefaultValueSql("((1))");
+            });
+
+            modelBuilder.Entity<TrainedData>(entity =>
+            {
+                entity.ToTable("TrainedData");
+
+            });
+
+            modelBuilder.Entity<MenuItemPrediction>(entity =>
+            {
+                entity.ToTable("MenuItemPrediction");
+
+                modelBuilder.Entity<MenuItemPrediction>()
+                    .HasOne(m => m.MainMenuItem)
+                    .WithMany(m => m.MainMenuItems)
+                    .HasForeignKey(m => m.MainMenuItemId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_MenuItemPrediction_MainMenuItemId");
+
+                modelBuilder.Entity<MenuItemPrediction>()
+                    .HasOne(m => m.RecommendedMenuItem)
+                    .WithMany(m => m.RecommendedMenuItems)
+                    .HasForeignKey(m => m.RecommendedMenuItemId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_MenuItemPrediction_RecommendedMenuItemId");
+
             });
 
             modelBuilder.Entity<Category>().SeedData();
