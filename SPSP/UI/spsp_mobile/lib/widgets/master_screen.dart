@@ -1,9 +1,11 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
+import 'package:spsp_mobile/main.dart';
 import 'package:spsp_mobile/screens/menu_item_list_customer_screen.dart';
 import 'package:spsp_mobile/screens/pos_screen.dart';
 import 'package:spsp_mobile/screens/qr_code_scanner_customer_screen.dart';
+import 'package:spsp_mobile/utils/util.dart';
 
 class MasterScreenWidget extends StatefulWidget {
   String? title;
@@ -39,6 +41,17 @@ class _MasterScreenWidgetState extends State<MasterScreenWidget> {
         context,
         MaterialPageRoute(
           builder: (context) => QRCodeScannerCustomerScreen(),
+        ),
+      );
+    } else if (currentIndex == 2) {
+      Authorization.token = "";
+      Authorization.username = "";
+      Authorization.password = "";
+
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => HomePage(),
         ),
       );
     }
@@ -85,6 +98,10 @@ class _MasterScreenWidgetState extends State<MasterScreenWidget> {
           BottomNavigationBarItem(
             icon: Icon(Icons.camera),
             label: 'Skeniraj',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.logout),
+            label: 'Odjava',
           ),
         ],
         selectedItemColor: Colors.amber[800],

@@ -37,7 +37,7 @@ dependencies:
   # http: ^1.2.1
   provider: ^6.1.2
   json_annotation: ^4.0.1
-  intl: ^0.19.0
+  intl: ^0.18.1
   flutter_form_builder: ^9.2.1
   file_picker: ^4.6.1
   pdf: ^3.10.8
@@ -48,7 +48,7 @@ dependencies:
   http: 0.13.6
   currency_converter: ^0.0.2
   flutter_dotenv: ^5.1.0
-
+  form_builder_validators: ^9.1.0
   # flutter_paypal: ^0.2.0
 
 dev_dependencies:

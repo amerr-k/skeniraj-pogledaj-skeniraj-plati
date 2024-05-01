@@ -11,6 +11,8 @@ using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using SPSP.Models;
+using SPSP.Models.Request.Auth;
+using Newtonsoft.Json.Linq;
 
 namespace SPSP.Services.UserAccount
 {
@@ -21,7 +23,6 @@ namespace SPSP.Services.UserAccount
         public UserAccountService(DataDbContext context, IMapper mapper)
             : base(context, mapper)
         {
-
         }
 
         //public override async Task<Models.UserAccount> Create(UserAccountCreateRequest create)
@@ -122,6 +123,12 @@ namespace SPSP.Services.UserAccount
                 signingCredentials: credentials);
 
             return new JwtSecurityTokenHandler().WriteToken(token);
+        }
+
+        public async Task<UserAuthInfo> Register(UserAccountCreateRequest userAccountCreateRequest)
+        {
+            var userAccount = await Create(userAccountCreateRequest);
+            return new UserAuthInfo(userAccount, "");
         }
     }
 }

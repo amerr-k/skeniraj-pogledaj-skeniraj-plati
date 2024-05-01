@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SPSP.Models.Request.Auth;
+using SPSP.Models.Request.UserAccount;
 using SPSP.Services.UserAccount;
 
 namespace SPSP.Controllers
@@ -22,6 +23,12 @@ namespace SPSP.Controllers
         public async Task<Models.UserAuthInfo> Login([FromBody] LoginRequest loginRequest)
         {
             return await userAccountService.Login(loginRequest.Username, loginRequest.Password);
+        }
+
+        [HttpPost("register")]
+        public async Task<Models.UserAuthInfo> Register([FromBody] UserAccountCreateRequest userAccountCreateRequest)
+        {
+            return await userAccountService.Register(userAccountCreateRequest);
         }
 
     }

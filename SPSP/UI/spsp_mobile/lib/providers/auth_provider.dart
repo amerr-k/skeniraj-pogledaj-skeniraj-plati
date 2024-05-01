@@ -1,8 +1,6 @@
 import 'dart:convert';
-import 'package:spsp_mobile/models/user_account.dart';
 import 'package:spsp_mobile/models/user_auth_info.dart';
 import 'package:spsp_mobile/providers/base_provider.dart';
-import 'package:spsp_mobile/utils/util.dart';
 
 class AuthProvider extends BaseProvider<UserAuthInfo> {
   AuthProvider() : super("Auth");
@@ -10,5 +8,22 @@ class AuthProvider extends BaseProvider<UserAuthInfo> {
   @override
   UserAuthInfo fromJson(data) {
     return UserAuthInfo.fromJson(data);
+  }
+
+  Future<UserAuthInfo> register(dynamic request) async {
+    var url = "${BaseProvider.baseUrl}$endpoint/register";
+    var uri = Uri.parse(url);
+    var headers = createHeaders();
+
+    var jsonRequest = jsonEncode(request);
+
+    var response = await http!.post(uri, headers: headers, body: jsonRequest);
+
+    if (isValidResponse(response)) {
+      var jsonData = jsonDecode(response.body);
+      return fromJson(jsonData);
+    } else {
+      throw new Exception("Unknown error");
+    }
   }
 }

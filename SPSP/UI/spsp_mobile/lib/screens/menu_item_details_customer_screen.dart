@@ -203,11 +203,15 @@ class _MenuItemDetailsCustomerScreenState extends State<MenuItemDetailsCustomerS
                 style: const TextStyle(color: Colors.black)),
             SizedBox(height: 10),
             FormBuilderTextField(
-                decoration: const InputDecoration(
-                    labelText: "Opis", labelStyle: TextStyle(color: Colors.black)),
-                name: "description",
-                enabled: false,
-                style: const TextStyle(color: Colors.black)),
+              decoration: InputDecoration(
+                labelText: "Opis",
+                labelStyle: TextStyle(color: Colors.black),
+              ),
+              name: "description",
+              enabled: false,
+              style: TextStyle(color: Colors.black),
+              maxLines: null,
+            ),
             SizedBox(height: 10),
             FormBuilderTextField(
                 decoration: const InputDecoration(

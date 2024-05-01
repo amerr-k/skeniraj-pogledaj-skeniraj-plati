@@ -1,4 +1,6 @@
-﻿using SPSP.Models.Request.Customer;
+﻿using SPSP.Models;
+using SPSP.Models.Request.Auth;
+using SPSP.Models.Request.Customer;
 using SPSP.Models.Request.Reservation;
 using SPSP.Models.Request.UserAccount;
 using SPSP.Models.SearchObjects;
@@ -12,5 +14,6 @@ namespace SPSP.Services.UserAccount
     {
         public Task<Models.UserAccount> GetAuthenticatedUserAccount(string username, string password);
         public Task<Models.UserAuthInfo> Login(string username, string password);
+        Task<UserAuthInfo> Register(UserAccountCreateRequest userAccountCreateRequest);
     }
 }

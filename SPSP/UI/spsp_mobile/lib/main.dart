@@ -14,6 +14,7 @@ import 'package:spsp_mobile/providers/transaction_provider.dart';
 import 'package:spsp_mobile/providers/user_provider.dart';
 import 'package:spsp_mobile/screens/menu_item_details_customer_screen.dart';
 import 'package:spsp_mobile/screens/menu_item_list_customer_screen.dart';
+import 'package:spsp_mobile/screens/registration_form_screen.dart';
 import 'package:spsp_mobile/utils/util.dart';
 
 void main() async {
@@ -55,6 +56,10 @@ void main() async {
       onGenerateRoute: (settings) {
         if (settings.name == MenuItemListCustomerScreen.routeName) {
           return MaterialPageRoute(builder: ((context) => MenuItemListCustomerScreen()));
+        }
+        if (settings.name == RegistrationFormScreenScreen.routeName) {
+          return MaterialPageRoute(
+              builder: ((context) => RegistrationFormScreenScreen()));
         }
 
         var uri = Uri.parse(settings.name!);
@@ -186,13 +191,26 @@ class HomePage extends StatelessWidget {
                     );
                   }
                 },
-                child: Center(child: Text("Login")),
+                child: Center(child: Text("Prijava")),
               ),
             ),
             SizedBox(
               height: 40,
             ),
-            Text("Forgot password?"),
+            InkWell(
+              onTap: () {
+                Navigator.pushNamed(context, RegistrationFormScreenScreen.routeName);
+              },
+              child: Container(
+                child: Text(
+                  'Nemate račun. Registrujte se!',
+                  style: TextStyle(
+                    color: Colors.blue,
+                    decoration: TextDecoration.underline,
+                  ),
+                ),
+              ),
+            ),
             SizedBox(
               height: 40,
             ),
