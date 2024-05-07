@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:provider/provider.dart';
+import 'package:spsp_mobile/models/qr_table.dart';
 import 'package:spsp_mobile/models/user_auth_info.dart';
 import 'package:spsp_mobile/providers/auth_provider.dart';
 import 'package:spsp_mobile/providers/cart_provider.dart';
@@ -9,12 +10,17 @@ import 'package:spsp_mobile/providers/menu_item_provider.dart';
 import 'package:spsp_mobile/providers/menu_provider.dart';
 import 'package:spsp_mobile/providers/order_provider.dart';
 import 'package:spsp_mobile/providers/prediction_menu_item_provider.dart';
+import 'package:spsp_mobile/providers/qr_table_provider.dart';
+import 'package:spsp_mobile/providers/reservation_provider.dart';
 import 'package:spsp_mobile/providers/sale_invoice_provider.dart';
 import 'package:spsp_mobile/providers/transaction_provider.dart';
 import 'package:spsp_mobile/providers/user_provider.dart';
-import 'package:spsp_mobile/screens/menu_item_details_customer_screen.dart';
-import 'package:spsp_mobile/screens/menu_item_list_customer_screen.dart';
-import 'package:spsp_mobile/screens/registration_form_screen.dart';
+import 'package:spsp_mobile/screens/menu/menu_item_details_customer_screen.dart';
+import 'package:spsp_mobile/screens/menu/menu_item_list_customer_screen.dart';
+import 'package:spsp_mobile/screens/order/order_list_customer_screen.dart';
+import 'package:spsp_mobile/screens/registration/registration_form_screen.dart';
+import 'package:spsp_mobile/screens/reservation/reservation_details_customer_screen.dart';
+import 'package:spsp_mobile/screens/reservation/reservation_list_customer_screen.dart';
 import 'package:spsp_mobile/utils/util.dart';
 
 void main() async {
@@ -26,11 +32,13 @@ void main() async {
       ChangeNotifierProvider(create: (_) => MenuProvider()),
       ChangeNotifierProvider(create: (_) => CategoryProvider()),
       ChangeNotifierProvider(create: (_) => UserProvider()),
-      ChangeNotifierProvider(create: (_) => CartProvider()),
+      ChangeNotifierProvider(create: (_) => QRTableSelectorProvider()),
       ChangeNotifierProvider(create: (_) => OrderProvider()),
       ChangeNotifierProvider(create: (_) => TransactionProvider()),
       ChangeNotifierProvider(create: (_) => SaleInvoiceProvider()),
       ChangeNotifierProvider(create: (_) => MenuItemPredictionProvider()),
+      ChangeNotifierProvider(create: (_) => ReservationProvider()),
+      ChangeNotifierProvider(create: (_) => QRTableProvider()),
     ],
     child: MaterialApp(
       debugShowCheckedModeBanner: true,
@@ -61,6 +69,13 @@ void main() async {
           return MaterialPageRoute(
               builder: ((context) => RegistrationFormScreenScreen()));
         }
+        if (settings.name == OrderListCustomerScreen.routeName) {
+          return MaterialPageRoute(builder: ((context) => OrderListCustomerScreen()));
+        }
+        if (settings.name == ReservationListCustomerScreen.routeName) {
+          return MaterialPageRoute(
+              builder: ((context) => ReservationListCustomerScreen()));
+        }
 
         var uri = Uri.parse(settings.name!);
         if (uri.pathSegments.length == 2 &&
@@ -72,6 +87,18 @@ void main() async {
                     // menuItem: MenuItem(
                     //     1, "name", "description", 1, 10, "code", "image", 1, 1),
                   ));
+        }
+
+        if (uri.pathSegments.length == 2 &&
+            "/${uri.pathSegments.first}" == ReservationDetailsCustomerScreen.routeName) {
+          var id = uri.pathSegments[1];
+          return MaterialPageRoute(
+            builder: (context) => ReservationDetailsCustomerScreen(
+              id: id,
+              // menuItem: MenuItem(
+              //     1, "name", "description", 1, 10, "code", "image", 1, 1),
+            ),
+          );
         }
       },
     ),

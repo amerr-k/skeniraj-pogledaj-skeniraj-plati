@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
-import 'package:spsp_mobile/screens/order_list_check_out_customer_screen.dart';
+import 'package:spsp_mobile/screens/order/order_list_check_out_customer_screen.dart';
 
 class QRCodeScannerCustomerScreen extends StatefulWidget {
   @override

@@ -25,11 +25,6 @@ namespace SPSP.Services.Reservation.StateMachine
             throw new AppException("Not allowed");
         }
 
-        public virtual Task<Models.Reservation> PutReservationOnHold(ReservationCreateRequest create)
-        {
-            throw new AppException("Not allowed");
-        }
-
         public virtual Task<Models.Reservation> Update(Database.Reservation dbEntity, ReservationUpdateRequest update)
         {
             throw new AppException("Not allowed");
@@ -58,8 +53,6 @@ namespace SPSP.Services.Reservation.StateMachine
                     return serviceProvider.GetService<InitialReservationState>();
                 case "CONFIRMED":
                     return serviceProvider.GetService<ConfirmedReservationState>();
-                case "ON_HOLD":
-                    return serviceProvider.GetService<OnHoldReservationState>();
                 case "PENDING_CONFIRMATION":
                     return serviceProvider.GetService<PendingConfirmationReservationState>();
                 default:

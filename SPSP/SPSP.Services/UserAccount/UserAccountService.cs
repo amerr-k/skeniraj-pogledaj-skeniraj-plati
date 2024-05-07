@@ -110,6 +110,7 @@ namespace SPSP.Services.UserAccount
             {
                 new Claim(ClaimTypes.Name, userAccount.Username),
                 new Claim(ClaimTypes.Email, userAccount.Email),
+                new Claim(ClaimTypes.NameIdentifier, userAccount.Id.ToString()),
              };
 
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("mojkljucstavigauappsettingsmojkljucstavigauappsettings"));

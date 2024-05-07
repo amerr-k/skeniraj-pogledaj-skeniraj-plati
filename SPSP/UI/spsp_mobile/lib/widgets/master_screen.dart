@@ -2,9 +2,10 @@
 
 import 'package:flutter/material.dart';
 import 'package:spsp_mobile/main.dart';
-import 'package:spsp_mobile/screens/menu_item_list_customer_screen.dart';
-import 'package:spsp_mobile/screens/pos_screen.dart';
-import 'package:spsp_mobile/screens/qr_code_scanner_customer_screen.dart';
+import 'package:spsp_mobile/screens/menu/menu_item_list_customer_screen.dart';
+import 'package:spsp_mobile/screens/order/order_list_customer_screen.dart';
+import 'package:spsp_mobile/screens/order/qr_code_scanner_customer_screen.dart';
+import 'package:spsp_mobile/screens/reservation/reservation_list_customer_screen.dart';
 import 'package:spsp_mobile/utils/util.dart';
 
 class MasterScreenWidget extends StatefulWidget {
@@ -27,33 +28,28 @@ class _MasterScreenWidgetState extends State<MasterScreenWidget> {
     if (currentIndex == 0) {
       Navigator.pushNamed(context, MenuItemListCustomerScreen.routeName);
     } else if (currentIndex == 1) {
-      // Open camera
-      //   final cameras = await availableCameras();
-      //   final firstCamera = cameras.last;
-      //   Navigator.push(
-      //     context,
-      //     MaterialPageRoute(
-      //       builder: (context) => CameraCustomerScreen(camera: firstCamera),
-      //     ),
-      //   );
-      // }
+      Navigator.pushNamed(context, OrderListCustomerScreen.routeName);
+    } else if (currentIndex == 2) {
       Navigator.push(
         context,
         MaterialPageRoute(
           builder: (context) => QRCodeScannerCustomerScreen(),
         ),
       );
-    } else if (currentIndex == 2) {
-      Authorization.token = "";
-      Authorization.username = "";
-      Authorization.password = "";
-
+    } else if (currentIndex == 3) {
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => HomePage(),
+          builder: (context) => ReservationListCustomerScreen(),
         ),
       );
+    } else if (currentIndex == 4) {
+      // Navigator.push(
+      //   context,
+      //   MaterialPageRoute(
+      //     builder: (context) => ProfileSettingsCustomerScreen(),
+      //   ),
+      // );
     }
   }
 
@@ -65,43 +61,46 @@ class _MasterScreenWidgetState extends State<MasterScreenWidget> {
         child: ListView(
           children: [
             ListTile(
-              title: Text("Proizvodi"),
+              title: Text("Odjava"),
               onTap: () {
-                Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => const MenuItemListCustomerScreen()));
+                Authorization.token = "";
+                Authorization.username = "";
+                Authorization.password = "";
+
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => HomePage(),
+                  ),
+                );
               },
             ),
-            ListTile(
-              title: Text("POS"),
-              onTap: () {
-                Navigator.of(context)
-                    .push(MaterialPageRoute(builder: (context) => POSScreen()));
-              },
-            ),
-            // ListTile(
-            //   title: Text("Narudžbe"),
-            //   onTap: () {
-            //     Navigator.of(context)
-            //         .push(MaterialPageRoute(builder: (context) => OrderListScreen()));
-            //   },
-            // )
           ],
         ),
       ),
       body: widget.child!,
       bottomNavigationBar: BottomNavigationBar(
+        type: BottomNavigationBarType.fixed,
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
             label: 'Meni',
           ),
           BottomNavigationBarItem(
+            icon: Icon(Icons.history),
+            label: 'Narudžbe',
+          ),
+          BottomNavigationBarItem(
             icon: Icon(Icons.camera),
             label: 'Skeniraj',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.logout),
-            label: 'Odjava',
+            icon: Icon(Icons.table_bar),
+            label: 'Rezervacije',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.settings),
+            label: 'Postavke',
           ),
         ],
         selectedItemColor: Colors.amber[800],
@@ -111,3 +110,15 @@ class _MasterScreenWidgetState extends State<MasterScreenWidget> {
     );
   }
 }
+
+
+      // Open camera
+      //   final cameras = await availableCameras();
+      //   final firstCamera = cameras.last;
+      //   Navigator.push(
+      //     context,
+      //     MaterialPageRoute(
+      //       builder: (context) => CameraCustomerScreen(camera: firstCamera),
+      //     ),
+      //   );
+      // }

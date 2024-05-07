@@ -27,5 +27,7 @@ String formatNumber(dynamic) {
 
 class Utils {
   static formatPrice(double price) => '\KM ${price.toStringAsFixed(2)}';
-  static formatDate(DateTime date) => DateFormat("dd.MM.yyyy");
+  static formatDate(DateTime date) => DateFormat("dd.MM.yyyy").format(date);
+  static formatDateTime(DateTime date) => DateFormat("dd.MM.yyyy hh:mm").format(date);
+  static formatTime(DateTime date) => DateFormat("HH:mm").format(date);
 }

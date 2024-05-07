@@ -12,11 +12,11 @@ namespace SPSP.Controllers
 {
     [ApiController]
     public class ReservationController 
-        : BaseCRUDController<Models.Reservation, BaseSearchObject, ReservationCreateRequest, ReservationUpdateRequest>
+        : BaseCRUDController<Models.Reservation, ReservationSearchObject, ReservationCreateRequest, ReservationUpdateRequest>
     {
         protected new readonly IReservationService service;
 
-        public ReservationController(ILogger<BaseCRUDController<Models.Reservation, BaseSearchObject, ReservationCreateRequest, ReservationUpdateRequest>> logger,
+        public ReservationController(ILogger<BaseCRUDController<Models.Reservation, ReservationSearchObject, ReservationCreateRequest, ReservationUpdateRequest>> logger,
             IReservationService service)
             : base(logger, service)
         {
@@ -37,18 +37,6 @@ namespace SPSP.Controllers
         {
 
             return await service.CancelReservation(id);
-        }
-
-        [HttpPost("onHold")]
-        public virtual async Task<Models.Reservation> PutReservationOnHold(ReservationCreateRequest create)
-        {
-            return await service.PutReservationOnHold(create);
-        }
-
-        [HttpPost("pendingConfirmation")]
-        public virtual async Task<Reservation> SwitchToPendingConfirmation(int id)
-        {
-            return await service.SwitchToPendingConfirmation(id);
         }
 
         [HttpGet("{id}/allowedActions")]

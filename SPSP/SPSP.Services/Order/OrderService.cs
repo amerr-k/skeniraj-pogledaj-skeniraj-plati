@@ -14,6 +14,9 @@ using SPSP.Models;
 using SPSP.Models.Enums;
 using SPSP.Services.OrderEmailPublisher;
 using SPSP.Services.SaleInvoice;
+using System.Security.Principal;
+using Microsoft.AspNetCore.Http;
+using System.Security.Claims;
 
 namespace SPSP.Services.Order
 {
@@ -22,12 +25,13 @@ namespace SPSP.Services.Order
     {
         protected readonly IOrderItemService orderItemService;
         protected readonly IQRTableService qrTableService;
-
-        public OrderService(DataDbContext context, IMapper mapper, IOrderItemService orderItemService, IQRTableService qrTableService) 
+        private readonly IHttpContextAccessor httpContextAccessor;
+        public OrderService(DataDbContext context, IMapper mapper, IOrderItemService orderItemService, IQRTableService qrTableService, IHttpContextAccessor httpContextAccessor) 
             : base(context, mapper)
         {
             this.orderItemService = orderItemService;
             this.qrTableService = qrTableService;
+            this.httpContextAccessor = httpContextAccessor;
         }
 
         public override IQueryable<Database.Order> AddInclude(IQueryable<Database.Order> query, OrderSearchObject search = null)
@@ -66,6 +70,14 @@ namespace SPSP.Services.Order
 
         public override IQueryable<Database.Order> AddFilter(IQueryable<Database.Order> query, OrderSearchObject search)
         {
+            if (search?.SearchByCustomer != null)
+            {
+                var principal = httpContextAccessor.HttpContext?.User;
+                var userId = principal?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+                query = query.Where(x => x.Customer.UserAccountId == int.Parse(userId!));
+            }
+
             if (search?.orderStatus != null)
             {
                 query = query.Where(x => x.Status.Equals(search.orderStatus.ToString()));

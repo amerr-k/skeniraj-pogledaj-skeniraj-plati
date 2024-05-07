@@ -13,6 +13,7 @@ QRTable _$QRTableFromJson(Map<String, dynamic> json) => QRTable(
       json['valid'] as bool?,
       json['capacity'] as int?,
       json['locationDescription'] as String,
+      json['isReserved'] as bool?,
       json['isTaken'] as bool,
     );
 
@@ -23,5 +24,6 @@ Map<String, dynamic> _$QRTableToJson(QRTable instance) => <String, dynamic>{
       'capacity': instance.capacity,
       'locationDescription': instance.locationDescription,
       'isTaken': instance.isTaken,
+      'isReserved': instance.isReserved,
       'valid': instance.valid,
     };

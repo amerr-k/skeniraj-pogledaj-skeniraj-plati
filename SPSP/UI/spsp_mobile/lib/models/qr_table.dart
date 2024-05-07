@@ -10,10 +10,11 @@ class QRTable {
   int? capacity;
   String locationDescription;
   bool isTaken;
+  bool? isReserved;
   bool? valid;
 
   QRTable(this.id, this.qrCode, this.tableNumber, this.valid, this.capacity,
-      this.locationDescription, this.isTaken);
+      this.locationDescription, this.isReserved, this.isTaken);
 
   /// A necessary factory constructor for creating a new User instance
   /// from a map. Pass the map to the generated `_$UserFromJson()` constructor.

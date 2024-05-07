@@ -14,6 +14,7 @@ namespace SPSP.Models
 
         public string LocationDescription { get; set; }
         public bool IsTaken { get; set; }
+        public bool? IsReserved { get; set; }
         public bool? Valid { get; set; }
     }
 }

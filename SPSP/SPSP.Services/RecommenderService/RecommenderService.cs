@@ -34,9 +34,7 @@ namespace SPSP.Services.RecommenderService
             var trainedData = Train();
 
             Predict(trainedData);
-
         }
-
 
         public TrainedData Train()
         {

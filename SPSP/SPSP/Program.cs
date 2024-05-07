@@ -35,6 +35,8 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 //add here ml context
+builder.Services.AddHttpContextAccessor();
+
 builder.Services.AddScoped<MLContext>();
 //builder.Services.AddScoped<ITransformer>();
 builder.Services.AddScoped<IRecommenderService, RecommenderService>();
@@ -93,7 +95,6 @@ builder.Services.AddTransient<BaseState>();
 builder.Services.AddTransient<InitialReservationState>();
 builder.Services.AddTransient<PendingConfirmationReservationState>();
 builder.Services.AddTransient<ConfirmedReservationState>();
-builder.Services.AddTransient<OnHoldReservationState>();
 
 
 builder.Services.AddControllers(x =>

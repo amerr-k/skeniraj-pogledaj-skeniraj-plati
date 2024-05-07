@@ -86,9 +86,9 @@ namespace SPSP
             var username = credentials[0];
             var password = credentials[1];
 
-            var user = await userAccountService.GetAuthenticatedUserAccount(username, password);
+            var userAccount = await userAccountService.GetAuthenticatedUserAccount(username, password);
 
-            if (user == null)
+            if (userAccount == null)
             {
                 return AuthenticateResult.Fail("Incorrect username or password");
             }
@@ -96,11 +96,11 @@ namespace SPSP
             {
                 var claims = new List<Claim>()
                 {
-                    new Claim(ClaimTypes.Name, user.FirstName),
-                    new Claim(ClaimTypes.NameIdentifier, user.Username)
+                    new Claim(ClaimTypes.Name, userAccount.FirstName),
+                    new Claim(ClaimTypes.NameIdentifier, userAccount.Id.ToString())
                 };
 
-                foreach (var role in user.UserAccountUserRoles)
+                foreach (var role in userAccount.UserAccountUserRoles)
                 {
                     claims.Add(new Claim(ClaimTypes.Role, role.UserRole.Name));
                 }

@@ -25,7 +25,6 @@ namespace SPSP.Controllers.Base
         [HttpGet]
         public async Task<PagedResult<T>> Get([FromQuery] TSearch search = null)
         {
-            var currentUser = HttpContext.User;
             return await service.Get(search);
         }
 

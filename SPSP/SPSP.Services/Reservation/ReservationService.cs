@@ -6,18 +6,44 @@ using SPSP.Models.Request.Reservation;
 using System.Threading.Tasks;
 using SPSP.Services.Reservation.StateMachine;
 using System.Collections.Generic;
+using Microsoft.EntityFrameworkCore;
+using SPSP.Models.Request.UserAccount;
+using Microsoft.AspNetCore.Http;
+using System.Security.Claims;
 
 namespace SPSP.Services.Reservation
 {
     public class ReservationService 
-        : BaseCRUDService<Models.Reservation, Database.Reservation, BaseSearchObject, ReservationCreateRequest, ReservationUpdateRequest>,
+        : BaseCRUDService<Models.Reservation, Database.Reservation, ReservationSearchObject, ReservationCreateRequest, ReservationUpdateRequest>,
           IReservationService
     {
         public BaseState baseState { get; set; }
-        public ReservationService(BaseState baseState, DataDbContext context, IMapper mapper) 
+        public ReservationService(BaseState baseState, DataDbContext context, IMapper mapper, IHttpContextAccessor httpContextAccessor) 
             : base(context, mapper)
         {
             this.baseState = baseState;
+
+        }
+
+        public override IQueryable<Database.Reservation> AddInclude(IQueryable<Database.Reservation> query, ReservationSearchObject search = null)
+        {
+            if (search.IsQRTableIncluded == true)
+            {
+                query = query.Include(x => x.QRTable);
+            }
+
+            return base.AddInclude(query, search);
+        }
+
+        public override IQueryable<Database.Reservation> AddFilter(IQueryable<Database.Reservation> query, ReservationSearchObject? search = null)
+        {
+
+            if (search.ReservationStatus != null)
+            {
+                query = query.Where(x => x.Status == search.ReservationStatus).OrderByDescending(x => x.StartTime);
+            }
+            
+            return base.AddFilter(query, search);
         }
 
         public override async Task<Models.Reservation> Create(ReservationCreateRequest create)
@@ -25,13 +51,6 @@ namespace SPSP.Services.Reservation
             var state = baseState.CreateState("INITIAL");
 
             return await state.Create(create);
-        }
-
-        public async Task<Models.Reservation> PutReservationOnHold(ReservationCreateRequest create)
-        {
-            var state = baseState.CreateState("INITIAL");
-
-            return await state.PutReservationOnHold(create);
         }
 
         public override async Task<Models.Reservation> Update(int id, ReservationUpdateRequest update)

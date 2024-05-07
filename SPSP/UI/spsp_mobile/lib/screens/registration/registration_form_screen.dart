@@ -9,8 +9,6 @@ import 'package:spsp_mobile/providers/auth_provider.dart';
 import 'package:spsp_mobile/widgets/master_screen.dart';
 
 class RegistrationFormScreenScreen extends StatefulWidget {
-  // MenuItem? menuItem;
-  // String? id;
   static const String routeName = "/registration";
 
   RegistrationFormScreenScreen({super.key});
@@ -23,29 +21,11 @@ class _RegistrationFormScreenScreenState extends State<RegistrationFormScreenScr
   final _formKey = GlobalKey<FormBuilderState>();
   Map<String, dynamic> _initialValue = {};
   late AuthProvider _authProvider;
-  // late MenuItemProvider _menuItemProvider;
-  // late MenuItemPredictionProvider _menuItemPredictionProvider;
-  // RequestResult<Category>? categoryResult;
-  // bool isLoading = true;
-  // String? previewImage;
-  // MenuItem? menuItemRequestResult;
-  // List<MenuItemPrediction>? menuItemPredictions;
 
   @override
   void initState() {
     super.initState();
-    // _initialValue = {};
-    // _initialValue = {
-    //   'code': menuItemRequestResult?.code,
-    //   'name': menuItemRequestResult?.name,
-    //   'description': menuItemRequestResult?.description,
-    //   'price': menuItemRequestResult?.price?.toString(),
-    // };
-
     _authProvider = context.read<AuthProvider>();
-    // _menuProvider = context.read<MenuProvider>();
-    // _menuItemPredictionProvider = context.read<MenuItemPredictionProvider>();
-
     initForm();
   }
 
@@ -54,38 +34,7 @@ class _RegistrationFormScreenScreenState extends State<RegistrationFormScreenScr
     super.didChangeDependencies();
   }
 
-  Future<void> initForm() async {
-    // if (widget.id != null) {
-    //   var result = await MenuItemProvider().getById(widget.id!);
-
-    //   var recommendedMenuItemsResult =
-    //       await MenuItemPredictionProvider().getByMainMenuItemId(widget.id!);
-
-    //   if (widget.id != null) {
-    //     var result = await MenuItemProvider().getById(widget.id!);
-    //     setState(() {
-    //       menuItemRequestResult = result;
-    //       isLoading = false;
-    //       _initialValue = {
-    //         'code': menuItemRequestResult?.code,
-    //         'name': menuItemRequestResult?.name,
-    //         'description': menuItemRequestResult?.description,
-    //         'price': menuItemRequestResult?.price?.toString(),
-    //         'inStorage': menuItemRequestResult?.inStorage?.toString(),
-    //         'category': menuItemRequestResult?.category?.name.toString(),
-    //         'menuId': menuItemRequestResult?.menuId?.toString(),
-    //         'image': menuItemRequestResult?.image,
-    //       };
-    //     });
-    //   }
-
-    //   setState(() {
-    //     menuItemRequestResult = result;
-    //     menuItemPredictions = recommendedMenuItemsResult.result;
-    //     isLoading = false;
-    //   });
-    // }
-  }
+  Future<void> initForm() async {}
 
   Widget build(BuildContext context) {
     return MasterScreenWidget(

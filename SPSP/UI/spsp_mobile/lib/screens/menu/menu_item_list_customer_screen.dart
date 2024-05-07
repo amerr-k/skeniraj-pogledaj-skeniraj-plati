@@ -4,7 +4,7 @@ import 'package:spsp_mobile/models/menu_item.dart';
 import 'package:spsp_mobile/models/search_result.dart';
 import 'package:spsp_mobile/providers/menu_item_provider.dart';
 import 'package:spsp_mobile/providers/transaction_provider.dart';
-import 'package:spsp_mobile/screens/menu_item_details_customer_screen.dart';
+import 'package:spsp_mobile/screens/menu/menu_item_details_customer_screen.dart';
 import 'package:spsp_mobile/utils/util.dart';
 import 'package:spsp_mobile/widgets/master_screen.dart';
 
@@ -107,8 +107,7 @@ class _MenuItemListCustomerScreenState extends State<MenuItemListCustomerScreen>
       },
       leading: imageFromBase64String(item!.image!),
       title: Text(item.name ?? ""),
-      subtitle: Text(item.price.toString()),
-      trailing: Text(item.price.toString()),
+      subtitle: Text('${formatNumber(item.price!)} KM'),
     );
   }
 
@@ -229,36 +228,27 @@ class _MenuItemListCustomerScreenState extends State<MenuItemListCustomerScreen>
           Expanded(
             child: TextField(
               decoration: const InputDecoration(
-                labelText: "Pretražite po nazivu",
+                labelText: "Unesite traženi proizvod...",
               ),
               controller: _ftsController,
             ),
           ),
           const SizedBox(width: 8),
-          Container(
-            padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-            child: IconButton(
-              icon: Icon(Icons.filter_list),
-              onPressed: () async {
-                var tmpData =
-                    // await _productProvider?.get({'naziv': _searchController.text});
-                    setState(() {
-                  // data = tmpData!;
-                });
-              },
-            ),
-          ),
           ElevatedButton(
             onPressed: () async {
+              setState(() {
+                isLoading = true;
+              });
               var data = await _menuItemProvider.get(filter: {
                 'fts': _ftsController.text,
                 'name': _nameController.text,
               });
               setState(() {
                 searchResult = data;
+                isLoading = false;
               });
             },
-            child: const Text("Pretraga"),
+            child: const Text("Traži"),
           ),
           const SizedBox(width: 8),
         ],
