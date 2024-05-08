@@ -2,9 +2,10 @@
 
 import 'package:flutter/material.dart';
 import 'package:spsp_desktop/main.dart';
-import 'package:spsp_desktop/screens/menu_item_list_screen.dart';
-import 'package:spsp_desktop/screens/order_list_screen.dart';
-import 'package:spsp_desktop/screens/pos_screen.dart';
+import 'package:spsp_desktop/screens/menu/menu_item_list_screen.dart';
+import 'package:spsp_desktop/screens/order/order_list_screen.dart';
+import 'package:spsp_desktop/screens/pos/pos_screen.dart';
+import 'package:spsp_desktop/screens/report/report_form_screen.dart';
 
 class MasterScreenWidget extends StatefulWidget {
   String? title;
@@ -25,7 +26,7 @@ class _MasterScreenWidgetState extends State<MasterScreenWidget> {
         child: ListView(
           children: [
             ListTile(
-              title: Text("LoginPage"),
+              title: Text("Odjava"),
               onTap: () {
                 Navigator.of(context)
                     .push(MaterialPageRoute(builder: (context) => LoginPage()));
@@ -50,6 +51,13 @@ class _MasterScreenWidgetState extends State<MasterScreenWidget> {
               onTap: () {
                 Navigator.of(context)
                     .push(MaterialPageRoute(builder: (context) => OrderListScreen()));
+              },
+            ),
+            ListTile(
+              title: Text("Izvještaji"),
+              onTap: () {
+                Navigator.of(context)
+                    .push(MaterialPageRoute(builder: (context) => ReportFormScreen()));
               },
             )
           ],

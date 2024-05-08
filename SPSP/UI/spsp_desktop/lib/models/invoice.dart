@@ -3,24 +3,24 @@ import 'package:spsp_desktop/models/customer.dart';
 import 'package:spsp_desktop/models/supplier.dart';
 
 class Invoice {
-  final InvoiceInfo info;
+  final InvoiceInfo? info;
   final Supplier supplier;
   final Customer? customer;
-  final List<InvoiceItem> items;
-  final DateTime orderDateTime;
-  final double totalAmountWithVAT;
-  final double vat;
-  final double totalAmount;
+  final List<InvoiceItem>? items;
+  final DateTime? orderDateTime;
+  final double? totalAmountWithVAT;
+  final double? vat;
+  final double? totalAmount;
 
   const Invoice(
-      {required this.info,
+      {this.info,
       required this.supplier,
       this.customer,
-      required this.items,
-      required this.orderDateTime,
-      required this.totalAmountWithVAT,
-      required this.totalAmount,
-      required this.vat});
+      this.items,
+      this.orderDateTime,
+      this.totalAmountWithVAT,
+      this.totalAmount,
+      this.vat});
 }
 
 class InvoiceInfo {

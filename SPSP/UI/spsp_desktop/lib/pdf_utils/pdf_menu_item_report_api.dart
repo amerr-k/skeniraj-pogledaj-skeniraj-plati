@@ -6,18 +6,19 @@ import 'package:pdf/widgets.dart' as pw;
 import 'package:pdf/widgets.dart';
 import 'package:spsp_desktop/models/customer.dart';
 import 'package:spsp_desktop/models/invoice.dart';
+import 'package:spsp_desktop/models/menu_item_report_data.dart';
 import 'package:spsp_desktop/models/supplier.dart';
 import 'package:spsp_desktop/pdf_utils/pdf_api.dart';
-import 'package:spsp_desktop/utils/util.dart';
-import 'dart:convert';
 
-class PdfInvoiceApi {
-  static Future<File> generateAsFile(Invoice invoice) async {
-    var pdf = await generatePdfDocument(invoice);
-    return PdfApi.saveDocument(name: 'invoice_.pdf', pdf: pdf);
+class PdfMenuItemReportApi {
+  static Future<File> generateAsFile(
+      Invoice invoice, List<MenuItemReportData> menuItemReportData) async {
+    var pdf = await generatePdfDocument(invoice, menuItemReportData);
+    return PdfApi.saveDocument(name: 'menu_item_report.pdf', pdf: pdf);
   }
 
-  static Future<Document> generatePdfDocument(Invoice invoice) async {
+  static Future<Document> generatePdfDocument(
+      Invoice invoice, List<MenuItemReportData> menuItemReportData) async {
     final pdf = Document(
         theme: ThemeData.withFont(
       base: Font.ttf(await rootBundle.load("assets/fonts/Roboto-Regular.ttf")),
@@ -30,9 +31,8 @@ class PdfInvoiceApi {
         buildHeader(invoice),
         SizedBox(height: 3 * PdfPageFormat.cm),
         buildTitle(invoice),
-        buildInvoice(invoice),
+        buildInvoice(menuItemReportData),
         Divider(),
-        buildTotal(invoice),
       ],
       footer: (context) => buildFooter(invoice),
     ));
@@ -47,25 +47,9 @@ class PdfInvoiceApi {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               buildSupplierAddress(invoice.supplier),
-              // Container(
-              //   height: 50,
-              //   width: 50,
-              //   child: BarcodeWidget(
-              //     barcode: Barcode.qrCode(),
-              //     data: invoice.info.number,
-              //   ),
-              // ),
             ],
           ),
           SizedBox(height: 1 * PdfPageFormat.cm),
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              // buildCustomerAddress(invoice.customer),
-              buildInvoiceInfo(invoice.info!),
-            ],
-          ),
         ],
       );
 
@@ -78,7 +62,7 @@ class PdfInvoiceApi {
       );
 
   static Widget buildInvoiceInfo(InvoiceInfo info) {
-    final titles = <String>['Broj računa:', 'Datum narudžbe:'];
+    final titles = <String>['Broj racuna:', 'Datum narudzbe:'];
     final data = <String>[info.number, DateFormat('dd.MM.yyyy').format(info.date)];
 
     return Column(
@@ -105,22 +89,23 @@ class PdfInvoiceApi {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            "RAČUN:  ${invoice.info!.number}",
-            style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+            "Izvještaj za 10 najprodavanijih proizvoda",
+            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
           ),
           SizedBox(height: 0.8 * PdfPageFormat.cm),
           SizedBox(height: 0.8 * PdfPageFormat.cm),
         ],
       );
 
-  static Widget buildInvoice(Invoice invoice) {
-    final headers = ['Naziv', 'Cijena', 'Količina', 'Ukupna cijena'];
-    final data = invoice.items!.map((item) {
+  static Widget buildInvoice(List<MenuItemReportData> customerReportData) {
+    final headers = ['Naziv', 'Kategorija', 'Cijena', 'Broj narudzbi', 'Ukupan prihod'];
+    final data = customerReportData.map((item) {
       return [
         item.name,
-        '${item.unitPrice} KM',
-        '${item.quantity}',
-        '${item.subtotal.toStringAsFixed(2)} KM ',
+        item.category,
+        item.price,
+        item.orderCount,
+        '${item.totalAmount.toStringAsFixed(2)} KM ',
       ];
     }).toList();
 
@@ -139,54 +124,6 @@ class PdfInvoiceApi {
         4: Alignment.centerRight,
         5: Alignment.centerRight,
       },
-    );
-  }
-
-  static Widget buildTotal(Invoice invoice) {
-    return Container(
-      alignment: Alignment.centerRight,
-      child: Row(
-        children: [
-          Spacer(flex: 6),
-          Expanded(
-            flex: 4,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                buildText(
-                  title: 'Vrijeme narudžbe',
-                  value: DateFormat('dd.MM.yyyy').format(invoice.orderDateTime!),
-                  unite: true,
-                ),
-                buildText(
-                  title: 'Iznos',
-                  value: Utils.formatPrice(invoice.totalAmount!).toString(),
-                  unite: true,
-                ),
-                buildText(
-                  title: 'PDV ${(invoice.vat! * 100).toInt()} %',
-                  value: "",
-                  unite: true,
-                ),
-                Divider(),
-                buildText(
-                  title: 'Ukupan iznos',
-                  titleStyle: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.bold,
-                  ),
-                  value: Utils.formatPrice(invoice.totalAmountWithVAT!).toString(),
-                  unite: true,
-                ),
-                SizedBox(height: 2 * PdfPageFormat.mm),
-                Container(height: 1, color: PdfColors.grey400),
-                SizedBox(height: 0.5 * PdfPageFormat.mm),
-                Container(height: 1, color: PdfColors.grey400),
-              ],
-            ),
-          ),
-        ],
-      ),
     );
   }
 
@@ -209,7 +146,7 @@ class PdfInvoiceApi {
 
     return Row(
       mainAxisSize: MainAxisSize.min,
-      crossAxisAlignment: CrossAxisAlignment.end,
+      crossAxisAlignment: pw.CrossAxisAlignment.end,
       children: [
         Text(title, style: style),
         SizedBox(width: 2 * PdfPageFormat.mm),

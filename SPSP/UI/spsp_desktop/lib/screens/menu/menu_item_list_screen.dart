@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:spsp_desktop/models/menu_item.dart';
 import 'package:spsp_desktop/models/search_result.dart';
 import 'package:spsp_desktop/providers/menu_item_provider.dart';
-import 'package:spsp_desktop/screens/menu_item_detail_screen.dart';
+import 'package:spsp_desktop/screens/menu/menu_item_detail_screen.dart';
 import 'package:spsp_desktop/utils/util.dart';
 import 'package:spsp_desktop/widgets/master_screen.dart';
 

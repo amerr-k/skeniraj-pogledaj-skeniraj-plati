@@ -30,6 +30,7 @@ using Quartz.Spi;
 using Quartz;
 using SPSP.Services.Base;
 using static Quartz.Logging.OperationName;
+using SPSP.Services.Report;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -90,6 +91,7 @@ builder.Services.AddTransient<IPurchaseInvoiceItemService, PurchaseInvoiceItemSe
 builder.Services.AddTransient<ICategoryService, CategoryService>();
 builder.Services.AddTransient<IQRTableService, QRTableService>();
 builder.Services.AddTransient<IReservationService, ReservationService>();
+builder.Services.AddTransient<IReportService, ReportService>();
 
 builder.Services.AddTransient<BaseState>();
 builder.Services.AddTransient<InitialReservationState>();

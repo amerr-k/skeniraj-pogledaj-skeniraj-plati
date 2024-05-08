@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
+import 'package:http/io_client.dart';
 import 'package:spsp_desktop/models/search_result.dart';
 import 'package:spsp_desktop/utils/util.dart';
 
@@ -9,12 +10,20 @@ abstract class BaseProvider<T> with ChangeNotifier {
   static String? _baseUrl;
   String _endpoint = "";
 
+  // static String? get baseUrl => _baseUrl;
+  get baseUrl => _baseUrl;
+  String? get endpoint => _endpoint;
+
+  // HttpClient client = HttpClient();
+  IOClient? http;
+
   BaseProvider(String endpoint) {
     _endpoint = endpoint;
     _baseUrl = const String.fromEnvironment(
       "baseUrl",
       defaultValue: "https://localhost:7011/",
     );
+    http = IOClient();
   }
 
 //kad opcionalne parametre hoces poslat stavis u viticaste zagrade
@@ -28,7 +37,7 @@ abstract class BaseProvider<T> with ChangeNotifier {
 
     var uri = Uri.parse(url);
     var headers = createHeaders();
-    var response = await http.get(uri, headers: headers);
+    var response = await http!.get(uri, headers: headers);
 
     if (isValidResponse(response)) {
       var jsonData = jsonDecode(response.body);
@@ -54,7 +63,7 @@ abstract class BaseProvider<T> with ChangeNotifier {
 
     var jsonRequest = jsonEncode(request);
 
-    var response = await http.post(uri, headers: headers, body: jsonRequest);
+    var response = await http!.post(uri, headers: headers, body: jsonRequest);
 
     if (isValidResponse(response)) {
       var jsonData = jsonDecode(response.body);
@@ -71,7 +80,7 @@ abstract class BaseProvider<T> with ChangeNotifier {
 
     var jsonRequest = jsonEncode(request);
 
-    var response = await http.put(uri, headers: headers, body: jsonRequest);
+    var response = await http!.put(uri, headers: headers, body: jsonRequest);
 
     if (isValidResponse(response)) {
       var jsonData = jsonDecode(response.body);

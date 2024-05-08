@@ -12,7 +12,7 @@ import 'package:spsp_desktop/providers/cart_provider.dart';
 import 'package:spsp_desktop/providers/menu_item_provider.dart';
 import 'package:spsp_desktop/providers/order_provider.dart';
 import 'package:spsp_desktop/providers/qr_table_provider.dart';
-import 'package:spsp_desktop/screens/qr_table_dialog.dart';
+import 'package:spsp_desktop/screens/pos/qr_table_dialog.dart';
 import 'package:spsp_desktop/utils/util.dart';
 import 'package:spsp_desktop/widgets/master_screen.dart';
 import 'package:spsp_desktop/widgets/qr_table_screen.dart';

@@ -340,7 +340,8 @@ class _OrderListScreenState extends State<OrderListScreen> {
                                       items: items,
                                     );
 
-                                    final pdfFile = await PdfInvoiceApi.generate(invoice);
+                                    final pdfFile =
+                                        await PdfInvoiceApi.generateAsFile(invoice);
 
                                     PdfApi.openFile(pdfFile);
                                   },
