@@ -3,7 +3,6 @@ import 'package:provider/provider.dart';
 import 'package:spsp_mobile/models/menu_item.dart';
 import 'package:spsp_mobile/models/search_result.dart';
 import 'package:spsp_mobile/providers/menu_item_provider.dart';
-import 'package:spsp_mobile/providers/transaction_provider.dart';
 import 'package:spsp_mobile/screens/menu/menu_item_details_customer_screen.dart';
 import 'package:spsp_mobile/utils/util.dart';
 import 'package:spsp_mobile/widgets/master_screen.dart';

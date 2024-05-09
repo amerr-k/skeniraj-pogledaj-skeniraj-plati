@@ -7,12 +7,13 @@ class UserAccount {
   int id;
   String username;
   String email;
+  String? password;
   String firstName;
   String lastName;
   bool valid;
 
-  UserAccount(
-      this.id, this.username, this.email, this.firstName, this.lastName, this.valid);
+  UserAccount(this.id, this.username, this.email, this.password, this.firstName,
+      this.lastName, this.valid);
 
   /// A necessary factory constructor for creating a new User instance
   /// from a map. Pass the map to the generated `_$UserFromJson()` constructor.

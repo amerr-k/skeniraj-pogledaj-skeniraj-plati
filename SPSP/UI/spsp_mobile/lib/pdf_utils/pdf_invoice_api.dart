@@ -5,24 +5,24 @@ import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart';
-import 'package:spsp_mobile/models/customer.dart';
-import 'package:spsp_mobile/models/invoice.dart';
-import 'package:spsp_mobile/models/supplier.dart';
+import 'package:spsp_mobile/models/pdf/customer_pdf.dart';
+import 'package:spsp_mobile/models/invoice_pdf.dart';
+import 'package:spsp_mobile/models/pdf/supplier_pdf.dart';
 import 'package:spsp_mobile/pdf_utils/pdf_api.dart';
 import 'package:spsp_mobile/utils/util.dart';
 
 class PdfInvoiceApi {
-  static Future<File> generateAsFile(Invoice invoice) async {
+  static Future<File> generateAsFile(InvoicePdf invoice) async {
     var pdf = await generatePdfDocument(invoice);
     return PdfApi.saveDocument(name: 'invoice_.pdf', pdf: pdf);
   }
 
-  static Future<Uint8List> generateAsBytes(Invoice invoice) async {
+  static Future<Uint8List> generateAsBytes(InvoicePdf invoice) async {
     var pdf = await generatePdfDocument(invoice);
     return PdfApi.generatePdfBytes(pdf: pdf);
   }
 
-  static Future<Document> generatePdfDocument(Invoice invoice) async {
+  static Future<Document> generatePdfDocument(InvoicePdf invoice) async {
     final pdf = Document(
         theme: ThemeData.withFont(
       base: Font.ttf(await rootBundle.load("assets/fonts/Roboto-Regular.ttf")),
@@ -50,7 +50,7 @@ class PdfInvoiceApi {
     return base64String;
   }
 
-  static Widget buildHeader(Invoice invoice) => Column(
+  static Widget buildHeader(InvoicePdf invoice) => Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           SizedBox(height: 1 * PdfPageFormat.cm),
@@ -80,7 +80,7 @@ class PdfInvoiceApi {
         ],
       );
 
-  static Widget buildCustomerAddress(Customer customer) => Column(
+  static Widget buildCustomerAddress(CustomerPdf customer) => Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(customer.name, style: TextStyle(fontWeight: FontWeight.bold)),
@@ -88,7 +88,7 @@ class PdfInvoiceApi {
         ],
       );
 
-  static Widget buildInvoiceInfo(InvoiceInfo info) {
+  static Widget buildInvoiceInfo(InvoiceInfoPdf info) {
     final titles = <String>['Broj računa:', 'Datum narudžbe:'];
     final data = <String>[info.number, DateFormat('dd.MM.yyyy').format(info.date)];
 
@@ -103,7 +103,7 @@ class PdfInvoiceApi {
     );
   }
 
-  static Widget buildSupplierAddress(Supplier supplier) => Column(
+  static Widget buildSupplierAddress(SupplierPdf supplier) => Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(supplier.name!, style: TextStyle(fontWeight: FontWeight.bold)),
@@ -112,7 +112,7 @@ class PdfInvoiceApi {
         ],
       );
 
-  static Widget buildTitle(Invoice invoice) => Column(
+  static Widget buildTitle(InvoicePdf invoice) => Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
@@ -124,7 +124,7 @@ class PdfInvoiceApi {
         ],
       );
 
-  static Widget buildInvoice(Invoice invoice) {
+  static Widget buildInvoice(InvoicePdf invoice) {
     final headers = ['Naziv', 'Cijena', 'Količina', 'Ukupna cijena'];
     final data = invoice.items.map((item) {
       return [
@@ -153,7 +153,7 @@ class PdfInvoiceApi {
     );
   }
 
-  static Widget buildTotal(Invoice invoice) {
+  static Widget buildTotal(InvoicePdf invoice) {
     return Container(
       alignment: Alignment.centerRight,
       child: Row(
@@ -201,7 +201,7 @@ class PdfInvoiceApi {
     );
   }
 
-  static Widget buildFooter(Invoice invoice) => Column(
+  static Widget buildFooter(InvoicePdf invoice) => Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Divider(),

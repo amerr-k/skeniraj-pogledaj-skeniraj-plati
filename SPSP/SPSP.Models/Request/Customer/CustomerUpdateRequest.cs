@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 
 namespace SPSP.Models.Request.Customer
 {
-    public class CustomerUpdateRequest
+    public class CustomerUpdateRequest : UserAccountUpdateRequest
     {
-        public UserAccountUpdateRequest UserAccount { get; set; }
+        public int UserAccountId { get; set; }
         public string Address { get; set; }
         public string Phone { get; set; }
     }

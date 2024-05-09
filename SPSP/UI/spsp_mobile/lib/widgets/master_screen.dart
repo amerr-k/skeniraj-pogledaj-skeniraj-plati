@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:spsp_mobile/main.dart';
+import 'package:spsp_mobile/screens/account/profile_settings_customer_screen.dart';
 import 'package:spsp_mobile/screens/menu/menu_item_list_customer_screen.dart';
 import 'package:spsp_mobile/screens/order/order_list_customer_screen.dart';
 import 'package:spsp_mobile/screens/order/qr_code_scanner_customer_screen.dart';
@@ -44,12 +45,12 @@ class _MasterScreenWidgetState extends State<MasterScreenWidget> {
         ),
       );
     } else if (currentIndex == 4) {
-      // Navigator.push(
-      //   context,
-      //   MaterialPageRoute(
-      //     builder: (context) => ProfileSettingsCustomerScreen(),
-      //   ),
-      // );
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => ProfileSettingsCustomerScreen(),
+        ),
+      );
     }
   }
 

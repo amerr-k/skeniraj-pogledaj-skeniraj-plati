@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:provider/provider.dart';
-import 'package:spsp_mobile/models/qr_table.dart';
-import 'package:spsp_mobile/models/user_auth_info.dart';
+import 'package:spsp_mobile/models/pdf/customer_pdf.dart';
 import 'package:spsp_mobile/providers/auth_provider.dart';
 import 'package:spsp_mobile/providers/cart_provider.dart';
 import 'package:spsp_mobile/providers/category_provider.dart';
+import 'package:spsp_mobile/providers/customer_provider.dart';
 import 'package:spsp_mobile/providers/menu_item_provider.dart';
 import 'package:spsp_mobile/providers/menu_provider.dart';
 import 'package:spsp_mobile/providers/order_provider.dart';
@@ -18,7 +18,7 @@ import 'package:spsp_mobile/providers/user_provider.dart';
 import 'package:spsp_mobile/screens/menu/menu_item_details_customer_screen.dart';
 import 'package:spsp_mobile/screens/menu/menu_item_list_customer_screen.dart';
 import 'package:spsp_mobile/screens/order/order_list_customer_screen.dart';
-import 'package:spsp_mobile/screens/registration/registration_form_screen.dart';
+import 'package:spsp_mobile/screens/account/registration_form_screen.dart';
 import 'package:spsp_mobile/screens/reservation/reservation_details_customer_screen.dart';
 import 'package:spsp_mobile/screens/reservation/reservation_list_customer_screen.dart';
 import 'package:spsp_mobile/utils/util.dart';
@@ -39,6 +39,7 @@ void main() async {
       ChangeNotifierProvider(create: (_) => MenuItemPredictionProvider()),
       ChangeNotifierProvider(create: (_) => ReservationProvider()),
       ChangeNotifierProvider(create: (_) => QRTableProvider()),
+      ChangeNotifierProvider(create: (_) => CustomerProvider()),
     ],
     child: MaterialApp(
       debugShowCheckedModeBanner: true,
@@ -65,9 +66,8 @@ void main() async {
         if (settings.name == MenuItemListCustomerScreen.routeName) {
           return MaterialPageRoute(builder: ((context) => MenuItemListCustomerScreen()));
         }
-        if (settings.name == RegistrationFormScreenScreen.routeName) {
-          return MaterialPageRoute(
-              builder: ((context) => RegistrationFormScreenScreen()));
+        if (settings.name == RegistrationScreenScreen.routeName) {
+          return MaterialPageRoute(builder: ((context) => RegistrationScreenScreen()));
         }
         if (settings.name == OrderListCustomerScreen.routeName) {
           return MaterialPageRoute(builder: ((context) => OrderListCustomerScreen()));
@@ -226,11 +226,11 @@ class HomePage extends StatelessWidget {
             ),
             InkWell(
               onTap: () {
-                Navigator.pushNamed(context, RegistrationFormScreenScreen.routeName);
+                Navigator.pushNamed(context, RegistrationScreenScreen.routeName);
               },
               child: Container(
                 child: Text(
-                  'Nemate račun. Registrujte se!',
+                  'Kreirajte novi račun.',
                   style: TextStyle(
                     color: Colors.blue,
                     decoration: TextDecoration.underline,

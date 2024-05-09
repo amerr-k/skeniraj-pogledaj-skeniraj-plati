@@ -5,7 +5,7 @@ import 'package:flutter_paypal_checkout/flutter_paypal_checkout.dart';
 import 'package:provider/provider.dart';
 import 'package:spsp_mobile/environment_config.dart';
 import 'package:spsp_mobile/models/enums/OrderStatus.dart';
-import 'package:spsp_mobile/models/invoice.dart';
+import 'package:spsp_mobile/models/invoice_pdf.dart';
 import 'package:spsp_mobile/models/order.dart';
 import 'package:spsp_mobile/models/paypal/amount.dart';
 import 'package:spsp_mobile/models/paypal/details.dart';
@@ -15,7 +15,7 @@ import 'package:spsp_mobile/models/paypal/payment_gateway_data.dart';
 import 'package:spsp_mobile/models/paypal/transaction.dart';
 import 'package:spsp_mobile/models/sale_invoice/sale_invoice.dart';
 import 'package:spsp_mobile/models/search_result.dart';
-import 'package:spsp_mobile/models/supplier.dart';
+import 'package:spsp_mobile/models/pdf/supplier_pdf.dart';
 import 'package:spsp_mobile/pdf_utils/pdf_invoice_api.dart';
 import 'package:spsp_mobile/providers/order_provider.dart';
 import 'package:spsp_mobile/providers/sale_invoice_provider.dart';
@@ -317,16 +317,16 @@ class _OrderListCheckOutCustomerScreenState
       final subtotal = orderItem.subtotal ?? 0.0;
       final quantity = orderItem.quantity ?? 0;
 
-      return InvoiceItem(
+      return InvoiceItemPdf(
           name: name, quantity: quantity, unitPrice: unitPrice, subtotal: subtotal);
     }).toList();
 
-    final invoice = Invoice(
-      supplier: Supplier(
+    final invoice = InvoicePdf(
+      supplier: SupplierPdf(
           name: 'Caffe Pub - Skeniraj Plati',
           address: 'ul. Abdulaha Sidrana, Sarajevo, BiH',
           contactInfo: "+387 62 123 321"),
-      info: InvoiceInfo(
+      info: InvoiceInfoPdf(
         date: x.orderDateTime!,
         number: x.id.toString(),
       ),

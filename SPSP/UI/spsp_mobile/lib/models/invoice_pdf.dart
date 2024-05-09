@@ -1,17 +1,17 @@
-import 'package:spsp_mobile/models/customer.dart';
-import 'package:spsp_mobile/models/supplier.dart';
+import 'package:spsp_mobile/models/pdf/customer_pdf.dart';
+import 'package:spsp_mobile/models/pdf/supplier_pdf.dart';
 
-class Invoice {
-  final InvoiceInfo info;
-  final Supplier supplier;
-  final Customer? customer;
-  final List<InvoiceItem> items;
+class InvoicePdf {
+  final InvoiceInfoPdf info;
+  final SupplierPdf supplier;
+  final CustomerPdf? customer;
+  final List<InvoiceItemPdf> items;
   final DateTime orderDateTime;
   final double totalAmountWithVAT;
   final double vat;
   final double totalAmount;
 
-  const Invoice(
+  const InvoicePdf(
       {required this.info,
       required this.supplier,
       this.customer,
@@ -22,25 +22,25 @@ class Invoice {
       required this.vat});
 }
 
-class InvoiceInfo {
+class InvoiceInfoPdf {
   final String? description;
   final String number;
   final DateTime date;
 
-  const InvoiceInfo({
+  const InvoiceInfoPdf({
     this.description,
     required this.number,
     required this.date,
   });
 }
 
-class InvoiceItem {
+class InvoiceItemPdf {
   final String name;
   final int quantity;
   final double unitPrice;
   final double subtotal;
 
-  const InvoiceItem(
+  const InvoiceItemPdf(
       {required this.name,
       required this.quantity,
       required this.unitPrice,

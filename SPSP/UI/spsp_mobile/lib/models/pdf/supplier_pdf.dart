@@ -1,9 +1,9 @@
-class Supplier {
+class SupplierPdf {
   final String? name;
   final String? address;
   final String? contactInfo;
 
-  const Supplier({
+  const SupplierPdf({
     this.name,
     this.address,
     this.contactInfo,

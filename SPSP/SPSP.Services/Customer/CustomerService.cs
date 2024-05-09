@@ -2,12 +2,11 @@
 using Microsoft.EntityFrameworkCore;
 using SPSP.Models.SearchObjects;
 using SPSP.Services.Database;
-using System.Threading.Tasks;
 using SPSP.Services.Base;
 using SPSP.Models.Request.Customer;
 using SPSP.Services.UserAccount;
-using SPSP.Models.Request.UserAccount;
-using SPSP.Services.MenuItem;
+using Microsoft.AspNetCore.Http;
+using System.Security.Claims;
 
 namespace SPSP.Services.Customer
 {
@@ -16,12 +15,13 @@ namespace SPSP.Services.Customer
     {
 
         protected readonly IUserAccountService userAccountService;
-        //protected readonly ICustomerService customerService;
+        protected readonly IHttpContextAccessor httpContextAccessor;
 
-        public CustomerService(DataDbContext context, IMapper mapper, IUserAccountService userAccountService) 
+        public CustomerService(DataDbContext context, IMapper mapper, IUserAccountService userAccountService, IHttpContextAccessor httpContextAccessor) 
             : base(context, mapper)
         {
             this.userAccountService = userAccountService;
+            this.httpContextAccessor = httpContextAccessor;
         }
         public override async Task<Models.Customer> Create(CustomerCreateRequest create)
         {
@@ -30,6 +30,18 @@ namespace SPSP.Services.Customer
             var userAccount = await userAccountService.Create(create);
 
             customerEntity.UserAccountId = userAccount.Id;
+
+            context.Customers.Add(customerEntity);
+            await context.SaveChangesAsync();
+
+            return mapper.Map<Models.Customer>(customerEntity);
+        }
+
+        public override async Task<Models.Customer> Update(int id, CustomerUpdateRequest update)
+        {
+            var customerEntity = mapper.Map<Database.Customer>(update);
+
+            await userAccountService.Update(update.UserAccountId, update);
 
             context.Customers.Add(customerEntity);
             await context.SaveChangesAsync();
@@ -47,5 +59,17 @@ namespace SPSP.Services.Customer
             return base.AddInclude(query, search);
         }
 
+        public async Task<Models.Customer> GetCustomerAccountInfo()
+        {
+            var principal = httpContextAccessor.HttpContext?.User;
+            var userId = principal?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            var customer = await context.Customers
+                .Include(x => x.UserAccount)
+                .Where(x => x.UserAccountId == int.Parse(userId!))
+                .FirstOrDefaultAsync();
+
+            return mapper.Map<Models.Customer>(customer);
+        }
     }
 }

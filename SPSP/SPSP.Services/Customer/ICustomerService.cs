@@ -7,6 +7,6 @@ namespace SPSP.Services.Customer
     public interface ICustomerService 
         : ICRUDService<Models.Customer, CustomerSearchObject, CustomerCreateRequest, CustomerUpdateRequest>
     {
-        
+        public Task<Models.Customer> GetCustomerAccountInfo();
     }
 }

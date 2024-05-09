@@ -8,16 +8,15 @@ import 'package:spsp_mobile/providers/auth_provider.dart';
 
 import 'package:spsp_mobile/widgets/master_screen.dart';
 
-class RegistrationFormScreenScreen extends StatefulWidget {
+class RegistrationScreenScreen extends StatefulWidget {
   static const String routeName = "/registration";
 
-  RegistrationFormScreenScreen({super.key});
+  RegistrationScreenScreen({super.key});
   @override
-  State<RegistrationFormScreenScreen> createState() =>
-      _RegistrationFormScreenScreenState();
+  State<RegistrationScreenScreen> createState() => _RegistrationScreenScreenState();
 }
 
-class _RegistrationFormScreenScreenState extends State<RegistrationFormScreenScreen> {
+class _RegistrationScreenScreenState extends State<RegistrationScreenScreen> {
   final _formKey = GlobalKey<FormBuilderState>();
   Map<String, dynamic> _initialValue = {};
   late AuthProvider _authProvider;
