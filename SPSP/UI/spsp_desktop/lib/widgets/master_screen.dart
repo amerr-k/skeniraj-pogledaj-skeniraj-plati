@@ -5,6 +5,7 @@ import 'package:spsp_desktop/main.dart';
 import 'package:spsp_desktop/screens/menu/menu_item_list_screen.dart';
 import 'package:spsp_desktop/screens/order/order_list_screen.dart';
 import 'package:spsp_desktop/screens/pos/pos_screen.dart';
+import 'package:spsp_desktop/screens/promotion/promotion_list_screen.dart';
 import 'package:spsp_desktop/screens/report/report_form_screen.dart';
 
 class MasterScreenWidget extends StatefulWidget {
@@ -58,6 +59,13 @@ class _MasterScreenWidgetState extends State<MasterScreenWidget> {
               onTap: () {
                 Navigator.of(context)
                     .push(MaterialPageRoute(builder: (context) => ReportFormScreen()));
+              },
+            ),
+            ListTile(
+              title: Text("Promocije"),
+              onTap: () {
+                Navigator.of(context)
+                    .push(MaterialPageRoute(builder: (context) => PromotionListScreen()));
               },
             )
           ],

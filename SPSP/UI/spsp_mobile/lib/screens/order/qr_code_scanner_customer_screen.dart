@@ -35,7 +35,7 @@ class _QRCodeScannerCustomerScreenState extends State<QRCodeScannerCustomerScree
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
-          title: Text('QR Code Scanner'),
+          title: Text('Skenirajte kod na Vašem stolu.'),
           actions: [
             IconButton(
               icon: Icon(Icons.close),

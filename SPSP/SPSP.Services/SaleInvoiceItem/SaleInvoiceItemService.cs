@@ -26,7 +26,7 @@ namespace SPSP.Services.SaleInvoiceItem
                 saleInvoiceItemEntities.Add(saleInvoiceItemEntity);
             }
 
-            context.SaleInvoiceItems.AddRange(saleInvoiceItemEntities);
+            await context.SaleInvoiceItems.AddRangeAsync(saleInvoiceItemEntities);
             await context.SaveChangesAsync();
             return mapper.Map<List<Models.SaleInvoiceItem>>(saleInvoiceItemEntities);
         }

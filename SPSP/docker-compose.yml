@@ -1,6 +1,22 @@
 version: '3'
 services:
 #mssql docker
+
+  rabbitmq:
+    image: rabbitmq:3.13-management
+    container_name: rabbitmq
+    restart: unless-stopped
+    environment:
+      - RABBITMQ_DEFAULT_USER=username
+      - RABBITMQ_DEFAULT_PASS=test
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    expose:
+      - 5672
+    networks:
+      - spspnet2024
+
   spsp-sql:
     image: mcr.microsoft.com/mssql/server:2017-latest-ubuntu
     restart: unless-stopped
@@ -19,9 +35,14 @@ services:
     restart: unless-stopped
     build:
       context: .
+      # dockerfile: Dockerfile
     environment:
       - ConnectionStrings:DefaultConnection=Server=spsp-sql,1433;Database=spsp_db;User=sa;Password=Password1234!;ConnectRetryCount=0; TrustServerCertificate=True
       - ASPNETCORE_ENVIRONMENT=Development
+      - RABBITMQ_HOST=rabbitmq
+      - RABBITMQ_USERNAME=username
+      - RABBITMQ_PASSWORD=test
+      - RABBITMQ_VIRTUALHOST=/
     ports:
       - 7011:7011
     networks:
@@ -30,6 +51,28 @@ services:
       - spsp-sql
     depends_on:
       - spsp-sql
+
+  mailing-service:
+    restart: on-failure
+    build:
+      context: .
+      dockerfile: Dockerfile.mailservice
+    environment:
+
+      - RABBITMQ_HOST=rabbitmq
+      - RABBITMQ_USERNAME=username
+      - RABBITMQ_PASSWORD=test
+      - RABBITMQ_VIRTUALHOST=/
+    #   - OUTLOOK_MAIL=travelo-reservations@outlook.com
+    #   - OUTLOOK_PASS=Travelo-pass123
+    depends_on:
+      - rabbitmq
+      - spsp-sql
+      # - spsp-api
+    networks:
+      - spspnet2024
+    ports:
+      - 7101:80
       
 networks:
   spspnet2024:

@@ -22,12 +22,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\SPSP.Models\SPSP.Models.csproj" />
-    <ProjectReference Include="..\SPSP.Services\SPSP.Services.csproj" />
+    <Folder Include="Auth\" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Auth\" />
+    <ProjectReference Include="..\SPSP.Models\SPSP.Models.csproj" />
+    <ProjectReference Include="..\SPSP.Services\SPSP.Services.csproj" />
   </ItemGroup>
 
 </Project>

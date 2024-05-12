@@ -3,7 +3,8 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:provider/provider.dart';
 import 'package:spsp_mobile/models/pdf/customer_pdf.dart';
 import 'package:spsp_mobile/providers/auth_provider.dart';
-import 'package:spsp_mobile/providers/cart_provider.dart';
+import 'package:spsp_mobile/providers/promotion_provider.dart';
+import 'package:spsp_mobile/providers/qr_table_selector_provider.dart';
 import 'package:spsp_mobile/providers/category_provider.dart';
 import 'package:spsp_mobile/providers/customer_provider.dart';
 import 'package:spsp_mobile/providers/menu_item_provider.dart';
@@ -40,6 +41,7 @@ void main() async {
       ChangeNotifierProvider(create: (_) => ReservationProvider()),
       ChangeNotifierProvider(create: (_) => QRTableProvider()),
       ChangeNotifierProvider(create: (_) => CustomerProvider()),
+      ChangeNotifierProvider(create: (_) => PromotionProvider()),
     ],
     child: MaterialApp(
       debugShowCheckedModeBanner: true,

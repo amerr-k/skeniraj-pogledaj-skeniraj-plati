@@ -11,7 +11,7 @@ import 'package:provider/provider.dart';
 import 'package:spsp_mobile/models/enums/AllowedMethodsEnum.dart';
 import 'package:spsp_mobile/models/qr_table.dart';
 import 'package:spsp_mobile/models/reservation/reservation.dart';
-import 'package:spsp_mobile/providers/cart_provider.dart';
+import 'package:spsp_mobile/providers/qr_table_selector_provider.dart';
 import 'package:spsp_mobile/providers/qr_table_provider.dart';
 import 'package:spsp_mobile/providers/reservation_provider.dart';
 import 'package:spsp_mobile/screens/reservation/qr_table_reservation_dialog_screen.dart';

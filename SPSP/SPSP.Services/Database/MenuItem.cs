@@ -33,5 +33,6 @@ namespace SPSP.Services.Database
         public virtual ICollection<SaleInvoiceItem> SaleInvoiceItems { get; set; }
         public virtual ICollection<MenuItemPrediction> MainMenuItems { get; set; }
         public virtual ICollection<MenuItemPrediction> RecommendedMenuItems { get; set; }
+        public virtual ICollection<Promotion> Promotions { get; set; }
     }
 }

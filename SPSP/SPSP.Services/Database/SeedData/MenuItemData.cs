@@ -4,6 +4,26 @@ namespace SPSP.Services.Database.SeedData
 {
     public static class MenuItemData
     {
+        //private static byte[] skyColaBytes = null;
+        //private static byte[] premingerBytes = null;
+        //private static byte[] senzacijaBytes = null;
+        //private static byte[] sarajevskoBytes = null;
+        //private static byte[] perkarskiKrompirBytes = null;
+        //private static byte[] ljuteKobasiceBytes = null;
+        //private static byte[] tuzlanskiPilsnerBytes = null;
+        //private static byte[] pomfritBytes = null;
+        //private static byte[] martiniBytes = null;
+        //private static byte[] mojitoBytes = null;
+        //private static byte[] kamilicaBytes = null;
+        //private static byte[] mentaBytes = null;
+        //private static byte[] narandzaBytes = null;
+        //private static byte[] jabukaBytes = null;
+        //private static byte[] drinaBytes = null;
+        //private static byte[] espressoBytes = null;
+        //private static byte[] machiatoBytes = null;
+        //private static byte[] zdrepcevaBytes = null;
+        //private static byte[] bijeloVinoBytes = null;
+
         public static void SeedData(this EntityTypeBuilder<MenuItem> entity)
         {
 

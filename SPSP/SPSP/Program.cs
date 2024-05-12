@@ -25,12 +25,9 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using SPSP.Services.RecommenderService;
 using Microsoft.ML;
-using Quartz.Impl;
-using Quartz.Spi;
 using Quartz;
-using SPSP.Services.Base;
-using static Quartz.Logging.OperationName;
 using SPSP.Services.Report;
+using SPSP.Services.Promotion;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -58,6 +55,8 @@ builder.Services.AddQuartz(options =>
     //            .RepeatForever()
     //        )
     //    );
+    //NAKON TOGA, UMJESTO DA SE NA PODACIMA ALGORITAM PONOVO TRENIRA, 
+    //APLIKACIJA CE DOHVATATI RECOMMENED PODATKE IZ TABELA
 
     options.AddJob<RecommenderJob>(jobKey)
     .AddTrigger(trigger => trigger.ForJob(jobKey)
@@ -70,11 +69,9 @@ builder.Services.AddQuartz(options =>
 builder.Services.AddQuartzHostedService();
 
 builder.Services.AddTransient<IEmailPublisherService, EmailPublisherService>();
-
 builder.Services.AddTransient<IUserAccountService, UserAccountService>();
 builder.Services.AddTransient<ICustomerService, CustomerService>();
 builder.Services.AddTransient<IEmployeeService, EmployeeService>();
-
 //builder.Services.AddTransient
 //    <IService<SPSP.Models.Business, BaseSearchObject>,
 //    BaseService<SPSP.Models.Business, Business, BaseSearchObject>>();
@@ -92,6 +89,7 @@ builder.Services.AddTransient<ICategoryService, CategoryService>();
 builder.Services.AddTransient<IQRTableService, QRTableService>();
 builder.Services.AddTransient<IReservationService, ReservationService>();
 builder.Services.AddTransient<IReportService, ReportService>();
+builder.Services.AddTransient<IPromotionService, PromotionService>();
 
 builder.Services.AddTransient<BaseState>();
 builder.Services.AddTransient<InitialReservationState>();

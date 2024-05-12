@@ -35,6 +35,7 @@ namespace SPSP.Services.Database
         public virtual DbSet<UserRole> UserRoles { get; set; }
         public virtual DbSet<TrainedData> TrainedDatas { get; set; }
         public virtual DbSet<MenuItemPrediction> MenuItemPredictions { get; set; }
+        public virtual DbSet<Promotion> Promotions { get; set; }
 
         //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         //{
@@ -506,6 +507,18 @@ namespace SPSP.Services.Database
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_MenuItemPrediction_RecommendedMenuItemId");
 
+            });
+
+            modelBuilder.Entity<Promotion>(entity =>
+            {
+                entity.ToTable("Promotion");
+
+                modelBuilder.Entity<Promotion>()
+                    .HasOne(m => m.MenuItem)
+                    .WithMany(m => m.Promotions)
+                    .HasForeignKey(m => m.MenuItemId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Promotion_MenuItemId");
             });
 
             modelBuilder.Entity<Category>().SeedData();

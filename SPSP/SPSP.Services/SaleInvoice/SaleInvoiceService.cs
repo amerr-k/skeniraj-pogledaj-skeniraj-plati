@@ -53,11 +53,11 @@ namespace SPSP.Services.SaleInvoice
             List<Models.SaleInvoiceItem> saleInvoiceItems;
             var saleInvoice = mapper.Map<Models.SaleInvoice>(saleInvoiceEntity);
             
-            if (create.SaleInvoiceItems  != null)
-            {
-                saleInvoiceItems = await saleInvoiceItemService.CreateMultiple(create.SaleInvoiceItems, saleInvoiceEntity.Id);
-                saleInvoice.SaleInvoiceItems = saleInvoiceItems;
-            }
+            //if (create.SaleInvoiceItems  != null)
+            //{
+            //    saleInvoiceItems = await saleInvoiceItemService.CreateMultiple(create.SaleInvoiceItems, saleInvoiceEntity.Id);
+            //    saleInvoice.SaleInvoiceItems = saleInvoiceItems;
+            //}
 
             if (create.PaymentGatewayData != null)
             {
@@ -69,8 +69,8 @@ namespace SPSP.Services.SaleInvoice
             
             if(saleInvoiceEntity.Processed != null && saleInvoiceEntity.Processed == true)
             {
-                //await orderService.UpdateStatus(saleInvoiceEntity.OrderId, OrderStatusEnum.COMPLETED);
-                await orderService.UpdateStatus(saleInvoiceEntity.OrderId, OrderStatusEnum.ACTIVE);
+                await orderService.UpdateStatus(saleInvoiceEntity.OrderId, OrderStatusEnum.COMPLETED);
+                //await orderService.UpdateStatus(saleInvoiceEntity.OrderId, OrderStatusEnum.ACTIVE);
                 //OVO CES ODKOMENTARISAT JER CE STATUS BITI COMPLETED A NE ACTIVE!!!!
             }
             else

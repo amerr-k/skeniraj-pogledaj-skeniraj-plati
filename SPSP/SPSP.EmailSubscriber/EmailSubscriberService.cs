@@ -4,6 +4,10 @@ using System.Net;
 using System.Net.Mime;
 using Microsoft.Extensions.Options;
 using SPSP.EmailSubscriber.Utils;
+using RabbitMQ.Client;
+using System.Reflection;
+using System.Data.Common;
+using System.Threading.Channels;
 
 namespace SPSP.EmailSubscriber
 {
@@ -13,25 +17,138 @@ namespace SPSP.EmailSubscriber
         private readonly IBus bus;
         private readonly ILogger<EmailSubscriberService> logger;
         private readonly GmailSMTP gmailSMTPSettings;
+        private IConnection _connection;
+        private IModel _channel;
 
-        public EmailSubscriberService(ILogger<EmailSubscriberService> logger, IOptions<GmailSMTP> gmailSMTPSettings)
+        private readonly string _host = Environment.GetEnvironmentVariable("RABBITMQ_HOST") ?? "localhost";
+        private readonly string _username = Environment.GetEnvironmentVariable("RABBITMQ_USERNAME") ?? "guest";
+        private readonly string _password = Environment.GetEnvironmentVariable("RABBITMQ_PASSWORD") ?? "guest";
+        private readonly string _virtualhost = Environment.GetEnvironmentVariable("RABBITMQ_VIRTUALHOST") ?? "/";
+        //private readonly string _host = "localhost";
+        //private readonly string _username = "guest";
+        //private readonly string _password = "guest";
+        //private readonly string _virtualhost = "/";
+        public EmailSubscriberService(ILogger<EmailSubscriberService> logger, IOptions<GmailSMTP> gmailSMTPSettings, IConfiguration configuration)
         {
             this.logger = logger;
             this.gmailSMTPSettings = gmailSMTPSettings.Value;
-            this.bus = RabbitHutch.CreateBus("host=localhost");
 
+            //var rabbitMQHost = configuration["RABBITMQ_HOST"] ?? "localhost";
+            //var rabbitMQUsername = configuration["RABBITMQ_USERNAME"] ?? "guest";
+            //var rabbitMQPassword = configuration["RABBITMQ_PASSWORD"] ?? "guest";
+            //var rabbitMQVirtualHost = configuration["RABBITMQ_VIRTUALHOST"] ?? "/";
+
+            //var rabbitMQConnectionString = $"host={rabbitMQHost};username={rabbitMQUsername};password={rabbitMQPassword};virtualHost={rabbitMQVirtualHost}";
+
+            //this.bus = RabbitHutch.CreateBus(rabbitMQConnectionString);
+            //InitRabbitMQ();
+
+        }
+
+
+        private void InitRabbitMQ()
+        {
+            var factory = new ConnectionFactory
+            {
+                HostName = _host,
+                UserName = _username,
+                Password = _password
+            };
+
+            // create connection  
+            _connection = factory.CreateConnection();
+
+            // create channel  
+            _channel = _connection.CreateModel();
+
+            //_channel.ExchangeDeclare("demo.exchange", ExchangeType.Topic);
+            _channel.QueueDeclare("Reservation_added", false, false, false, null);
+            //_channel.QueueBind("demo.queue.log", "demo.exchange", "demo.queue.*", null);
+            _channel.BasicQos(0, 1, false);
+
+            _connection.ConnectionShutdown += RabbitMQ_ConnectionShutdown;
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
 
-            await bus.PubSub.SubscribeAsync<Models.EmailMessage>("email-queue", emailMessage =>
+            //await bus.PubSub.SubscribeAsync<Models.EmailMessage>("email-queue", emailMessage =>
+            //{
+            //     SendErrorMailAsync(emailMessage);
+            //});
+            Console.WriteLine($"PRIJE WHILE");
+
+            while (!stoppingToken.IsCancellationRequested)
             {
-                 SendErrorMailAsync(emailMessage);
-            });
+                Console.WriteLine($"POSLIJE WHILE");
+
+                try
+                {
+                    Console.WriteLine($"TRY");
+
+                    Console.WriteLine($"_host: {_host}");
+                    Console.WriteLine($"-------------------------------------");
+                    Console.WriteLine($"_virtualhost: {_virtualhost}");
+                    Console.WriteLine($"-------------------------------------");
+                    Console.WriteLine($"username: {_username}");
+                    Console.WriteLine($"-------------------------------------");
+                    Console.WriteLine($"_password: {_password}");
+                    Console.WriteLine($"-------------------------------------");
+
+                    using (var bus = RabbitHutch.CreateBus($"host={_host};virtualHost={_virtualhost};username={_username};password={_password}"))
+                    {
+                        bus.PubSub.Subscribe<Models.EmailMessage>("email-queue", emailMessage =>
+                        {
+                            SendErrorMailAsync(emailMessage);
+                        });
+                        Console.WriteLine("Listening for email messages.");
+                        await Task.Delay(TimeSpan.FromSeconds(5), stoppingToken);
+                    }
+
+
+                    //await this.bus.PubSub.SubscribeAsync<Models.EmailMessage>("email-queue", emailMessage =>
+                    //{
+                    //    SendErrorMailAsync(emailMessage);
+                    //});
+
+                }
+                catch (OperationCanceledException) when (stoppingToken.IsCancellationRequested)
+                {
+                    // Gracefully handle cancellation
+                    break;
+                }
+                catch (Exception ex)
+                {
+                    // Handle exceptions
+                    Console.WriteLine($"Error in RabbitMQ listener: {ex.Message}");
+                    Console.WriteLine($"-------------------------------------");
+
+                    // Log the full exception object
+                    Console.WriteLine($"Error object: {ex}");
+                    Console.WriteLine($"----------------------------");
+
+                    // Log the stack trace
+                    Console.WriteLine($"Stack trace: {ex.StackTrace}");
+                    Console.WriteLine($"----------------------------");
+
+                    if (bus == null)
+                    {
+                        Console.WriteLine("Bus is null.");
+                    }
+                    else
+                    {
+                        // Example: Check if the underlying connection is closed
+                        var advancedBus = ((RabbitAdvancedBus)bus);
+                        if (!advancedBus.IsConnected)
+                        {
+                            Console.WriteLine("Bus connection is closed.");
+                        }
+                    }
+                }
+            }
 
         }
-
+        private void RabbitMQ_ConnectionShutdown(object sender, ShutdownEventArgs e) { }
         public Task SendErrorMailAsync(Models.EmailMessage emailMessage)
         {
 
@@ -75,12 +192,19 @@ namespace SPSP.EmailSubscriber
             return Task.CompletedTask;
         }
 
+        //public override void Dispose()
+        //{
+        //    bus.Dispose();
+        //    base.Dispose();
+        //}
+
         public override void Dispose()
         {
-            bus.Dispose();
+            _channel.Close();
+            _connection.Close();
+            //bus.Dispose();
             base.Dispose();
         }
-
 
         //private async Task SendErrorMailEventHandler(object? model, BasicDeliverEventArgs eventArgs)
         //{

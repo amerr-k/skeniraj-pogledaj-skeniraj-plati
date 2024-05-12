@@ -3,7 +3,7 @@ import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:spsp_mobile/models/qr_table.dart';
-import 'package:spsp_mobile/providers/cart_provider.dart';
+import 'package:spsp_mobile/providers/qr_table_selector_provider.dart';
 import 'package:spsp_mobile/providers/qr_table_provider.dart';
 import 'package:spsp_mobile/widgets/qr_table_positions_widget.dart';
 

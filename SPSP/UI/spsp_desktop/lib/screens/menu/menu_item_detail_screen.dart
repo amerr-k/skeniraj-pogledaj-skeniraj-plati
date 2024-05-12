@@ -101,6 +101,12 @@ class _MenuItemDetailScreenState extends State<MenuItemDetailScreen> {
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: ElevatedButton(
+                    child: const Text("Natrag"),
+                    onPressed: () => Navigator.pop(context),
+                  )),
+              Padding(
                 padding: const EdgeInsets.all(10.0),
                 child: ElevatedButton(
                     onPressed: () async {
@@ -116,6 +122,19 @@ class _MenuItemDetailScreenState extends State<MenuItemDetailScreen> {
                         } else {
                           _menuItemProvider.update(widget.menuItem!.id!, request);
                         }
+
+                        showDialog(
+                          context: context,
+                          builder: ((BuildContext context) => AlertDialog(
+                                title: Text("Uspješno ste sačuvali izmjene"),
+                                actions: [
+                                  TextButton(
+                                    onPressed: () => Navigator.pop(context),
+                                    child: Text("Uredu"),
+                                  ),
+                                ],
+                              )),
+                        );
                       } on Exception catch (e) {
                         showDialog(
                           context: context,

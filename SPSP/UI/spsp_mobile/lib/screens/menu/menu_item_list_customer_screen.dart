@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:spsp_mobile/models/menu_item.dart';
+import 'package:spsp_mobile/models/promotion.dart';
 import 'package:spsp_mobile/models/search_result.dart';
 import 'package:spsp_mobile/providers/menu_item_provider.dart';
+import 'package:spsp_mobile/providers/promotion_provider.dart';
 import 'package:spsp_mobile/screens/menu/menu_item_details_customer_screen.dart';
 import 'package:spsp_mobile/utils/util.dart';
 import 'package:spsp_mobile/widgets/master_screen.dart';
@@ -17,8 +19,10 @@ class MenuItemListCustomerScreen extends StatefulWidget {
 }
 
 class _MenuItemListCustomerScreenState extends State<MenuItemListCustomerScreen> {
-  RequestResult<MenuItem>? searchResult;
+  RequestResult<MenuItem>? menuItems;
+  RequestResult<Promotion>? promotions;
   late MenuItemProvider _menuItemProvider;
+  late PromotionProvider _promotionProvider;
   final TextEditingController _ftsController = TextEditingController();
   final TextEditingController _nameController = TextEditingController();
   bool isLoading = true;
@@ -28,14 +32,19 @@ class _MenuItemListCustomerScreenState extends State<MenuItemListCustomerScreen>
     super.initState();
 
     _menuItemProvider = context.read<MenuItemProvider>();
+    _promotionProvider = context.read<PromotionProvider>();
 
-    _loadMenuItems();
+    _loadData();
   }
 
-  _loadMenuItems() async {
-    var data = await _menuItemProvider.get();
+  _loadData() async {
+    var menuItemsGetSearchResult = await _menuItemProvider.get();
+    var promotionGetSearchResult = await _promotionProvider.get(filter: {
+      'IsOnlyTodaysIncluded': true,
+    });
     setState(() {
-      searchResult = data;
+      menuItems = menuItemsGetSearchResult;
+      promotions = promotionGetSearchResult;
       isLoading = false;
     });
   }
@@ -45,60 +54,114 @@ class _MenuItemListCustomerScreenState extends State<MenuItemListCustomerScreen>
     super.didChangeDependencies();
 
     _menuItemProvider = context.read<MenuItemProvider>();
-    var data = await _menuItemProvider.get();
+    var menuItemsGetSearchResult = await _menuItemProvider.get();
     setState(() {
-      searchResult = data;
+      menuItems = menuItemsGetSearchResult;
     });
   }
-
-  // @override
-  // Widget build(BuildContext context) {
-  //   return MasterScreenWidget(
-  //     child: Container(
-  //       child: Column(
-  //         children: [_buildSearch(), _buildDataListView()],
-  //       ),
-  //     ),
-  //   );
-  // }
 
   @override
   Widget build(BuildContext context) {
     return MasterScreenWidget(
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           _buildSearch(),
+          isLoading ? Container() : _buildDismissiblePromotion(),
           Expanded(
               child: isLoading
                   ? Container(
                       child: Center(child: CircularProgressIndicator()),
                     )
-                  : _buildProductCardList()),
+                  : _buildMenuItemCardList()),
         ],
       ),
     );
   }
 
-  // Widget _buildDataListView() {
-  //   return Expanded(
-  //     child: SingleChildScrollView(
-  //       child: isLoading ? Container() : _buildProductCardList(),
+  // Widget _buildDismissiblePromotion() {
+  //   return Dismissible(
+  //     key: UniqueKey(),
+  //     background: Container(
+  //       color: Colors.red,
+  //       child: Icon(Icons.delete),
   //     ),
+  //     child: _buildPromotionCardList(),
   //   );
   // }
 
-  Widget _buildProductCardList() {
+  Widget _buildDismissiblePromotion() {
+    return Dismissible(
+      key: UniqueKey(),
+      background: Container(
+        color: Colors.red,
+        child: Icon(Icons.delete),
+      ),
+      child: Column(
+        children: [
+          Text("Uklonite promociju prevlačenjem prsta na stranu."),
+          _buildPromotionCardList(),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildPromotionCardList() {
+    return Container(
+      child: Column(
+        children: List.generate(promotions?.count ?? 0, (index) {
+          return _buildPromotionCard(promotions!.result[index]);
+        }),
+      ),
+    );
+  }
+
+  Widget _buildPromotionCard(Promotion item) {
+    return Padding(
+      padding: const EdgeInsets.all(3.0),
+      child: Container(
+          decoration: BoxDecoration(
+            color: const Color(0xFFFFF170),
+            border: Border.all(
+              color: Colors.black,
+              width: 1.0,
+            ),
+          ),
+          child: ListTile(
+            onTap: () => {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) =>
+                      MenuItemDetailsCustomerScreen(id: item.menuItem!.id!.toString()),
+                ),
+              )
+            },
+            subtitle: Text(
+              item.menuItem!.name!,
+              style: TextStyle(
+                fontStyle: FontStyle.italic,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            title: Text(item.description),
+            trailing: imageFromBase64String(item!.menuItem!.image!),
+          )),
+    );
+  }
+
+  Widget _buildMenuItemCardList() {
     return Container(
       child: ListView.builder(
-        itemCount: searchResult?.count,
+        itemCount: menuItems?.count,
         itemBuilder: (context, index) {
-          return _buildProductCard(searchResult!.result[index]);
+          return _buildMenuItemCard(menuItems!.result[index]);
         },
       ),
     );
   }
 
-  Widget _buildProductCard(MenuItem item) {
+  Widget _buildMenuItemCard(MenuItem item) {
     return ListTile(
       onTap: () {
         Navigator.pushNamed(
@@ -109,115 +172,6 @@ class _MenuItemListCustomerScreenState extends State<MenuItemListCustomerScreen>
       subtitle: Text('${formatNumber(item.price!)} KM'),
     );
   }
-
-  // Widget _buildDataTable() {
-  //   return Row(
-  //     children: [
-  //       Expanded(
-  //         child: DataTable(
-  //             showCheckboxColumn: false,
-  //             columns: const [
-  //               DataColumn(
-  //                 label: Expanded(
-  //                   child: Text(
-  //                     'Id',
-  //                     style: TextStyle(fontStyle: FontStyle.italic),
-  //                   ),
-  //                 ),
-  //               ),
-  //               DataColumn(
-  //                 label: Expanded(
-  //                   child: Text(
-  //                     "Šifra",
-  //                     style: TextStyle(fontStyle: FontStyle.italic),
-  //                   ),
-  //                 ),
-  //               ),
-  //               DataColumn(
-  //                 label: Expanded(
-  //                   child: Text(
-  //                     'Naziv',
-  //                     style: TextStyle(fontStyle: FontStyle.italic),
-  //                   ),
-  //                 ),
-  //               ),
-  //               DataColumn(
-  //                 label: Expanded(
-  //                   child: Text(
-  //                     'Opis',
-  //                     style: TextStyle(fontStyle: FontStyle.italic),
-  //                   ),
-  //                 ),
-  //               ),
-  //               DataColumn(
-  //                 label: Expanded(
-  //                   child: Text(
-  //                     'Cijena',
-  //                     style: TextStyle(fontStyle: FontStyle.italic),
-  //                   ),
-  //                 ),
-  //               ),
-  //               DataColumn(
-  //                 label: Expanded(
-  //                   child: Text(
-  //                     'Slika',
-  //                     style: TextStyle(fontStyle: FontStyle.italic),
-  //                   ),
-  //                 ),
-  //               )
-  //             ],
-  //             rows: searchResult?.result
-  //                     .map(
-  //                       (e) => DataRow(
-  //                           onSelectChanged: (selected) => {
-  //                                 if (selected == true)
-  //                                   {
-  //                                     Navigator.of(context).push(
-  //                                       MaterialPageRoute(
-  //                                         builder: (context) => MenuItemDetailScreen(
-  //                                           menuItem: e,
-  //                                         ),
-  //                                       ),
-  //                                     )
-  //                                   }
-  //                               },
-  //                           cells: [
-  //                             DataCell(
-  //                               Text(e.id?.toString() ?? ""),
-  //                             ),
-  //                             DataCell(
-  //                               Text(e.code ?? ""),
-  //                             ),
-  //                             DataCell(
-  //                               Text(e.name ?? ""),
-  //                             ),
-  //                             DataCell(
-  //                               Text(e.description ?? ""),
-  //                             ),
-  //                             DataCell(
-  //                               Text(formatNumber(e.price)),
-  //                             ),
-  //                             DataCell(
-  //                               Container(
-  //                                 width: 50,
-  //                                 height: 50,
-  //                                 decoration: BoxDecoration(
-  //                                   border: Border.all(
-  //                                     color: Colors.black,
-  //                                     width: 1,
-  //                                   ),
-  //                                 ),
-  //                                 child: imageFromBase64String(e.image!),
-  //                               ),
-  //                             ),
-  //                           ]),
-  //                     )
-  //                     .toList() ??
-  //                 []),
-  //       ),
-  //     ],
-  //   );
-  // }
 
   Widget _buildSearch() {
     return Padding(
@@ -243,7 +197,7 @@ class _MenuItemListCustomerScreenState extends State<MenuItemListCustomerScreen>
                 'name': _nameController.text,
               });
               setState(() {
-                searchResult = data;
+                menuItems = data;
                 isLoading = false;
               });
             },

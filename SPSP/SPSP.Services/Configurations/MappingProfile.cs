@@ -6,6 +6,7 @@ using SPSP.Models.Request.MenuItem;
 using SPSP.Models.Request.Order;
 using SPSP.Models.Request.OrderItem;
 using SPSP.Models.Request.PaymentGatewayData;
+using SPSP.Models.Request.Promotion;
 using SPSP.Models.Request.PurchaseInvoice;
 using SPSP.Models.Request.PurchaseInvoiceItem;
 using SPSP.Models.Request.Reservation;
@@ -77,6 +78,9 @@ namespace SPSP.Services.Configurations
             CreateMap<PaymentGatewayDataCreateRequest, Database.PaymentGatewayData>();
 
 
+            CreateMap<Database.Promotion, Models.Promotion>();
+            CreateMap<PromotionCreateRequest, Database.Promotion>();
+            CreateMap<PromotionUpdateRequest, Database.Promotion>();
         }
     }
 }
