@@ -175,7 +175,6 @@ class _OrderListCheckOutCustomerScreenState
               );
             },
             onError: (error) {
-              print(error);
               ScaffoldMessenger.of(context).showSnackBar(
                 const SnackBar(
                   content: Text(
@@ -348,72 +347,3 @@ class _OrderListCheckOutCustomerScreenState
     return await PdfInvoiceApi.bytesToBase64(pdfFileBytes);
   }
 }
-
-
-// Navigator.of(context).push(MaterialPageRoute(
-//                     builder: (BuildContext context) => SafeArea(
-//                       child: PaypalCheckout(
-//                         sandboxMode: true,
-//                         clientId: CLIENT_ID_VALUE,
-//                         secretKey: SECRET_KEY_VALUE,
-//                         returnURL: "success.snippetcoder.com",
-//                         cancelURL: "cancel.snippetcoder.com",
-//                         transactions: transactions,
-//                         note: "Uživajte u vašem piću i dođite nam ponovo.",
-//                         onSuccess: (Map params) async {
-//                           var paymentGatewayData = PaymentGatewayData(
-//                               params["data"].toString(),
-//                               params["message"].toString(),
-//                               params["error"]);
-
-//                           _clearOrderItems();
-
-//                           for (var i = 0; i < selectedOrders!.length; i++) {
-//                             var order = selectedOrders[i];
-//                             var create = SaleInvoice.fromOrder(order);
-//                             create.pdfInvoice = await _createPdfInvoice(order);
-
-//                             create.paymentGatewayData = paymentGatewayData;
-//                             create.processed = true;
-
-//                             await _saleInvoiceProvider.create(create);
-//                           }
-
-//                           final fetchedOrders = await _orderProvider.get(filter: {
-//                             "qrTableId": widget.qrTableId,
-//                             "orderStatus": OrderStatus.ACTIVE.name,
-//                             "isOrderItemsIncluded": true
-//                           });
-//                           setState(() {
-//                             orders = fetchedOrders;
-//                             _isChecked = List<bool>.filled(
-//                                 fetchedOrders?.result.length ?? 0, false);
-//                           });
-
-//                           _scaffoldMessengerState.showSnackBar(
-//                             const SnackBar(
-//                               content: Text(
-//                                 "Plaćanje je uspješno procesuirano",
-//                                 style: TextStyle(color: Colors.white),
-//                               ),
-//                               backgroundColor: Colors.green,
-//                             ),
-//                           );
-//                         },
-//                         onError: (error) {
-//                           print(error);
-//                           ScaffoldMessenger.of(context).showSnackBar(
-//                             const SnackBar(
-//                               content: Text(
-//                                 "Desila se greška prilikom procesuiranja plaćanja. Molimo kontaktirajte administratora",
-//                                 style: TextStyle(color: Colors.white),
-//                               ),
-//                               backgroundColor: Colors.red,
-//                             ),
-//                           );
-//                           Navigator.pop(context);
-//                         },
-//                         onCancel: () {},
-//                       ),
-//                     ),
-//                   ));

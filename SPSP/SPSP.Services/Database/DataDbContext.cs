@@ -537,6 +537,7 @@ namespace SPSP.Services.Database
             modelBuilder.Entity<SaleInvoice>().SeedData();
             modelBuilder.Entity<SaleInvoiceItem>().SeedData();
             modelBuilder.Entity<Reservation>().SeedData();
+            modelBuilder.Entity<Promotion>().SeedData();
 
             OnModelCreatingPartial(modelBuilder);
         }

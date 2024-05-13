@@ -18,8 +18,10 @@ class AuthProvider extends BaseProvider<UserAuthInfo> {
     var jsonRequest = jsonEncode(request);
 
     var response = await http!.post(uri, headers: headers, body: jsonRequest);
+    print(response);
 
     if (isValidResponse(response)) {
+      print(response);
       var jsonData = jsonDecode(response.body);
       return fromJson(jsonData);
     } else {

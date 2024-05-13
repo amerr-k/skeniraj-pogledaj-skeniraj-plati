@@ -21,9 +21,6 @@ namespace SPSP.Services.Reservation.StateMachine
 
         public override async Task<Models.Reservation> Update(Database.Reservation dbEntity, ReservationUpdateRequest update)
         {
-            //nema potrebe da se ponovo trazi entity, odma se moze poslat u metodu
-            //var set = context.Set<Database.Reservation>();
-            //var entity = await set.FindAsync(id);
 
             mapper.Map(update, dbEntity);
 

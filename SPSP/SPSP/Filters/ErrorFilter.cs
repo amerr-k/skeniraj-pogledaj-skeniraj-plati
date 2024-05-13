@@ -26,7 +26,6 @@ namespace SPSP.Filters
                 .ToDictionary(x => x.Key, y => y.Value.Errors.Select(z => z.ErrorMessage));
 
             context.Result = new JsonResult(new { errors = list });
-            //napravi posebnu klasu za error: AppException
         }
     }
 }

@@ -22,8 +22,7 @@ abstract class BaseProvider<T> with ChangeNotifier {
 
   BaseProvider(String endpoint) {
     _baseUrl =
-        const String.fromEnvironment("baseUrl", defaultValue: "https://10.0.2.2:7011/");
-    print("baseurl: $_baseUrl");
+        const String.fromEnvironment("baseUrl", defaultValue: "http://10.0.2.2:7011/");
 
     if (_baseUrl!.endsWith("/") == false) {
       _baseUrl = _baseUrl! + "/";
@@ -49,10 +48,8 @@ abstract class BaseProvider<T> with ChangeNotifier {
 
     var jsonRequest = jsonEncode(loginRequest);
     var response = await http!.post(uri, headers: headers, body: jsonRequest);
-    print(response);
 
     if (isValidResponseCode(response)) {
-      print(response.body);
       var data = jsonDecode(response.body);
 
       var userAccountInfo = fromJson(data) as UserAuthInfo;
@@ -61,7 +58,6 @@ abstract class BaseProvider<T> with ChangeNotifier {
 
       return userAccountInfo;
     } else {
-      print(response.body);
       throw Exception("Failed to login: ${response.statusCode}");
     }
   }
@@ -138,8 +134,6 @@ abstract class BaseProvider<T> with ChangeNotifier {
     } else if (response.statusCode == 401) {
       throw new Exception("Unauthorized");
     } else {
-      print('RESPONSE BODY');
-      print(response.body);
       throw new Exception("Something bad happened. Please try again.");
     }
   }
@@ -157,6 +151,8 @@ abstract class BaseProvider<T> with ChangeNotifier {
       var jsonData = jsonDecode(response.body);
       return fromJson(jsonData);
     } else {
+      print('RESPONSE BODY');
+      print(response.body);
       throw new Exception("Unknown error");
     }
   }
@@ -201,74 +197,6 @@ abstract class BaseProvider<T> with ChangeNotifier {
   T fromJson(data) {
     throw Exception("Method not implemented");
   }
-
-  // Future<List<T>> get([dynamic search]) async {
-  //   var url = "$_baseUrl$_endpoint";
-
-  //   if (search != null) {
-  //     String queryString = getQueryString(search);
-  //     url = url + "?" + queryString;
-  //   }
-
-  //   var uri = Uri.parse(url);
-
-  //   Map<String, String> headers = createHeaders();
-  //   print("get me");
-  //   var response = await http!.get(uri, headers: headers);
-  //   print("done $response");
-  //   if (isValidResponseCode(response)) {
-  //     var data = jsonDecode(response.body);
-  //     return data['result'].map((x) => fromJson(x)).cast<T>().toList();
-  //   } else {
-  //     throw Exception("Exception... handle this gracefully");
-  //   }
-  // }
-
-  // Future<T?> insert(dynamic request) async {
-  //   var url = "$_baseUrl$_endpoint";
-  //   var uri = Uri.parse(url);
-
-  //   Map<String, String> headers = createHeaders();
-  //   var jsonRequest = jsonEncode(request);
-  //   var response = await http!.post(uri, headers: headers, body: jsonRequest);
-
-  //   if (isValidResponseCode(response)) {
-  //     var data = jsonDecode(response.body);
-  //     return fromJson(data) as T;
-  //   } else {
-  //     return null;
-  //   }
-  // }
-
-  // Future<T?> update(int id, [dynamic request]) async {
-  //   var url = "$_baseUrl$_endpoint/$id";
-  //   var uri = Uri.parse(url);
-
-  //   Map<String, String> headers = createHeaders();
-
-  //   var response = await http!.put(uri, headers: headers, body: jsonEncode(request));
-
-  //   if (isValidResponseCode(response)) {
-  //     var data = jsonDecode(response.body);
-  //     return fromJson(data) as T;
-  //   } else {
-  //     return null;
-  //   }
-  // }
-
-  // Map<String, String> createHeaders() {
-  //   String? username = Authorization.username;
-  //   String? password = Authorization.password;
-
-  //   String basicAuth = "Basic ${base64Encode(utf8.encode('$username:$password'))}";
-
-  //   var headers = {"Content-Type": "application/json", "Authorization": basicAuth};
-  //   return headers;
-  // }
-
-  // T fromJson(data) {
-  //   throw Exception("Override method");
-  // }
 
   String getQueryString(Map params, {String prefix = '&', bool inRecursion = false}) {
     String query = '';

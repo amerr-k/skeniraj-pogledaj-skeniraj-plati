@@ -11,8 +11,6 @@ namespace SPSP.Services.RecommenderService
 {
     public class RecommenderService : IRecommenderService
     {
-        //static object isLocked = new object();
-        //static ITransformer model = null;
 
         protected readonly MLContext mlContext;
         protected readonly DataDbContext context;

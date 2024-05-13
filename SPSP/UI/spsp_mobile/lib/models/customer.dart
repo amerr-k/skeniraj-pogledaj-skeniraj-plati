@@ -8,8 +8,8 @@ class Customer {
   int id;
   int? userAccountId;
   UserAccount? userAccount;
-  String address;
-  String phone;
+  String? address;
+  String? phone;
   int? penaltyPoints;
   bool? valid;
 

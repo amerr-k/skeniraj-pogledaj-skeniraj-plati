@@ -28,6 +28,7 @@ using Microsoft.ML;
 using Quartz;
 using SPSP.Services.Report;
 using SPSP.Services.Promotion;
+using SPSP.Filters;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -45,8 +46,8 @@ builder.Services.AddQuartz(options =>
 
     var jobKey = JobKey.Create(nameof(RecommenderJob));
 
-    // JOB KOJI ÆE SE IZVRŠAVATI SVAKA 24 SATA, 
-    // ZA POTREBE TESTIRANJA, JOB ÆE IZVRŠITI SAMO JEDNOM I 
+    // JOB KOJI ï¿½E SE IZVRï¿½AVATI SVAKA 24 SATA, 
+    // ZA POTREBE TESTIRANJA, JOB ï¿½E IZVRï¿½ITI SAMO JEDNOM I 
     // POPUNITI TABELU MenuItemPrediction I TrainedData
     //options.AddJob<RecommenderJob>(jobKey)
     //    .AddTrigger(trigger => trigger.ForJob(jobKey)
@@ -99,7 +100,7 @@ builder.Services.AddTransient<ConfirmedReservationState>();
 
 builder.Services.AddControllers(x =>
 {
-    //x.Filters.Add<ErrorFilter>();
+    x.Filters.Add<ErrorFilter>();
 });
 
 builder.Services.AddEndpointsApiExplorer();

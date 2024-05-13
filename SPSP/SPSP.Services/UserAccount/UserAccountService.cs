@@ -4,15 +4,12 @@ using SPSP.Services.Database;
 using SPSP.Services.Base;
 using SPSP.Models.Request.UserAccount;
 using System.Security.Cryptography;
-using System;
 using System.Text;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using SPSP.Models;
-using SPSP.Models.Request.Auth;
-using Newtonsoft.Json.Linq;
 
 namespace SPSP.Services.UserAccount
 {
@@ -24,17 +21,6 @@ namespace SPSP.Services.UserAccount
             : base(context, mapper)
         {
         }
-
-        //public override async Task<Models.UserAccount> Create(UserAccountCreateRequest create)
-        //{
-        //    var userAccountEntity = mapper.Map<Database.UserAccount>(create);
-        //    context.UserAccounts.Add(userAccountEntity);
-
-        //    await PrepareBeforeCreate(userAccountEntity, create);
-
-        //    await context.SaveChangesAsync();
-        //    return mapper.Map<Models.UserAccount>(userAccountEntity);
-        //}
 
         public override async Task PrepareBeforeCreate(Database.UserAccount entity, UserAccountCreateRequest create)
         {
@@ -99,6 +85,11 @@ namespace SPSP.Services.UserAccount
 
             var userAccount = await GetAuthenticatedUserAccount(username, password);
 
+            if(userAccount == null)
+            {
+                throw new AppException("Unijeli ste pogrešne kredencijale.");
+            }
+
             var jwtToken = GenerateJwtToken(userAccount);
 
             return new UserAuthInfo(userAccount, jwtToken);
@@ -129,6 +120,14 @@ namespace SPSP.Services.UserAccount
         public async Task<UserAuthInfo> Register(UserAccountCreateRequest userAccountCreateRequest)
         {
             var userAccount = await Create(userAccountCreateRequest);
+
+            //context.Customers.Add(new Database.Customer
+            //{
+            //    UserAccountId = userAccount.Id
+            //});
+
+            //await context.SaveChangesAsync();
+
             return new UserAuthInfo(userAccount, "");
         }
 

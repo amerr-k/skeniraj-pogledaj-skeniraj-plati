@@ -213,9 +213,9 @@ class HomePage extends StatelessWidget {
                       SnackBar(
                         content: Text(
                           e.toString(),
-                          style: TextStyle(color: Colors.white), // Text color
+                          style: TextStyle(color: Colors.white),
                         ),
-                        backgroundColor: Colors.red, // Background color
+                        backgroundColor: Colors.red,
                       ),
                     );
                   }

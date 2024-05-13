@@ -17,6 +17,7 @@ using SPSP.Services.SaleInvoice;
 using System.Security.Principal;
 using Microsoft.AspNetCore.Http;
 using System.Security.Claims;
+using SPSP.Services.Customer;
 
 namespace SPSP.Services.Order
 {
@@ -24,14 +25,16 @@ namespace SPSP.Services.Order
         : BaseCRUDService<Models.Order, Database.Order, OrderSearchObject, OrderCreateRequest, OrderUpdateRequest>, IOrderService
     {
         protected readonly IOrderItemService orderItemService;
+        protected readonly ICustomerService customerService;
         protected readonly IQRTableService qrTableService;
         private readonly IHttpContextAccessor httpContextAccessor;
-        public OrderService(DataDbContext context, IMapper mapper, IOrderItemService orderItemService, IQRTableService qrTableService, IHttpContextAccessor httpContextAccessor) 
+        public OrderService(DataDbContext context, IMapper mapper, IOrderItemService orderItemService, IQRTableService qrTableService, IHttpContextAccessor httpContextAccessor, ICustomerService customerService) 
             : base(context, mapper)
         {
             this.orderItemService = orderItemService;
             this.qrTableService = qrTableService;
             this.httpContextAccessor = httpContextAccessor;
+            this.customerService = customerService;
         }
 
         public override IQueryable<Database.Order> AddInclude(IQueryable<Database.Order> query, OrderSearchObject search = null)
@@ -108,12 +111,14 @@ namespace SPSP.Services.Order
             return base.AddFilter(query, search);
         }
 
-        public async Task<Models.Order> UpdateStatus(int orderId, OrderStatusEnum orderStatus)
+        public async Task<Models.Order> UpdateStatus(int orderId, OrderStatusEnum orderStatus, int customerId)
         {
+
             var orderEntity = await context.Orders.FindAsync(orderId);
             if (orderEntity != null)
             {
                 orderEntity.Status = OrderStatusEnumExtension.GetValue(orderStatus);
+                orderEntity.CustomerId = customerId;
             }
 
             await context.SaveChangesAsync();

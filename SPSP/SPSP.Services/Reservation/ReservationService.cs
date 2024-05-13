@@ -10,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using SPSP.Models.Request.UserAccount;
 using Microsoft.AspNetCore.Http;
 using System.Security.Claims;
+using SPSP.Services.Customer;
 
 namespace SPSP.Services.Reservation
 {
@@ -18,10 +19,12 @@ namespace SPSP.Services.Reservation
           IReservationService
     {
         public BaseState baseState { get; set; }
-        public ReservationService(BaseState baseState, DataDbContext context, IMapper mapper, IHttpContextAccessor httpContextAccessor) 
+        public ICustomerService customerService;
+        public ReservationService(BaseState baseState, DataDbContext context, IMapper mapper, IHttpContextAccessor httpContextAccessor, ICustomerService customerService) 
             : base(context, mapper)
         {
             this.baseState = baseState;
+            this.customerService = customerService;
 
         }
 
@@ -37,12 +40,32 @@ namespace SPSP.Services.Reservation
 
         public override IQueryable<Database.Reservation> AddFilter(IQueryable<Database.Reservation> query, ReservationSearchObject? search = null)
         {
-
-            if (search.ReservationStatus != null)
+            if(search != null)
             {
-                query = query.Where(x => x.Status == search.ReservationStatus).OrderByDescending(x => x.StartTime);
+                if (search.SearchByCustomer != null && search.SearchByCustomer == true)
+                {
+                    var customer = customerService.GetCustomerAccountInfo();
+                    query = query.Where(x => x.CustomerId == customer.Id);
+                }
+
+                if (search.StartTime != null)
+                {
+                    query = query.Where(x => x.StartTime.Date >= search.StartTime.Value.Date);
+                }
+
+                if (search.EndTime != null)
+                {
+                    query = query.Where(x => x.StartTime.Date <= search.EndTime.Value.Date);
+                }
+
+                if (search.ReservationStatus != null)
+                {
+                    query = query.Where(x => x.Status == search.ReservationStatus);
+                }
+
+                query = query.OrderByDescending(x => x.StartTime);
             }
-            
+
             return base.AddFilter(query, search);
         }
 

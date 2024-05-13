@@ -68,7 +68,6 @@ class _ReservationDetailsCustomerScreenState
   @override
   void didChangeDependencies() async {
     super.didChangeDependencies();
-    // _qrTableSelectorProvider = context.read<QRTableSelectorProvider>();
     _qrTableSelectorProvider = context.watch<QRTableSelectorProvider>();
     _qrTableProvider = context.read<QRTableProvider>();
 
@@ -78,28 +77,6 @@ class _ReservationDetailsCustomerScreenState
     setState(() {
       qrTableDropdownList = qrTableRequestResult.result;
     });
-
-    // if (_qrTableSelectorProvider.reservationDate != null) {
-    //   var qrTableRequestResult = await QRTableProvider().getAllByReservationDate(filter: {
-    //     "reservationDate": _qrTableSelectorProvider.reservationDate,
-    //   });
-    //   setState(() {
-    //     qrTableList = qrTableRequestResult.result;
-    //   });
-    //   setState(() {
-    //     // Update the value of the form field
-    //     _formKey.currentState?.fields["startTime"]?.didChange(DateFormat('dd.MM.yyyy')
-    //         .format(_qrTableSelectorProvider.reservationDate!)
-    //         .toString());
-    //   });
-    // }
-
-    // if (_qrTableSelectorProvider.selectedQRTable != null) {
-    //   setState(() {
-    //     _formKey.currentState
-    //         ?.patchValue({'qrTableId': _qrTableSelectorProvider.selectedQRTable!.id});
-    //   });
-    // }
   }
 
   Future initForm() async {
@@ -210,7 +187,17 @@ class _ReservationDetailsCustomerScreenState
                                   var request =
                                       new Map.from(_formKey.currentState!.value);
                                   var startTime = request['startTime'] as DateTime;
-                                  request['startTime'] = startTime.toIso8601String();
+
+                                  var modifiedStartTime = DateTime(
+                                    startTime.year,
+                                    startTime.month,
+                                    startTime.day,
+                                    19,
+                                    0,
+                                  );
+
+                                  request['startTime'] =
+                                      modifiedStartTime.toIso8601String();
 
                                   try {
                                     if (widget.reservation == null) {
@@ -409,60 +396,3 @@ class _ReservationDetailsCustomerScreenState
     );
   }
 }
-
-
-
-
-  // @override
-  // Widget build(BuildContext context) {
-  //   return MasterScreenWidget(
-  //     title: widget.reservation != null
-  //         ? "Ažuriranje postojeće rezervacije"
-  //         : "Kreiranje nove rezervacije",
-  //     child: Column(
-  //       children: [
-  //         isLoading ? Container() : Expanded(child: _buildForm()),
-  //         Row(
-  //           mainAxisAlignment: MainAxisAlignment.end,
-  //           children: [
-  //             Padding(
-  //               padding: const EdgeInsets.all(10.0),
-  //               child: ElevatedButton(
-  //                   onPressed: () async {
-  //                     _formKey.currentState?.saveAndValidate();
-  //                     // print(_formKey.currentState?.value["code"]);
-  //                     //kopira stvari iz form keya u novu mapu da bi je mogao izmjeniti sa baseimageom
-  //                     var request = new Map.from(_formKey.currentState!.value);
-
-  //                     try {
-  //                       if (widget.reservation == null) {
-  //                         _reservationProvider.create(request);
-  //                       } else {
-  //                         _reservationProvider.update(widget.reservation!.id!, request);
-  //                       }
-  //                     } on Exception catch (e) {
-  //                       showDialog(
-  //                         context: context,
-  //                         builder: ((BuildContext context) => AlertDialog(
-  //                               title: Text("Error"),
-  //                               content: Text(
-  //                                 e.toString(),
-  //                               ),
-  //                               actions: [
-  //                                 TextButton(
-  //                                   onPressed: () => Navigator.pop(context),
-  //                                   child: Text("Uredu"),
-  //                                 ),
-  //                               ],
-  //                             )),
-  //                       );
-  //                     }
-  //                   },
-  //                   child: const Text("Kreiraj")),
-  //             )
-  //           ],
-  //         )
-  //       ],
-  //     ),
-  //   );
-  // }

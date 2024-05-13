@@ -29,10 +29,9 @@ namespace SPSP.Controllers
         }
 
         [HttpGet("GetCustomerAccountInfo")]
-        public async Task<Models.Customer> GetCustomerAccountInfo()
+        public Models.Customer GetCustomerAccountInfo()
         {
-            return await customerService.GetCustomerAccountInfo();
-
+            return customerService.GetCustomerAccountInfo();
 
         }
     }

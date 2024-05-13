@@ -9,6 +9,7 @@ using SPSP.Services.PaymentGatewayData;
 using SPSP.Services.Order;
 using SPSP.Models.Enums;
 using SPSP.Services.OrderEmailPublisher;
+using SPSP.Services.Customer;
 
 namespace SPSP.Services.SaleInvoice
 {
@@ -18,15 +19,17 @@ namespace SPSP.Services.SaleInvoice
         protected readonly ISaleInvoiceItemService saleInvoiceItemService;
         protected readonly IPaymentGatewayDataService paymentGatewayDataService;
         protected readonly IOrderService orderService;
+        protected readonly ICustomerService customerService;
         protected readonly IEmailPublisherService emailPublisherService;
 
-        public SaleInvoiceService(DataDbContext context, IMapper mapper, ISaleInvoiceItemService saleInvoiceItemService, IPaymentGatewayDataService paymentGatewayDataService, IOrderService orderService, IEmailPublisherService emailPublisherService) 
+        public SaleInvoiceService(DataDbContext context, IMapper mapper, ISaleInvoiceItemService saleInvoiceItemService, IPaymentGatewayDataService paymentGatewayDataService, IOrderService orderService, IEmailPublisherService emailPublisherService, ICustomerService customerService) 
             : base(context, mapper)
         {
             this.saleInvoiceItemService = saleInvoiceItemService;
             this.paymentGatewayDataService = paymentGatewayDataService;
             this.orderService = orderService;
             this.emailPublisherService = emailPublisherService;
+            this.customerService = customerService;
         }
 
         public override IQueryable<Database.SaleInvoice> AddInclude(IQueryable<Database.SaleInvoice> query, SaleInvoiceSearchObject search = null)
@@ -52,12 +55,6 @@ namespace SPSP.Services.SaleInvoice
 
             List<Models.SaleInvoiceItem> saleInvoiceItems;
             var saleInvoice = mapper.Map<Models.SaleInvoice>(saleInvoiceEntity);
-            
-            //if (create.SaleInvoiceItems  != null)
-            //{
-            //    saleInvoiceItems = await saleInvoiceItemService.CreateMultiple(create.SaleInvoiceItems, saleInvoiceEntity.Id);
-            //    saleInvoice.SaleInvoiceItems = saleInvoiceItems;
-            //}
 
             if (create.PaymentGatewayData != null)
             {
@@ -66,16 +63,15 @@ namespace SPSP.Services.SaleInvoice
             }
             await context.SaveChangesAsync();
 
-            
-            if(saleInvoiceEntity.Processed != null && saleInvoiceEntity.Processed == true)
+            var customer = customerService.GetCustomerAccountInfo();
+
+            if (saleInvoiceEntity.Processed != null && saleInvoiceEntity.Processed == true)
             {
-                await orderService.UpdateStatus(saleInvoiceEntity.OrderId, OrderStatusEnum.COMPLETED);
-                //await orderService.UpdateStatus(saleInvoiceEntity.OrderId, OrderStatusEnum.ACTIVE);
-                //OVO CES ODKOMENTARISAT JER CE STATUS BITI COMPLETED A NE ACTIVE!!!!
+                await orderService.UpdateStatus(saleInvoiceEntity.OrderId, OrderStatusEnum.COMPLETED, customer.Id);
             }
             else
             {
-                await orderService.UpdateStatus(saleInvoiceEntity.OrderId, OrderStatusEnum.FAILED);
+                await orderService.UpdateStatus(saleInvoiceEntity.OrderId, OrderStatusEnum.FAILED, customer.Id);
             }
 
             createSaleInvoiceEmail(create.PdfInvoice);

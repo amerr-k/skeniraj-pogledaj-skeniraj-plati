@@ -8,7 +8,7 @@ namespace SPSP.Models.Request.Reservation
 {
     public class ReservationUpdateRequest
     {
-        public string ContactInfo { get; set; }
+        public string? ContactInfo { get; set; }
         public string? SpecialRequest { get; set; }
     }
 }

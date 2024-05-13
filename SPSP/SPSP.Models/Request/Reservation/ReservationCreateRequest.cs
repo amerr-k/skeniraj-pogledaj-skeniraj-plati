@@ -13,10 +13,11 @@ namespace SPSP.Models.Request.Reservation
         public int QRTableId { get; set; }
         public string? ContactInfo { get; set; }
         public string? SpecialRequest { get; set; }
-        [Required(AllowEmptyStrings = false, ErrorMessage = "Datum rezervacije je obavezan.")]
-        //[DataType(DataType.DateTime)]
-        public DateTime? StartTime { get; set; }
+
         [DataType(DataType.DateTime)]
+        public DateTime? StartTime { get; set; }
+
+        [DataType(DataType.Date)]
         public DateTime? EndTime { get; set; }
     }
 }

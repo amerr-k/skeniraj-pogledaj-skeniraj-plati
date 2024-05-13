@@ -31,7 +31,7 @@ namespace SPSP.Services.Reservation.StateMachine
         public override async Task<List<string>> GetAllowedActions()
         {
             var allowedActions = await base.GetAllowedActions();
-            allowedActions.Add("cancel"); //mogu li se ovdje staviti create i put on hold ili cu u create-u radit provjeru?
+            allowedActions.Add("cancel");
             return allowedActions;
         }
     }

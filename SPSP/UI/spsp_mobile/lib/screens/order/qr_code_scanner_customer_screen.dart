@@ -20,16 +20,6 @@ class _QRCodeScannerCustomerScreenState extends State<QRCodeScannerCustomerScree
     super.dispose();
   }
 
-  // @override
-  // void reassemble() async {
-  //   super.reassemble();
-
-  //   if (Platform.isAndroid) {
-  //     await _controller!.pauseCamera();
-  //   }
-  //   _controller.resumeCamera();
-  // }
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -83,7 +73,6 @@ class _QRCodeScannerCustomerScreenState extends State<QRCodeScannerCustomerScree
             ? ElevatedButton(
                 onPressed: () {
                   if (barcode != null) {
-                    // Navigator.pop(context);
                     Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(
@@ -104,22 +93,9 @@ class _QRCodeScannerCustomerScreenState extends State<QRCodeScannerCustomerScree
     });
 
     _controller.scannedDataStream.listen((barcode) {
-      print('Scanned data: ${barcode.code}');
       setState(() {
         this.barcode = barcode;
       });
     });
   }
-
-  // void _onQRViewCreated(QRViewController controller) {
-  //   setState(() {
-  //     _controller = controller;
-  //     _controller.scannedDataStream.listen((scanData) {
-  //       print('Scanned data: ${scanData.code}');
-  //       setState(() {
-  //         this.barcode = scanData;
-  //       });
-  //     });
-  //   });
-  // }
 }

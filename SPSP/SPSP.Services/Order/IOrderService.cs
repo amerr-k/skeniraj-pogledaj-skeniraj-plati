@@ -9,6 +9,6 @@ namespace SPSP.Services.Order
     public interface IOrderService 
         : ICRUDService<Models.Order, OrderSearchObject, OrderCreateRequest, OrderUpdateRequest>
     {
-        Task<Models.Order> UpdateStatus(int orderId, OrderStatusEnum orderStatus);
+        Task<Models.Order> UpdateStatus(int orderId, OrderStatusEnum orderStatus, int customerId);
     }
 }

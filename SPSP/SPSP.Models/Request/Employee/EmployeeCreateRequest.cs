@@ -11,6 +11,6 @@ namespace SPSP.Models.Request.Employee
 {
     public class EmployeeCreateRequest : UserAccountCreateRequest
     {
-        //public UserAccountUpdateRequest UserAccount { get; set; }
+
     }
 }

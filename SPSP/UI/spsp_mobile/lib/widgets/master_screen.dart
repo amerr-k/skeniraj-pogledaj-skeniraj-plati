@@ -111,15 +111,3 @@ class _MasterScreenWidgetState extends State<MasterScreenWidget> {
     );
   }
 }
-
-
-      // Open camera
-      //   final cameras = await availableCameras();
-      //   final firstCamera = cameras.last;
-      //   Navigator.push(
-      //     context,
-      //     MaterialPageRoute(
-      //       builder: (context) => CameraCustomerScreen(camera: firstCamera),
-      //     ),
-      //   );
-      // }

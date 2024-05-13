@@ -11,8 +11,7 @@ namespace SPSP.Models.Request.Customer
 {
     public class CustomerCreateRequest : UserAccountCreateRequest
     {
-        //public UserAccountCreateRequest UserAccount { get; set; }
-        public string Address { get; set; }
-        public string Phone { get; set; }
+        public string? Address { get; set; }
+        public string? Phone { get; set; }
     }
 }

@@ -12,8 +12,8 @@ Customer _$CustomerFromJson(Map<String, dynamic> json) => Customer(
       json['userAccount'] == null
           ? null
           : UserAccount.fromJson(json['userAccount'] as Map<String, dynamic>),
-      json['address'] as String,
-      json['phone'] as String,
+      json['address'] as String?,
+      json['phone'] as String?,
       json['penaltyPoints'] as int?,
       json['valid'] as bool?,
     );

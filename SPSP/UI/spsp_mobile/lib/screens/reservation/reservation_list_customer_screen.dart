@@ -110,13 +110,6 @@ class _ReservationListCustomerScreenState extends State<ReservationListCustomerS
                       ),
                     );
                   },
-                  // onPressed: () => showDialog<String>(
-                  //   context: context,
-                  //   builder: (context) => QRTableDialog(
-                  //       qrTableList: qrTableList,
-                  //       // cartProvider: _cartProvider!,
-                  //       setState: setState),
-                  // ),
                   child: const Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -190,20 +183,19 @@ class _ReservationListCustomerScreenState extends State<ReservationListCustomerS
           children: [
             Expanded(
               child: FormBuilderDateTimePicker(
-                name: "orderDateTimeFrom",
+                name: "startTime",
                 decoration: InputDecoration(
                     labelText: "Datum od",
                     suffixIcon: IconButton(
                       icon: const Icon(Icons.close),
                       onPressed: () {
                         setState(() {
-                          _formKey.currentState?.fields['orderDateTimeFrom']?.reset();
+                          _formKey.currentState?.fields['startTime']?.reset();
                         });
                       },
                     )),
                 initialDate: DateTime.now(),
                 firstDate: DateTime(2000),
-                lastDate: DateTime.now(),
                 inputType: InputType.date,
                 format: DateFormat('dd.MM.yyyy'),
                 onChanged: (value) {},
@@ -212,20 +204,19 @@ class _ReservationListCustomerScreenState extends State<ReservationListCustomerS
             ),
             Expanded(
               child: FormBuilderDateTimePicker(
-                name: "orderDateTimeTo",
+                name: "endTime",
                 decoration: InputDecoration(
                     labelText: "Datum do",
                     suffixIcon: IconButton(
                       icon: const Icon(Icons.close),
                       onPressed: () {
                         setState(() {
-                          _formKey.currentState?.fields['orderDateTimeTo']?.reset();
+                          _formKey.currentState?.fields['endTime']?.reset();
                         });
                       },
                     )),
                 initialDate: DateTime.now(),
                 firstDate: DateTime(2000),
-                lastDate: DateTime.now(),
                 inputType: InputType.date,
                 format: DateFormat('dd.MM.yyyy'),
                 onChanged: (value) {},
@@ -236,16 +227,7 @@ class _ReservationListCustomerScreenState extends State<ReservationListCustomerS
               child: FormBuilderDropdown<String>(
                 name: 'reservationStatus',
                 decoration: InputDecoration(
-                    labelText: "Status rezervacije",
-                    suffixIcon: IconButton(
-                      icon: const Icon(
-                        Icons.close,
-                      ),
-                      onPressed: () {
-                        _formKey.currentState!.fields['orderStatus']?.reset();
-                      },
-                    ),
-                    hintText: "Odaberi status narudžbe"),
+                    labelText: "Status rezervacije", hintText: "Odaberi status narudžbe"),
                 items: [
                   DropdownMenuItem<String>(
                     value: ReservationStatus.PENDING_CONFIRMATION.name,

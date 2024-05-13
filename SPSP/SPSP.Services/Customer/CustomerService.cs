@@ -7,6 +7,8 @@ using SPSP.Models.Request.Customer;
 using SPSP.Services.UserAccount;
 using Microsoft.AspNetCore.Http;
 using System.Security.Claims;
+using SPSP.Models;
+using SPSP.Models.Request.UserAccount;
 
 namespace SPSP.Services.Customer
 {
@@ -17,7 +19,7 @@ namespace SPSP.Services.Customer
         protected readonly IUserAccountService userAccountService;
         protected readonly IHttpContextAccessor httpContextAccessor;
 
-        public CustomerService(DataDbContext context, IMapper mapper, IUserAccountService userAccountService, IHttpContextAccessor httpContextAccessor) 
+        public CustomerService(DataDbContext context, IMapper mapper, IUserAccountService userAccountService, IHttpContextAccessor httpContextAccessor)
             : base(context, mapper)
         {
             this.userAccountService = userAccountService;
@@ -59,17 +61,29 @@ namespace SPSP.Services.Customer
             return base.AddInclude(query, search);
         }
 
-        public async Task<Models.Customer> GetCustomerAccountInfo()
+        public Models.Customer GetCustomerAccountInfo()
         {
             var principal = httpContextAccessor.HttpContext?.User;
             var userId = principal?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
-            var customer = await context.Customers
+            var customer = context.Customers
                 .Include(x => x.UserAccount)
                 .Where(x => x.UserAccountId == int.Parse(userId!))
-                .FirstOrDefaultAsync();
+                .FirstOrDefault();
 
             return mapper.Map<Models.Customer>(customer);
+        }
+
+        public async Task<UserAuthInfo> Register(CustomerCreateRequest customerCreateRequest)
+        {
+            var userAccount = await userAccountService.Create(customerCreateRequest);
+
+            var customer = new Database.Customer { UserAccountId = userAccount.Id };
+
+            context.Customers.Add(customer);
+            await context.SaveChangesAsync();
+
+            return new UserAuthInfo(userAccount, "");
         }
     }
 }

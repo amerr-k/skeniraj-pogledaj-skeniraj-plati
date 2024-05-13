@@ -9,7 +9,6 @@ import 'package:spsp_mobile/models/order.dart';
 import 'package:spsp_mobile/models/qr_table.dart';
 import 'package:spsp_mobile/models/search_result.dart';
 import 'package:spsp_mobile/providers/order_provider.dart';
-import 'package:spsp_mobile/screens/menu/menu_item_details_customer_screen.dart';
 import 'package:spsp_mobile/utils/util.dart';
 import 'package:spsp_mobile/widgets/master_screen.dart';
 
@@ -54,13 +53,6 @@ class _OrderListCustomerScreenState extends State<OrderListCustomerScreen> {
   void initState() {
     super.initState();
     _orderProvider = context.read<OrderProvider>();
-    // _qrTableProvider = context.read<QRTableProvider>();
-
-    _initialValue = {
-      'orderStatus': OrderStatus.COMPLETED.name.toString(),
-    };
-
-    // loadQRTableList();
   }
 
   @override
@@ -173,36 +165,6 @@ class _OrderListCustomerScreenState extends State<OrderListCustomerScreen> {
                 format: DateFormat('dd.MM.yyyy'),
                 onChanged: (value) {},
                 onSaved: (value) {},
-              ),
-            ),
-            Expanded(
-              child: FormBuilderDropdown<String>(
-                name: 'orderStatus',
-                decoration: InputDecoration(
-                    labelText: "Status narudžbe",
-                    suffixIcon: IconButton(
-                      icon: const Icon(
-                        Icons.close,
-                      ),
-                      onPressed: () {
-                        _formKey.currentState!.fields['orderStatus']?.reset();
-                      },
-                    ),
-                    hintText: "Odaberi status narudžbe"),
-                items: [
-                  DropdownMenuItem<String>(
-                    value: OrderStatus.ACTIVE.name,
-                    child: Text(OrderStatus.ACTIVE.value),
-                  ),
-                  DropdownMenuItem<String>(
-                    value: OrderStatus.COMPLETED.name,
-                    child: Text(OrderStatus.COMPLETED.value),
-                  ),
-                  DropdownMenuItem<String>(
-                    value: OrderStatus.CANCELED.name,
-                    child: Text(OrderStatus.CANCELED.value),
-                  ),
-                ],
               ),
             ),
             Padding(

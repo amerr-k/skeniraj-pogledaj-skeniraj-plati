@@ -39,15 +39,11 @@ class QRTableReservationDialogScreenState extends State<QRTableReservationDialog
   void initState() {
     super.initState();
     _qrTableProvider = context.read<QRTableProvider>();
-
-    // Initialize qrTableList using QRTableProvider
-    // _fetchQRTables();
   }
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    // Initialize qrTableList using QRTableProvider
     _fetchQRTables();
   }
 
@@ -83,7 +79,6 @@ class QRTableReservationDialogScreenState extends State<QRTableReservationDialog
         child: Center(
           child: Column(
             mainAxisSize: MainAxisSize.min,
-            // mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Padding(
                 padding: const EdgeInsets.all(10.0),
