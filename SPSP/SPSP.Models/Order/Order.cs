@@ -10,6 +10,7 @@ namespace SPSP.Models
         public int Id { get; set; }
         public int? CustomerId { get; set; }
         public int? EmployeeId { get; set; }
+        public int QRTableId { get; set; }
         public DateTime OrderDateTime { get; set; }
         public decimal? TotalAmount { get; set; }
         public decimal? TotalAmountWithVAT { get; set; }
@@ -20,5 +21,7 @@ namespace SPSP.Models
         public virtual Customer Customer { get; set; }
         public virtual Employee Employee { get; set; }
         public virtual ICollection<OrderItem> OrderItems { get; set; }
+        public virtual QRTable QRTable { get; set; }
+
     }
 }

@@ -18,12 +18,13 @@ Order _$OrderFromJson(Map<String, dynamic> json) => Order(
       (json['vatAmount'] as num?)?.toDouble(),
       json['status'] as String?,
       json['qrTableId'] as int?,
+      json['qrTable'] == null
+          ? null
+          : QRTable.fromJson(json['qrTable'] as Map<String, dynamic>),
       (json['orderItems'] as List<dynamic>)
           .map((e) => OrderItem.fromJson(e as Map<String, dynamic>))
           .toList(),
-    )..qrTable = json['qrTable'] == null
-        ? null
-        : QRTable.fromJson(json['qrTable'] as Map<String, dynamic>);
+    );
 
 Map<String, dynamic> _$OrderToJson(Order instance) => <String, dynamic>{
       'id': instance.id,

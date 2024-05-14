@@ -37,7 +37,7 @@ services:
       context: .
       # dockerfile: Dockerfile
     environment:
-      - ConnectionStrings:DefaultConnection=Server=spsp-sql,1433;Database=spsp_db;User=sa;Password=Password1234!;ConnectRetryCount=0; TrustServerCertificate=True
+      - ConnectionStrings:DefaultConnection=Server=spsp-sql,1433;Database=210425;User=sa;Password=Password1234!;ConnectRetryCount=0; TrustServerCertificate=True
       - ASPNETCORE_ENVIRONMENT=Development
       - RABBITMQ_HOST=rabbitmq
       - RABBITMQ_USERNAME=username
@@ -63,12 +63,10 @@ services:
       - RABBITMQ_USERNAME=username
       - RABBITMQ_PASSWORD=test
       - RABBITMQ_VIRTUALHOST=/
-    #   - OUTLOOK_MAIL=travelo-reservations@outlook.com
-    #   - OUTLOOK_PASS=Travelo-pass123
     depends_on:
       - rabbitmq
       - spsp-sql
-      # - spsp-api
+      - spsp-api
     networks:
       - spspnet2024
     ports:

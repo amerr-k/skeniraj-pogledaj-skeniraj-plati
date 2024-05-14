@@ -57,11 +57,11 @@ namespace SPSP.Services.Order
             List<Models.OrderItem> orderItems;
             var order = mapper.Map<Models.Order>(orderEntity);
             
-            if (create.OrderItems  != null)
-            {
-                orderItems = await orderItemService.CreateMultiple(create.OrderItems, orderEntity.Id);
-                order.OrderItems = orderItems;
-            }
+            //if (create.OrderItems  != null)
+            //{
+            //    orderItems = await orderItemService.CreateMultiple(create.OrderItems, orderEntity.Id);
+            //    order.OrderItems = orderItems;
+            //}
 
             await qrTableService.SetIsTaken(create.QRTableId, true);
 
@@ -87,15 +87,15 @@ namespace SPSP.Services.Order
             {
                 if (search.orderDateTimeFrom != null && search.orderDateTimeTo != null)
                 {
-                    query = query.Where(x => x.OrderDateTime >= search.orderDateTimeFrom && x.OrderDateTime <= search.orderDateTimeTo);
+                    query = query.Where(x => x.OrderDateTime.Date >= search.orderDateTimeFrom.Value.Date && x.OrderDateTime.Date <= search.orderDateTimeTo.Value.Date);
                 }
                 else if (search.orderDateTimeFrom != null)
                 {
-                    query = query.Where(x => x.OrderDateTime >= search.orderDateTimeFrom);
+                    query = query.Where(x => x.OrderDateTime.Date >= search.orderDateTimeFrom.Value.Date);
                 }
                 else if (search.orderDateTimeTo != null)
                 {
-                    query = query.Where(x => x.OrderDateTime <= search.orderDateTimeTo);
+                    query = query.Where(x => x.OrderDateTime.Date <= search.orderDateTimeTo.Value.Date);
                 }
             }
 

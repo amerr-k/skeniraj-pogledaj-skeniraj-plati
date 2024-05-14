@@ -91,41 +91,42 @@ class _MenuItemDetailScreenState extends State<MenuItemDetailScreen> {
                 padding: const EdgeInsets.all(10.0),
                 child: ElevatedButton(
                     onPressed: () async {
-                      print(_formKey.currentState?.value["code"]);
-                      var request = new Map.from(_formKey.currentState!.value);
-                      request['image'] =
-                          _base64Image != null ? previewImage : widget.menuItem?.image;
-                      try {
-                        _formKey.currentState?.saveAndValidate();
-                        if (widget.menuItem == null) {
-                          await _menuItemProvider.create(request);
-                        } else {
-                          await _menuItemProvider.update(widget.menuItem!.id!, request);
+                      var isValid = _formKey.currentState?.saveAndValidate() ?? false;
+                      if (isValid) {
+                        var request = new Map.from(_formKey.currentState!.value);
+                        request['image'] =
+                            _base64Image != null ? previewImage : widget.menuItem?.image;
+                        try {
+                          if (widget.menuItem == null) {
+                            await _menuItemProvider.create(request);
+                          } else {
+                            await _menuItemProvider.update(widget.menuItem!.id!, request);
+                          }
+                          Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const MenuItemListScreen(),
+                              ));
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text(
+                                "Uspješno ste sačuvali izmjene",
+                                style: TextStyle(color: Colors.white),
+                              ),
+                              backgroundColor: Colors.green,
+                            ),
+                          );
+                        } on Exception catch (e) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text(
+                                e.toString(),
+                                style: TextStyle(color: Colors.white),
+                              ),
+                              backgroundColor: Colors.red,
+                            ),
+                          );
                         }
-                        Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const MenuItemListScreen(),
-                            ));
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content: Text(
-                              "Uspješno ste sačuvali izmjene",
-                              style: TextStyle(color: Colors.white),
-                            ),
-                            backgroundColor: Colors.green,
-                          ),
-                        );
-                      } on Exception catch (e) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text(
-                              e.toString(),
-                              style: TextStyle(color: Colors.white),
-                            ),
-                            backgroundColor: Colors.red,
-                          ),
-                        );
                       }
                     },
                     child: const Text("Sačuvaj")),
@@ -170,8 +171,11 @@ class _MenuItemDetailScreenState extends State<MenuItemDetailScreen> {
             children: [
               Expanded(
                 child: FormBuilderTextField(
-                  validator: FormBuilderValidators.required(
-                      errorText: "Polje ne smije biti prazno."),
+                  validator: FormBuilderValidators.compose([
+                    FormBuilderValidators.required(errorText: 'Polje je obavezno.'),
+                    FormBuilderValidators.numeric(errorText: 'Unesite ispravnu cijenu.'),
+                    FormBuilderValidators.min(0, errorText: "Unesite ispravnu cijenu"),
+                  ]),
                   decoration: const InputDecoration(labelText: "Cijena(BAM)"),
                   name: "price",
                 ),

@@ -29,6 +29,7 @@ class Order {
       this.vatAmount,
       this.status,
       this.qrTableId,
+      this.qrTable,
       this.orderItems);
 
   factory Order.fromCart(Cart cart) {
@@ -53,6 +54,7 @@ class Order {
       null,
       null,
       cart.qrTable?.id,
+      null,
       orderItems,
     );
   }

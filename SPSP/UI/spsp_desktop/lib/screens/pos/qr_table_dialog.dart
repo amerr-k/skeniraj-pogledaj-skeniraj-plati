@@ -47,12 +47,10 @@ class QRTableDialog extends StatelessWidget {
                   TableWidget(
                     qrTableList: qrTableList,
                     onTap: (tableNumber) {
-                      if (!qrTableList[tableNumber - 1].isTaken) {
-                        setState(() {
-                          cartProvider?.cart.qrTable = qrTableList[tableNumber - 1];
-                        });
-                        Navigator.pop(context);
-                      }
+                      setState(() {
+                        cartProvider?.cart.qrTable = qrTableList[tableNumber - 1];
+                      });
+                      Navigator.pop(context);
                     },
                   ),
                   const SizedBox(width: 25),

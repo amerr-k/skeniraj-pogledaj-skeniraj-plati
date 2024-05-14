@@ -19,7 +19,7 @@ class TableWidget extends StatelessWidget {
         children: List.generate(
           qrTableList.length,
           (index) {
-            bool isTaken = qrTableList[index].isTaken;
+            // bool isTaken = qrTableList[index].isTaken;
             int tableNumber = index + 1;
             return GestureDetector(
               onTap: () {
@@ -27,7 +27,7 @@ class TableWidget extends StatelessWidget {
               },
               child: Container(
                 decoration: BoxDecoration(
-                  color: isTaken ? Colors.red : Colors.green,
+                  color: Colors.green,
                   borderRadius: BorderRadius.circular(120.0),
                 ),
                 margin: EdgeInsets.all(8.0),

@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using static SPSP.Services.RecommenderService.RecommenderModels;
 using System.IO;
 using Microsoft.Extensions.Logging;
+using Microsoft.IdentityModel.Tokens;
 
 namespace SPSP.Services.RecommenderService
 {
@@ -64,33 +65,37 @@ namespace SPSP.Services.RecommenderService
 
             var traindata = mlContext.Data.LoadFromEnumerable(data);
 
-            MatrixFactorizationTrainer.Options options = new MatrixFactorizationTrainer.Options();
-            options.MatrixColumnIndexColumnName = nameof(ProductEntry.ProductID);
-            options.MatrixRowIndexColumnName = nameof(ProductEntry.CoPurchaseProductID);
-            options.LabelColumnName = "Label";
-            options.LossFunction = MatrixFactorizationTrainer.LossFunctionType.SquareLossOneClass;
-            options.Alpha = 0.01;
-            options.Lambda = 0.025;
-            options.NumberOfIterations = 100;
-            options.C = 0.00001;
-
-            var est = mlContext.Recommendation().Trainers.MatrixFactorization(options);
-
-            ITransformer model = est.Fit(traindata);
-
-            mlContext.Model.Save(model, traindata.Schema, memoryStream);
-
-            var trainedData = new TrainedData
+            if(tmpData != null && !data.IsNullOrEmpty())
             {
-                Data = memoryStream.ToArray(),
-                TrainedDateTime = DateTime.Now,
-            };
+                MatrixFactorizationTrainer.Options options = new MatrixFactorizationTrainer.Options();
+                options.MatrixColumnIndexColumnName = nameof(ProductEntry.ProductID);
+                options.MatrixRowIndexColumnName = nameof(ProductEntry.CoPurchaseProductID);
+                options.LabelColumnName = "Label";
+                options.LossFunction = MatrixFactorizationTrainer.LossFunctionType.SquareLossOneClass;
+                options.Alpha = 0.01;
+                options.Lambda = 0.025;
+                options.NumberOfIterations = 100;
+                options.C = 0.00001;
 
-            context.TrainedDatas.Add(trainedData);
+                var est = mlContext.Recommendation().Trainers.MatrixFactorization(options);
 
-            context.SaveChanges();
+                ITransformer model = est.Fit(traindata);
 
-            return trainedData;
+                mlContext.Model.Save(model, traindata.Schema, memoryStream);
+
+                var trainedData = new TrainedData
+                {
+                    Data = memoryStream.ToArray(),
+                    TrainedDateTime = DateTime.Now,
+                };
+
+                context.TrainedDatas.Add(trainedData);
+
+                context.SaveChanges();
+                return trainedData;
+            }
+
+            return null;
         }
 
         public void Predict(TrainedData trainedData)

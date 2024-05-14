@@ -1,4 +1,3 @@
-import 'package:http/http.dart';
 import 'package:spsp_desktop/models/customer.dart';
 import 'package:spsp_desktop/models/supplier.dart';
 

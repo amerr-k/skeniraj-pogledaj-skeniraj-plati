@@ -1,6 +1,4 @@
 import 'package:json_annotation/json_annotation.dart';
-import 'package:spsp_desktop/models/cart.dart';
-import 'package:spsp_desktop/models/menu_item.dart';
 import 'package:spsp_desktop/models/menu_item.dart';
 
 part 'order_item.g.dart';

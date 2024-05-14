@@ -206,6 +206,7 @@ class _OrderListScreenState extends State<OrderListScreen> {
                 _formKey.currentState?.saveAndValidate();
                 var request = Map.from(_formKey.currentState!.value);
                 request['isOrderItemsIncluded'] = true;
+                request['isQRTablesIncluded'] = true;
                 var orderListSearchResult = await _orderProvider.get(filter: request);
                 setState(() {
                   orderList = orderListSearchResult!.result;
@@ -221,7 +222,7 @@ class _OrderListScreenState extends State<OrderListScreen> {
 
   List<Widget> _buildOrderListCards() {
     if (orderList.length == 0) {
-      return [Text("Nema podataka")];
+      return [Text("Podaci za tražene narudžbe ne postoje.")];
     }
 
     List<Widget> list = orderList
@@ -255,7 +256,10 @@ class _OrderListScreenState extends State<OrderListScreen> {
                                 style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                 )),
-                            trailing: Text("1",
+                            trailing: Text(
+                                x.qrTable != null
+                                    ? x.qrTable!.tableNumber.toString()
+                                    : "",
                                 style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                 )),
