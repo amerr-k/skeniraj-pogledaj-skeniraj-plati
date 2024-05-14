@@ -67,11 +67,11 @@ namespace SPSP.Services.SaleInvoice
 
             if (saleInvoiceEntity.Processed != null && saleInvoiceEntity.Processed == true)
             {
-                await orderService.UpdateStatus(saleInvoiceEntity.OrderId, OrderStatusEnum.COMPLETED, customer.Id);
+                await orderService.UpdateStatusAndCustomer(saleInvoiceEntity.OrderId, OrderStatusEnum.COMPLETED, customer.Id);
             }
             else
             {
-                await orderService.UpdateStatus(saleInvoiceEntity.OrderId, OrderStatusEnum.FAILED, customer.Id);
+                await orderService.UpdateStatusAndCustomer(saleInvoiceEntity.OrderId, OrderStatusEnum.FAILED, customer.Id);
             }
 
             createSaleInvoiceEmail(create.PdfInvoice);

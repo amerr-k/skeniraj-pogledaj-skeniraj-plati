@@ -1,6 +1,7 @@
 import 'package:json_annotation/json_annotation.dart';
 import 'package:spsp_desktop/models/cart.dart';
 import 'package:spsp_desktop/models/order_item.dart';
+import 'package:spsp_desktop/models/qr_table.dart';
 
 part 'order.g.dart';
 
@@ -15,6 +16,7 @@ class Order {
   double? vatAmount;
   String? status;
   int? qrTableId;
+  QRTable? qrTable;
   List<OrderItem> orderItems;
 
   Order(
@@ -34,22 +36,22 @@ class Order {
       return OrderItem(
         null,
         null,
-        cartItem.menuItem.id, // Assuming menuItem has an id attribute
+        cartItem.menuItem.id,
         cartItem.quantity,
         cartItem.subtotal,
-        null, // menuItem will be populated later
+        null,
       );
     }).toList();
 
     return Order(
-      null, // id
-      null, // customerId
-      DateTime.now(), // orderDateTime
-      cart.totalAmount, // totalAmount
-      cart.totalAmountWithVAT, // totalAmountWithVAT
-      cart.VAT, // VAT
-      null, // VATAmount
-      null, // status
+      null,
+      null,
+      DateTime.now(),
+      cart.totalAmount,
+      cart.totalAmountWithVAT,
+      cart.VAT,
+      null,
+      null,
       cart.qrTable?.id,
       orderItems,
     );

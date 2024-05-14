@@ -9,7 +9,6 @@ class Cart {
   QRTable? qrTable;
   double VAT = 0.17;
 
-  // Getter method
   double get totalAmount => totalAmountWithVAT - (totalAmountWithVAT * VAT);
 }
 

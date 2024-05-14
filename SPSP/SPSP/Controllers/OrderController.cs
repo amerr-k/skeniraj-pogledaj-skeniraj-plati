@@ -10,11 +10,27 @@ namespace SPSP.Controllers
 
     public class OrderController : BaseCRUDController<Models.Order, OrderSearchObject, OrderCreateRequest, OrderUpdateRequest>
     {
+
+        private readonly IOrderService orderService;
+
         public OrderController(ILogger<BaseCRUDController<Models.Order, OrderSearchObject, OrderCreateRequest, OrderUpdateRequest>> logger, IOrderService service)
             : base(logger, service)
         {
-
+            this.orderService = service;
         }
+
+        [HttpPut("{id}/cancel")]
+        public virtual async Task<Models.Order> CancelOrder(int id)
+        {
+            return await orderService.CancelOrder(id);
+        }
+
+        [HttpPut("{id}/complete")]
+        public virtual async Task<Models.Order> CompleteOrder(int id)
+        {
+            return await orderService.CompleteOrder(id);
+        }
+
     }
 }
 

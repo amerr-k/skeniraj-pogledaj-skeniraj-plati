@@ -2,19 +2,11 @@
 using Microsoft.EntityFrameworkCore;
 using SPSP.Models.SearchObjects;
 using SPSP.Services.Database;
-using System.Linq;
-using System.Threading.Tasks;
 using SPSP.Services.Base;
 using SPSP.Models.Request.Order;
-using SPSP.Models.Request.Employee;
-using SPSP.Services.UserAccount;
 using SPSP.Services.OrderItem;
 using SPSP.Services.QRTable;
-using SPSP.Models;
 using SPSP.Models.Enums;
-using SPSP.Services.OrderEmailPublisher;
-using SPSP.Services.SaleInvoice;
-using System.Security.Principal;
 using Microsoft.AspNetCore.Http;
 using System.Security.Claims;
 using SPSP.Services.Customer;
@@ -44,6 +36,11 @@ namespace SPSP.Services.Order
                 query = query.Include(x => x.OrderItems) 
                             .ThenInclude(o => o.MenuItem)
                             .ThenInclude(c => c.Category);
+            }
+
+            if (search.IsQRTablesIncluded == true)
+            {
+                query = query.Include(x => x.QRTable);
             }
 
             return base.AddInclude(query, search);
@@ -111,7 +108,7 @@ namespace SPSP.Services.Order
             return base.AddFilter(query, search);
         }
 
-        public async Task<Models.Order> UpdateStatus(int orderId, OrderStatusEnum orderStatus, int customerId)
+        public async Task<Models.Order> UpdateStatusAndCustomer(int orderId, OrderStatusEnum orderStatus, int customerId)
         {
 
             var orderEntity = await context.Orders.FindAsync(orderId);
@@ -126,6 +123,28 @@ namespace SPSP.Services.Order
             return mapper.Map<Models.Order>(orderEntity);
         }
 
+        public async Task<Models.Order> CancelOrder(int id)
+        {
+            var orderEntity = await context.Orders.FindAsync(id);
+            if (orderEntity != null)
+            {
+                orderEntity.Status = OrderStatusEnumExtension.GetValue(OrderStatusEnum.CANCELED);
+            }
+            await context.SaveChangesAsync();
 
+            return mapper.Map<Models.Order>(orderEntity);
+        }
+
+        public async Task<Models.Order> CompleteOrder(int id)
+        {
+            var orderEntity = await context.Orders.FindAsync(id);
+            if (orderEntity != null)
+            {
+                orderEntity.Status = OrderStatusEnumExtension.GetValue(OrderStatusEnum.COMPLETED);
+            }
+            await context.SaveChangesAsync();
+
+            return mapper.Map<Models.Order>(orderEntity);
+        }
     }
 }

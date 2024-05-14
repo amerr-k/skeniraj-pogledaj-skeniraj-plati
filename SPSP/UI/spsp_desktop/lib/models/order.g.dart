@@ -21,7 +21,9 @@ Order _$OrderFromJson(Map<String, dynamic> json) => Order(
       (json['orderItems'] as List<dynamic>)
           .map((e) => OrderItem.fromJson(e as Map<String, dynamic>))
           .toList(),
-    );
+    )..qrTable = json['qrTable'] == null
+        ? null
+        : QRTable.fromJson(json['qrTable'] as Map<String, dynamic>);
 
 Map<String, dynamic> _$OrderToJson(Order instance) => <String, dynamic>{
       'id': instance.id,
@@ -33,5 +35,6 @@ Map<String, dynamic> _$OrderToJson(Order instance) => <String, dynamic>{
       'vatAmount': instance.vatAmount,
       'status': instance.status,
       'qrTableId': instance.qrTableId,
+      'qrTable': instance.qrTable,
       'orderItems': instance.orderItems,
     };

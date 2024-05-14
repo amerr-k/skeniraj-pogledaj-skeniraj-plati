@@ -9,7 +9,9 @@ part of 'promotion.dart';
 Promotion _$PromotionFromJson(Map<String, dynamic> json) => Promotion(
       json['id'] as int,
       DateTime.parse(json['startTime'] as String),
-      json['endTime'] == null ? null : DateTime.parse(json['endTime'] as String),
+      json['endTime'] == null
+          ? null
+          : DateTime.parse(json['endTime'] as String),
       json['description'] as String,
       json['active'] as bool,
       json['menuItemId'] as int?,

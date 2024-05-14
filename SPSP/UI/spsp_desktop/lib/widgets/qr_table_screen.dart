@@ -3,7 +3,7 @@ import 'package:spsp_desktop/models/qr_table.dart';
 
 class TableWidget extends StatelessWidget {
   final List<QRTable> qrTableList;
-  final Function(int) onTap; // Callback function when a table is tapped
+  final Function(int) onTap;
 
   TableWidget({required this.qrTableList, required this.onTap});
 
@@ -33,8 +33,8 @@ class TableWidget extends StatelessWidget {
                 margin: EdgeInsets.all(8.0),
                 child: Center(
                   child: Text(
-                    'Table $tableNumber',
-                    style: TextStyle(
+                    'Sto $tableNumber',
+                    style: const TextStyle(
                       color: Colors.white,
                       fontSize: 14.0,
                     ),

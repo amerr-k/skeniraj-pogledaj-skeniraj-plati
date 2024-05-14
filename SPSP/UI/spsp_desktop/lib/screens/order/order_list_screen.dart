@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-import 'package:spsp_desktop/models/customer.dart';
 import 'package:spsp_desktop/models/enums/OrderStatus.dart';
 import 'package:spsp_desktop/models/invoice.dart';
 import 'package:spsp_desktop/models/order.dart';
@@ -13,12 +12,10 @@ import 'package:spsp_desktop/models/search_result.dart';
 import 'package:spsp_desktop/models/supplier.dart';
 import 'package:spsp_desktop/pdf_utils/pdf_api.dart';
 import 'package:spsp_desktop/pdf_utils/pdf_invoice_api.dart';
-import 'package:spsp_desktop/providers/cart_provider.dart';
 import 'package:spsp_desktop/providers/order_provider.dart';
 import 'package:spsp_desktop/providers/qr_table_provider.dart';
 import 'package:spsp_desktop/utils/util.dart';
 import 'package:spsp_desktop/widgets/master_screen.dart';
-import 'package:pdf/pdf.dart';
 
 class OrderListScreen extends StatefulWidget {
   const OrderListScreen({super.key});
@@ -38,17 +35,21 @@ class _OrderListScreenState extends State<OrderListScreen> {
 
   List<Order> orderList = [];
   List<QRTable> qrTableList = [];
-
+  bool isLoading = true;
   @override
   void didChangeDependencies() async {
     super.didChangeDependencies();
 
     _orderProvider = context.read<OrderProvider>();
 
-    orderListRequestResult = await _orderProvider?.get(
-        filter: {"orderStatus": OrderStatus.ACTIVE.name, "isOrderItemsIncluded": true});
+    orderListRequestResult = await _orderProvider?.get(filter: {
+      "orderStatus": OrderStatus.ACTIVE.name,
+      "isOrderItemsIncluded": true,
+      "isQRTablesIncluded": true
+    });
     setState(() {
       orderList = orderListRequestResult!.result;
+      isLoading = false;
     });
   }
 
@@ -79,7 +80,16 @@ class _OrderListScreenState extends State<OrderListScreen> {
           Expanded(
             child: Container(
               child: Column(
-                children: [_buildSearch(), _buildOrderListView()],
+                children: [
+                  _buildSearch(),
+                  isLoading
+                      ? Center(
+                          child: Container(
+                            child: CircularProgressIndicator(),
+                          ),
+                        )
+                      : _buildOrderListView()
+                ],
               ),
             ),
           ),
@@ -211,7 +221,7 @@ class _OrderListScreenState extends State<OrderListScreen> {
 
   List<Widget> _buildOrderListCards() {
     if (orderList.length == 0) {
-      return [Text("Lista narudžbi je prazna.")];
+      return [Text("Nema podataka")];
     }
 
     List<Widget> list = orderList
@@ -234,7 +244,8 @@ class _OrderListScreenState extends State<OrderListScreen> {
                             title: Text("Status narudžbe",
                                 style: TextStyle(
                                     fontWeight: FontWeight.bold, color: Colors.black)),
-                            trailing: Text(x.status!,
+                            trailing: Text(
+                                OrderStatusExtension.enumFromString(x.status!).value,
                                 style: TextStyle(fontWeight: FontWeight.bold)),
                           )),
                           Container(
@@ -287,69 +298,146 @@ class _OrderListScreenState extends State<OrderListScreen> {
                             trailing: Text(formatNumber(x.totalAmountWithVAT),
                                 style: TextStyle(fontWeight: FontWeight.bold)),
                           )),
-                          Padding(
-                            padding: EdgeInsets.symmetric(vertical: 12.0),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                ElevatedButton(
-                                  style: ElevatedButton.styleFrom(
-                                    foregroundColor: Colors.blue,
-                                    backgroundColor: Colors.white, // Text color
-                                  ),
-                                  onPressed: () async {
-                                    // OTKAZII
-                                  },
-                                  child: const Text("Otkaži"),
-                                ),
-                                SizedBox(
-                                  width: 10,
-                                ),
-                                ElevatedButton(
-                                  style: ElevatedButton.styleFrom(
-                                    foregroundColor: Colors.blue,
-                                    backgroundColor: Colors.white, // Text color
-                                  ),
-                                  onPressed: () async {
-                                    final items = x.orderItems.map((orderItem) {
-                                      final name = orderItem.menuItem?.name ?? '';
-                                      final unitPrice = orderItem.menuItem?.price ?? 0.0;
-                                      final subtotal = orderItem.subtotal ?? 0.0;
-                                      final quantity = orderItem.quantity ?? 0;
-
-                                      return InvoiceItem(
-                                          name: name,
-                                          quantity: quantity,
-                                          unitPrice: unitPrice,
-                                          subtotal: subtotal);
-                                    }).toList();
-
-                                    final invoice = Invoice(
-                                      supplier: Supplier(
-                                          name: 'Caffe Pub - Skeniraj Plati',
-                                          address: 'ul. Abdulaha Sidrana, Sarajevo, BiH',
-                                          contactInfo: "+387 62 123 321"),
-                                      info: InvoiceInfo(
-                                        date: x.orderDateTime!,
-                                        number: x.id.toString(),
+                          x.status == "ACTIVE"
+                              ? Padding(
+                                  padding: EdgeInsets.symmetric(vertical: 12.0),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                    children: [
+                                      ElevatedButton(
+                                        style: ElevatedButton.styleFrom(
+                                          foregroundColor: Colors.blue,
+                                          backgroundColor: Colors.white,
+                                        ),
+                                        onPressed: () async {
+                                          try {
+                                            await _orderProvider.cancelOrder(x.id!);
+                                            setState(() {
+                                              isLoading = false;
+                                            });
+                                            orderListRequestResult =
+                                                await _orderProvider?.get(filter: {
+                                              "orderStatus": OrderStatus.ACTIVE.name,
+                                              "isOrderItemsIncluded": true,
+                                              "isQRTablesIncluded": true
+                                            });
+                                            setState(() {
+                                              orderList = orderListRequestResult!.result;
+                                              isLoading = false;
+                                            });
+                                            ScaffoldMessenger.of(context).showSnackBar(
+                                              const SnackBar(
+                                                content: Text(
+                                                  "Uspješno ste otkazali narudžbu",
+                                                  style: TextStyle(color: Colors.white),
+                                                ),
+                                                backgroundColor: Colors.green,
+                                              ),
+                                            );
+                                          } on Exception catch (e) {
+                                            ScaffoldMessenger.of(context).showSnackBar(
+                                              SnackBar(
+                                                content: Text(
+                                                  e.toString(),
+                                                  style: TextStyle(color: Colors.white),
+                                                ),
+                                                backgroundColor: Colors.red,
+                                              ),
+                                            );
+                                          }
+                                        },
+                                        child: const Text("Otkaži"),
                                       ),
-                                      orderDateTime: x.orderDateTime!,
-                                      totalAmount: x.totalAmount!,
-                                      totalAmountWithVAT: x.totalAmountWithVAT!,
-                                      vat: x.vat!,
-                                      items: items,
-                                    );
+                                      SizedBox(
+                                        width: 10,
+                                      ),
+                                      ElevatedButton(
+                                        style: ElevatedButton.styleFrom(
+                                          foregroundColor: Colors.blue,
+                                          backgroundColor: Colors.white,
+                                        ),
+                                        onPressed: () async {
+                                          final items = x.orderItems.map((orderItem) {
+                                            final name = orderItem.menuItem?.name ?? '';
+                                            final unitPrice =
+                                                orderItem.menuItem?.price ?? 0.0;
+                                            final subtotal = orderItem.subtotal ?? 0.0;
+                                            final quantity = orderItem.quantity ?? 0;
 
-                                    final pdfFile =
-                                        await PdfInvoiceApi.generateAsFile(invoice);
+                                            return InvoiceItem(
+                                                name: name,
+                                                quantity: quantity,
+                                                unitPrice: unitPrice,
+                                                subtotal: subtotal);
+                                          }).toList();
 
-                                    PdfApi.openFile(pdfFile);
-                                  },
-                                  child: const Text("Generiši račun"),
+                                          final invoice = Invoice(
+                                            supplier: Supplier(
+                                                name: 'Caffe Pub - Skeniraj Plati',
+                                                address:
+                                                    'ul. Abdulaha Sidrana, Sarajevo, BiH',
+                                                contactInfo: "+387 62 123 321"),
+                                            info: InvoiceInfo(
+                                              date: x.orderDateTime!,
+                                              number: x.id.toString(),
+                                            ),
+                                            orderDateTime: x.orderDateTime!,
+                                            totalAmount: x.totalAmount!,
+                                            totalAmountWithVAT: x.totalAmountWithVAT!,
+                                            vat: x.vat!,
+                                            items: items,
+                                          );
+
+                                          try {
+                                            await _orderProvider.completeOrder(x.id!);
+
+                                            final pdfFile =
+                                                await PdfInvoiceApi.generateAsFile(
+                                                    invoice);
+
+                                            PdfApi.openFile(pdfFile);
+
+                                            setState(() {
+                                              isLoading = false;
+                                            });
+                                            orderListRequestResult =
+                                                await _orderProvider?.get(filter: {
+                                              "orderStatus": OrderStatus.ACTIVE.name,
+                                              "isOrderItemsIncluded": true,
+                                              "isQRTablesIncluded": true
+                                            });
+                                            setState(() {
+                                              orderList = orderListRequestResult!.result;
+                                              isLoading = false;
+                                            });
+
+                                            ScaffoldMessenger.of(context).showSnackBar(
+                                              const SnackBar(
+                                                content: Text(
+                                                  "Uspješno ste generisali račun",
+                                                  style: TextStyle(color: Colors.white),
+                                                ),
+                                                backgroundColor: Colors.green,
+                                              ),
+                                            );
+                                          } on Exception catch (e) {
+                                            ScaffoldMessenger.of(context).showSnackBar(
+                                              SnackBar(
+                                                content: Text(
+                                                  e.toString(),
+                                                  style: TextStyle(color: Colors.white),
+                                                ),
+                                                backgroundColor: Colors.red,
+                                              ),
+                                            );
+                                          }
+                                        },
+                                        child: const Text("Generiši račun"),
+                                      )
+                                    ],
+                                  ),
                                 )
-                              ],
-                            ),
-                          ),
+                              : Container(),
                         ],
                       ),
                     ),

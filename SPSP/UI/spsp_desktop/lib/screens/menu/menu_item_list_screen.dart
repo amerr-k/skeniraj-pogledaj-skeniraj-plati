@@ -7,14 +7,14 @@ import 'package:spsp_desktop/screens/menu/menu_item_detail_screen.dart';
 import 'package:spsp_desktop/utils/util.dart';
 import 'package:spsp_desktop/widgets/master_screen.dart';
 
-class MenuItemScreen extends StatefulWidget {
-  const MenuItemScreen({super.key});
+class MenuItemListScreen extends StatefulWidget {
+  const MenuItemListScreen({super.key});
 
   @override
-  State<MenuItemScreen> createState() => _MenuItemScreenState();
+  State<MenuItemListScreen> createState() => _MenuItemListScreenState();
 }
 
-class _MenuItemScreenState extends State<MenuItemScreen> {
+class _MenuItemListScreenState extends State<MenuItemListScreen> {
   RequestResult<MenuItem>? searchResult;
   late MenuItemProvider _menuItemProvider;
   final TextEditingController _ftsController = TextEditingController();

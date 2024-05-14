@@ -132,7 +132,9 @@ class _PromotionListScreenState extends State<PromotionListScreen> {
                                 Text(Utils.formatDate(e.startTime!) ?? ""),
                               ),
                               DataCell(
-                                Text(Utils.formatDate(e.endTime!) ?? ""),
+                                Text(e.endTime != null
+                                    ? Utils.formatDate(e.endTime!)
+                                    : ""),
                               ),
                               DataCell(
                                 Text(e.menuItem!.name! ?? ""),
@@ -157,7 +159,7 @@ class _PromotionListScreenState extends State<PromotionListScreen> {
           Expanded(
             child: TextField(
               decoration: const InputDecoration(
-                labelText: "Naziv, šifra ili opis",
+                labelText: "Naziv meni stavke ili opis promocije",
               ),
               controller: _ftsController,
             ),

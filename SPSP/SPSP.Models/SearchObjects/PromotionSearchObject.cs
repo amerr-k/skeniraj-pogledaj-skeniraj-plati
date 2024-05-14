@@ -9,5 +9,7 @@ namespace SPSP.Models.SearchObjects
     public class PromotionSearchObject : BaseSearchObject
     {
         public bool? IsOnlyTodaysIncluded {  get; set; }
+        public string? FTS { get; set; }
+
     }
 }

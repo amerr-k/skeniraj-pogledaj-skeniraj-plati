@@ -15,4 +15,17 @@ extension OrderStatusExtension on OrderStatus {
         return 'OTKAZANO';
     }
   }
+
+  static OrderStatus enumFromString(String value) {
+    if (!_stringToEnum.containsKey(value)) {
+      throw ArgumentError('Invalid value: $value');
+    }
+    return _stringToEnum[value]!;
+  }
 }
+
+final Map<String, OrderStatus> _stringToEnum = {
+  'ACTIVE': OrderStatus.ACTIVE,
+  'COMPLETED': OrderStatus.COMPLETED,
+  'CANCELED': OrderStatus.CANCELED,
+};

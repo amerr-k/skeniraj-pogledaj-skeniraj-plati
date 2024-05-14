@@ -20,7 +20,6 @@ class QRTableDialog extends StatelessWidget {
         child: Center(
           child: Column(
             mainAxisSize: MainAxisSize.min,
-            // mainAxisAlignment: MainAxisAlignment.center,
             children: [
               const Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -49,7 +48,6 @@ class QRTableDialog extends StatelessWidget {
                     qrTableList: qrTableList,
                     onTap: (tableNumber) {
                       if (!qrTableList[tableNumber - 1].isTaken) {
-                        print('Table $tableNumber tapped!');
                         setState(() {
                           cartProvider?.cart.qrTable = qrTableList[tableNumber - 1];
                         });

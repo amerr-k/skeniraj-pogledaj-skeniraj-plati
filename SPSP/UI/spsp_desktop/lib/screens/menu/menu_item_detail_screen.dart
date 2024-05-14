@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
+import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:provider/provider.dart';
 import 'package:spsp_desktop/models/category.dart';
 import 'package:spsp_desktop/models/menu.dart';
@@ -12,6 +13,7 @@ import 'package:spsp_desktop/models/search_result.dart';
 import 'package:spsp_desktop/providers/category_provider.dart';
 import 'package:spsp_desktop/providers/menu_item_provider.dart';
 import 'package:spsp_desktop/providers/menu_provider.dart';
+import 'package:spsp_desktop/screens/menu/menu_item_list_screen.dart';
 import 'package:spsp_desktop/utils/util.dart';
 import 'package:spsp_desktop/widgets/master_screen.dart';
 
@@ -58,36 +60,14 @@ class _MenuItemDetailScreenState extends State<MenuItemDetailScreen> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-
-    // _categoryProvider = context.read<CategoryProvider>();
-
-    // var data = await _categoryProvider.get();
-    // setState(() {
-    //   searchResult = data;
-    // });
-
-    // if (widget.menuItem != null) {
-    //   setState(() {
-    //     _formKey.currentState?.patchValue(
-    //       {'code': widget.menuItem?.code},
-    //     );
-    //   });
-    // }
   }
 
   Future initForm() async {
     categoryResult = await CategoryProvider().get();
     menuResult = await MenuProvider().get();
-    print(categoryResult);
-    print(menuResult);
-    // setState(() async {
-    //   categoryResult = await CategoryProvider().get();
-    // });
     setState(() {
       isLoading = false;
     });
-    print("widget.menuItem");
-    print(widget.menuItem);
   }
 
   @override
@@ -101,55 +81,50 @@ class _MenuItemDetailScreenState extends State<MenuItemDetailScreen> {
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               Padding(
-                  padding: const EdgeInsets.all(10.0),
-                  child: ElevatedButton(
-                    child: const Text("Natrag"),
-                    onPressed: () => Navigator.pop(context),
-                  )),
+                padding: const EdgeInsets.all(10.0),
+                child: ElevatedButton(
+                  child: const Text("Natrag"),
+                  onPressed: () => Navigator.pop(context),
+                ),
+              ),
               Padding(
                 padding: const EdgeInsets.all(10.0),
                 child: ElevatedButton(
                     onPressed: () async {
-                      _formKey.currentState?.saveAndValidate();
                       print(_formKey.currentState?.value["code"]);
-                      //kopira stvari iz form keya u novu mapu da bi je mogao izmjeniti sa baseimageom
                       var request = new Map.from(_formKey.currentState!.value);
-                      request['image'] = _base64Image;
-
+                      request['image'] =
+                          _base64Image != null ? previewImage : widget.menuItem?.image;
                       try {
+                        _formKey.currentState?.saveAndValidate();
                         if (widget.menuItem == null) {
-                          _menuItemProvider.create(request);
+                          await _menuItemProvider.create(request);
                         } else {
-                          _menuItemProvider.update(widget.menuItem!.id!, request);
+                          await _menuItemProvider.update(widget.menuItem!.id!, request);
                         }
-
-                        showDialog(
-                          context: context,
-                          builder: ((BuildContext context) => AlertDialog(
-                                title: Text("Uspješno ste sačuvali izmjene"),
-                                actions: [
-                                  TextButton(
-                                    onPressed: () => Navigator.pop(context),
-                                    child: Text("Uredu"),
-                                  ),
-                                ],
-                              )),
+                        Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const MenuItemListScreen(),
+                            ));
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text(
+                              "Uspješno ste sačuvali izmjene",
+                              style: TextStyle(color: Colors.white),
+                            ),
+                            backgroundColor: Colors.green,
+                          ),
                         );
                       } on Exception catch (e) {
-                        showDialog(
-                          context: context,
-                          builder: ((BuildContext context) => AlertDialog(
-                                title: Text("Error"),
-                                content: Text(
-                                  e.toString(),
-                                ),
-                                actions: [
-                                  TextButton(
-                                    onPressed: () => Navigator.pop(context),
-                                    child: Text("Uredu"),
-                                  ),
-                                ],
-                              )),
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text(
+                              e.toString(),
+                              style: TextStyle(color: Colors.white),
+                            ),
+                            backgroundColor: Colors.red,
+                          ),
                         );
                       }
                     },
@@ -172,6 +147,8 @@ class _MenuItemDetailScreenState extends State<MenuItemDetailScreen> {
             children: [
               Expanded(
                 child: FormBuilderTextField(
+                  validator: FormBuilderValidators.required(
+                      errorText: "Polje ne smije biti prazno."),
                   decoration: const InputDecoration(labelText: "Naziv"),
                   name: "name",
                 ),
@@ -181,6 +158,8 @@ class _MenuItemDetailScreenState extends State<MenuItemDetailScreen> {
               ),
               Expanded(
                 child: FormBuilderTextField(
+                  validator: FormBuilderValidators.required(
+                      errorText: "Polje ne smije biti prazno."),
                   decoration: const InputDecoration(labelText: "Šifra"),
                   name: "code",
                 ),
@@ -191,6 +170,8 @@ class _MenuItemDetailScreenState extends State<MenuItemDetailScreen> {
             children: [
               Expanded(
                 child: FormBuilderTextField(
+                  validator: FormBuilderValidators.required(
+                      errorText: "Polje ne smije biti prazno."),
                   decoration: const InputDecoration(labelText: "Cijena(BAM)"),
                   name: "price",
                 ),
@@ -200,6 +181,7 @@ class _MenuItemDetailScreenState extends State<MenuItemDetailScreen> {
               ),
               Expanded(
                 child: FormBuilderTextField(
+                  enabled: false,
                   decoration: const InputDecoration(labelText: "Na stanju"),
                   name: "inStorage",
                 ),
@@ -235,6 +217,8 @@ class _MenuItemDetailScreenState extends State<MenuItemDetailScreen> {
               SizedBox(width: 10),
               Expanded(
                 child: FormBuilderDropdown<String>(
+                  validator: FormBuilderValidators.required(
+                      errorText: "Polje ne smije biti prazno."),
                   name: 'menuId',
                   decoration: InputDecoration(
                       labelText: "Meni",

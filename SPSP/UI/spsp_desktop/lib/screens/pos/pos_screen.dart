@@ -5,7 +5,6 @@ import 'package:provider/provider.dart';
 import 'package:spsp_desktop/models/cart.dart';
 import 'package:spsp_desktop/models/menu_item.dart';
 import 'package:spsp_desktop/models/order.dart';
-import 'package:spsp_desktop/models/order_item.dart';
 import 'package:spsp_desktop/models/qr_table.dart';
 import 'package:spsp_desktop/models/search_result.dart';
 import 'package:spsp_desktop/providers/cart_provider.dart';
@@ -15,7 +14,6 @@ import 'package:spsp_desktop/providers/qr_table_provider.dart';
 import 'package:spsp_desktop/screens/pos/qr_table_dialog.dart';
 import 'package:spsp_desktop/utils/util.dart';
 import 'package:spsp_desktop/widgets/master_screen.dart';
-import 'package:spsp_desktop/widgets/qr_table_screen.dart';
 
 class POSScreen extends StatefulWidget {
   const POSScreen({super.key});
@@ -247,10 +245,32 @@ class _POSScreenState extends State<POSScreen> {
                       setState: setState),
                 );
               } else {
-                var create = Order.fromCart(_cartProvider!.cart);
-                await _orderProvider.create(create);
-                _cartProvider!.cart = Cart();
-                _cartProvider!.notifyListeners();
+                if (_cartProvider!.cart.items.isNotEmpty) {
+                  var create = Order.fromCart(_cartProvider!.cart);
+                  await _orderProvider.create(create);
+                  _cartProvider!.cart = Cart();
+                  _cartProvider!.notifyListeners();
+                  await loadQRTableList();
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(
+                        "Uspješno ste kreirali narudžbu",
+                        style: TextStyle(color: Colors.white),
+                      ),
+                      backgroundColor: Colors.green,
+                    ),
+                  );
+                } else {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(
+                        "Vaša narudžba je prazna",
+                        style: TextStyle(color: Colors.white),
+                      ),
+                      backgroundColor: Colors.red,
+                    ),
+                  );
+                }
               }
             },
             child: const Text("Kreiraj narudžbu"),
@@ -272,9 +292,9 @@ class _POSScreenState extends State<POSScreen> {
                   Material(
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10),
-                      side: const BorderSide(color: Colors.blue),
+                      side: const BorderSide(color: Color.fromRGBO(33, 150, 243, 1)),
                     ),
-                    color: Colors.blue,
+                    color: Color.fromRGBO(33, 150, 243, 1),
                     child: Column(
                       children: [
                         InkWell(

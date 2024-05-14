@@ -117,7 +117,7 @@ Widget _buildLoginButton(BuildContext context, TextEditingController usernameCon
 
           Navigator.of(context).push(
             MaterialPageRoute(
-              builder: (context) => const MenuItemScreen(),
+              builder: (context) => const MenuItemListScreen(),
             ),
           );
         } on Exception catch (e) {

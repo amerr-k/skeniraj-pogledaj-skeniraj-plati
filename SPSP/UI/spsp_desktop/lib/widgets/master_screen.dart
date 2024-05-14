@@ -37,7 +37,7 @@ class _MasterScreenWidgetState extends State<MasterScreenWidget> {
               title: Text("Proizvodi"),
               onTap: () {
                 Navigator.of(context).push(
-                    MaterialPageRoute(builder: (context) => const MenuItemScreen()));
+                    MaterialPageRoute(builder: (context) => const MenuItemListScreen()));
               },
             ),
             ListTile(

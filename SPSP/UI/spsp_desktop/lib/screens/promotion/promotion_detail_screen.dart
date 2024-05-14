@@ -1,21 +1,14 @@
-import 'dart:convert';
-import 'dart:io';
-
-import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
+import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-import 'package:spsp_desktop/models/category.dart';
-import 'package:spsp_desktop/models/menu.dart';
 import 'package:spsp_desktop/models/menu_item.dart';
 import 'package:spsp_desktop/models/promotion.dart';
 import 'package:spsp_desktop/models/search_result.dart';
-import 'package:spsp_desktop/providers/category_provider.dart';
 import 'package:spsp_desktop/providers/menu_item_provider.dart';
-import 'package:spsp_desktop/providers/menu_provider.dart';
 import 'package:spsp_desktop/providers/promotion_provider.dart';
-import 'package:spsp_desktop/utils/util.dart';
+import 'package:spsp_desktop/screens/promotion/promotion_list_screen.dart';
 import 'package:spsp_desktop/widgets/master_screen.dart';
 
 class PromotionDetailScreen extends StatefulWidget {
@@ -43,10 +36,6 @@ class _PromotionDetailScreenState extends State<PromotionDetailScreen> {
       'endTime': widget.promotion?.endTime,
       'menuItemId': widget.promotion?.menuItemId.toString(),
       'active': widget.promotion?.active,
-      // 'inStorage': widget.promotion?.inStorage?.toString(),
-      // 'categoryId': widget.promotion?.categoryId?.toString(),
-      // 'menuId': widget.promotion?.menuId?.toString(),
-      // 'image': widget.promotion?.image,
     };
 
     _promotionProvider = context.read<PromotionProvider>();
@@ -89,46 +78,50 @@ class _PromotionDetailScreenState extends State<PromotionDetailScreen> {
                 padding: const EdgeInsets.all(10.0),
                 child: ElevatedButton(
                     onPressed: () async {
-                      _formKey.currentState?.saveAndValidate();
-                      var request = new Map.from(_formKey.currentState!.value);
-                      var startTime = request['startTime'] as DateTime;
-                      request['startTime'] = startTime.toIso8601String();
-                      var endTime = request['endTime'] as DateTime;
-                      request['endTime'] = endTime.toIso8601String();
-                      try {
-                        if (widget.promotion == null) {
-                          await _promotionProvider.create(request);
-                        } else {
-                          await _promotionProvider.update(widget.promotion!.id!, request);
+                      bool isValid = _formKey.currentState?.saveAndValidate() ?? false;
+                      if (isValid) {
+                        var request = new Map.from(_formKey.currentState!.value);
+                        if (request['startTime'] != null) {
+                          var startTime = request['startTime'] as DateTime;
+                          request['startTime'] = startTime.toIso8601String();
                         }
-                        showDialog(
-                          context: context,
-                          builder: ((BuildContext context) => AlertDialog(
-                                title: Text("Uspješno ste sačuvali izmjene"),
-                                actions: [
-                                  TextButton(
-                                    onPressed: () => Navigator.pop(context),
-                                    child: Text("Uredu"),
-                                  ),
-                                ],
-                              )),
-                        );
-                      } on Exception catch (e) {
-                        showDialog(
-                          context: context,
-                          builder: ((BuildContext context) => AlertDialog(
-                                title: Text("Error"),
-                                content: Text(
-                                  e.toString(),
-                                ),
-                                actions: [
-                                  TextButton(
-                                    onPressed: () => Navigator.pop(context),
-                                    child: Text("Uredu"),
-                                  ),
-                                ],
-                              )),
-                        );
+                        if (request['endTime'] != null) {
+                          var endTime = request['endTime'] as DateTime;
+                          request['endTime'] = endTime.toIso8601String();
+                        }
+
+                        try {
+                          if (widget.promotion == null) {
+                            await _promotionProvider.create(request);
+                          } else {
+                            await _promotionProvider.update(
+                                widget.promotion!.id!, request);
+                          }
+                          Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const PromotionListScreen(),
+                              ));
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text(
+                                "Uspješno ste sačuvali izmjene",
+                                style: TextStyle(color: Colors.white),
+                              ),
+                              backgroundColor: Colors.green,
+                            ),
+                          );
+                        } on Exception catch (e) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text(
+                                e.toString(),
+                                style: TextStyle(color: Colors.white),
+                              ),
+                              backgroundColor: Colors.red,
+                            ),
+                          );
+                        }
                       }
                     },
                     child: const Text("Sačuvaj")),
@@ -160,11 +153,12 @@ class _PromotionDetailScreenState extends State<PromotionDetailScreen> {
                 Expanded(
                   child: FormBuilderDateTimePicker(
                     name: "startTime",
+                    validator: FormBuilderValidators.required(
+                        errorText: "Polje ne smije biti prazno."),
                     decoration: const InputDecoration(
                       labelText: "Datum početka promocije",
                     ),
                     initialDate: DateTime.now(),
-                    firstDate: DateTime.now(),
                     inputType: InputType.date,
                     format: DateFormat('dd.MM.yyyy'),
                     onChanged: (value) async {
@@ -184,7 +178,6 @@ class _PromotionDetailScreenState extends State<PromotionDetailScreen> {
                       labelText: "Datum kraja promocije",
                     ),
                     initialDate: DateTime.now(),
-                    firstDate: DateTime.now(),
                     inputType: InputType.date,
                     format: DateFormat('dd.MM.yyyy'),
                     onChanged: (value) async {
@@ -234,7 +227,6 @@ class _PromotionDetailScreenState extends State<PromotionDetailScreen> {
               children: [
                 Expanded(
                   child: FormBuilderSwitch(
-                    // decoration: const InputDecoration(labelText: "Promocija aktivna"),
                     name: "active",
                     title: const Text("Promocija aktivna"),
                   ),

@@ -18,6 +18,7 @@ namespace SPSP.Services.Promotion
         {
         }
 
+
         public override IQueryable<Database.Promotion> AddFilter(IQueryable<Database.Promotion> query, PromotionSearchObject search)
         {
             if (search.IsOnlyTodaysIncluded != null && search.IsOnlyTodaysIncluded == true)
@@ -25,6 +26,12 @@ namespace SPSP.Services.Promotion
                 var today = DateTime.Now.Date;
                 query = query.Where(x => x.StartTime.Date <= today && (x.EndTime == null || x.EndTime >= today) && x.Active);
             }
+
+            if (!string.IsNullOrWhiteSpace(search?.FTS))
+            {
+                query = query.Include(x=>x.MenuItem).Where(x => x.Description != null && x.Description.Contains(search.FTS) || x.MenuItem.Name.Contains(search.FTS));
+            }
+
 
             return base.AddFilter(query, search);
         }
