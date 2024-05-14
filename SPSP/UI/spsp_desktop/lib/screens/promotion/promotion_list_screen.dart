@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:spsp_desktop/models/promotion.dart';
+import 'package:spsp_desktop/models/promotion/promotion.dart';
 import 'package:spsp_desktop/models/search_result.dart';
 import 'package:spsp_desktop/providers/promotion_provider.dart';
 import 'package:spsp_desktop/screens/promotion/promotion_detail_screen.dart';

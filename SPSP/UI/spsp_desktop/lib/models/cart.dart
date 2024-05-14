@@ -1,6 +1,5 @@
-import 'package:spsp_desktop/models/menu_item.dart';
-import 'package:spsp_desktop/models/order_item.dart';
-import 'package:spsp_desktop/models/qr_table.dart';
+import 'package:spsp_desktop/models/menu_item/menu_item.dart';
+import 'package:spsp_desktop/models/qr_table/qr_table.dart';
 
 class Cart {
   List<CartItem> items = [];

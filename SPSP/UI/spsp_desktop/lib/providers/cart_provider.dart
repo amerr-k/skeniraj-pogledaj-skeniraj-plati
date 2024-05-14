@@ -1,7 +1,7 @@
 import 'package:collection/collection.dart';
 import 'package:flutter/widgets.dart';
 import 'package:spsp_desktop/models/cart.dart';
-import 'package:spsp_desktop/models/menu_item.dart';
+import 'package:spsp_desktop/models/menu_item/menu_item.dart';
 
 class CartProvider with ChangeNotifier {
   Cart cart = Cart();

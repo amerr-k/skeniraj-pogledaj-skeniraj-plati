@@ -127,15 +127,16 @@ class _OrderListCustomerScreenState extends State<OrderListCustomerScreen> {
               child: FormBuilderDateTimePicker(
                 name: "orderDateTimeFrom",
                 decoration: InputDecoration(
-                    labelText: "Datum od",
-                    suffixIcon: IconButton(
-                      icon: const Icon(Icons.close),
-                      onPressed: () {
-                        setState(() {
-                          _formKey.currentState?.fields['orderDateTimeFrom']?.reset();
-                        });
-                      },
-                    )),
+                  labelText: "Datum od",
+                  suffixIcon: IconButton(
+                    icon: const Icon(Icons.close),
+                    onPressed: () {
+                      setState(() {
+                        _formKey.currentState?.fields['orderDateTimeFrom']?.reset();
+                      });
+                    },
+                  ),
+                ),
                 initialDate: DateTime.now(),
                 firstDate: DateTime(2000),
                 lastDate: DateTime.now(),

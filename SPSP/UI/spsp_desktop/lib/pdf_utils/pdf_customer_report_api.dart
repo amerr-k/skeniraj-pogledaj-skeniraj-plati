@@ -4,10 +4,10 @@ import 'package:intl/intl.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:pdf/widgets.dart';
-import 'package:spsp_desktop/models/customer.dart';
-import 'package:spsp_desktop/models/customer_report_data.dart';
-import 'package:spsp_desktop/models/invoice.dart';
-import 'package:spsp_desktop/models/supplier.dart';
+import 'package:spsp_desktop/models/invoice/customer.dart';
+import 'package:spsp_desktop/models/customer_report_data/customer_report_data.dart';
+import 'package:spsp_desktop/models/invoice/invoice.dart';
+import 'package:spsp_desktop/models/invoice/supplier.dart';
 import 'package:spsp_desktop/pdf_utils/pdf_api.dart';
 
 class PdfCustomerReportApi {

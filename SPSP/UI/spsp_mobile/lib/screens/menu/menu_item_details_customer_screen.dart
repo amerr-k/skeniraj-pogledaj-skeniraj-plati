@@ -140,16 +140,16 @@ class _MenuItemDetailsCustomerScreenState extends State<MenuItemDetailsCustomerS
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Container(
-              decoration: BoxDecoration(
-                color: Colors.yellow,
-                border: Border.all(
-                  color: Colors.black,
-                  width: 1.0,
-                ),
-              ),
-              child: menuItemPredictions != null
-                  ? ListTile(
+            menuItemPredictions != null && menuItemPredictions!.isNotEmpty == true
+                ? Container(
+                    decoration: BoxDecoration(
+                      color: Colors.yellow,
+                      border: Border.all(
+                        color: Colors.black,
+                        width: 1.0,
+                      ),
+                    ),
+                    child: ListTile(
                       onTap: () => {
                         Navigator.pushReplacement(
                           context,
@@ -160,11 +160,11 @@ class _MenuItemDetailsCustomerScreenState extends State<MenuItemDetailsCustomerS
                                     .id!
                                     .toString()),
                           ),
-                        )
+                        ),
                       },
                       subtitle: Text(
                         menuItemPredictions![0].recommendedMenuItem!.name!,
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontStyle: FontStyle.italic,
                           fontWeight: FontWeight.bold,
                         ),
@@ -172,15 +172,15 @@ class _MenuItemDetailsCustomerScreenState extends State<MenuItemDetailsCustomerS
                       title: Text("Tražili ste uz ovaj proizvod!"),
                       trailing: Text(
                         "ZA SAMO ${formatNumber(menuItemPredictions![0].recommendedMenuItem!.price)} BAM",
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontStyle: FontStyle.italic,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                    )
-                  : Text(""),
-            ),
-            SizedBox(height: 10),
+                    ),
+                  )
+                : Container(),
+            const SizedBox(height: 10),
             Container(
               width: 300,
               height: 300,
@@ -203,7 +203,7 @@ class _MenuItemDetailsCustomerScreenState extends State<MenuItemDetailsCustomerS
                 style: const TextStyle(color: Colors.black)),
             SizedBox(height: 10),
             FormBuilderTextField(
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 labelText: "Opis",
                 labelStyle: TextStyle(color: Colors.black),
               ),
@@ -227,16 +227,16 @@ class _MenuItemDetailsCustomerScreenState extends State<MenuItemDetailsCustomerS
                 enabled: false,
                 style: const TextStyle(color: Colors.black)),
             SizedBox(height: 10),
-            Container(
-              decoration: BoxDecoration(
-                color: Colors.yellow,
-                border: Border.all(
-                  color: Colors.black,
-                  width: 1.0,
-                ),
-              ),
-              child: menuItemPredictions != null
-                  ? ListTile(
+            menuItemPredictions != null && menuItemPredictions!.isNotEmpty == true
+                ? Container(
+                    decoration: BoxDecoration(
+                      color: Colors.yellow,
+                      border: Border.all(
+                        color: Colors.black,
+                        width: 1.0,
+                      ),
+                    ),
+                    child: ListTile(
                       onTap: () => {
                         Navigator.pushReplacement(
                           context,
@@ -251,22 +251,22 @@ class _MenuItemDetailsCustomerScreenState extends State<MenuItemDetailsCustomerS
                       },
                       subtitle: Text(
                         menuItemPredictions![1].recommendedMenuItem!.name!,
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontStyle: FontStyle.italic,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      title: Text("Tražili ste uz ovaj proizvod!"),
+                      title: const Text("Tražili ste uz ovaj proizvod!"),
                       trailing: Text(
                         "ZA SAMO ${formatNumber(menuItemPredictions![1].recommendedMenuItem!.price)} BAM",
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontStyle: FontStyle.italic,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                    )
-                  : Text(""),
-            ),
+                    ),
+                  )
+                : Container(),
           ],
         ),
       ),

@@ -36,9 +36,9 @@ class _RegistrationScreenScreenState extends State<RegistrationScreenScreen> {
   Future<void> initForm() async {}
 
   Widget build(BuildContext context) {
-    return MasterScreenWidget(
-      title: "Registracija",
-      child: SingleChildScrollView(
+    return Scaffold(
+      appBar: AppBar(title: const Text("Registracija")),
+      body: SingleChildScrollView(
         child: Column(
           children: [
             _buildForm(),
@@ -49,32 +49,34 @@ class _RegistrationScreenScreenState extends State<RegistrationScreenScreen> {
                   padding: const EdgeInsets.all(10.0),
                   child: ElevatedButton(
                       onPressed: () async {
-                        _formKey.currentState?.saveAndValidate();
-                        var request = new Map.from(_formKey.currentState!.value);
+                        var isValid = _formKey.currentState?.saveAndValidate() ?? false;
+                        if (isValid) {
+                          var request = new Map.from(_formKey.currentState!.value);
 
-                        try {
-                          await _authProvider.register(request);
+                          try {
+                            await _authProvider.register(request);
 
-                          Navigator.pop(context);
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              content: Text(
-                                "Uspješno ste kreirali račun",
-                                style: TextStyle(color: Colors.white),
+                            Navigator.pop(context);
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text(
+                                  "Uspješno ste kreirali račun",
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                                backgroundColor: Colors.green,
                               ),
-                              backgroundColor: Colors.green,
-                            ),
-                          );
-                        } on Exception catch (e) {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: Text(
-                                e.toString(),
-                                style: TextStyle(color: Colors.white),
+                            );
+                          } on Exception catch (e) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text(
+                                  e.toString(),
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                                backgroundColor: Colors.red,
                               ),
-                              backgroundColor: Colors.red,
-                            ),
-                          );
+                            );
+                          }
                         }
                       },
                       child: const Text("Kreiraj račun")),
@@ -93,7 +95,6 @@ class _RegistrationScreenScreenState extends State<RegistrationScreenScreen> {
       child: FormBuilder(
         key: _formKey,
         initialValue: _initialValue,
-        autovalidateMode: AutovalidateMode.onUserInteraction,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
@@ -113,6 +114,8 @@ class _RegistrationScreenScreenState extends State<RegistrationScreenScreen> {
               ),
               name: "lastName",
               style: TextStyle(color: Colors.black),
+              validator: FormBuilderValidators.required(
+                  errorText: "Polje ne smije biti prazno."),
             ),
             SizedBox(height: 10),
             FormBuilderTextField(
@@ -120,8 +123,10 @@ class _RegistrationScreenScreenState extends State<RegistrationScreenScreen> {
                   labelText: "E-mail", labelStyle: TextStyle(color: Colors.black)),
               name: "email",
               style: const TextStyle(color: Colors.black),
-              validator: FormBuilderValidators.email(
-                  errorText: "Unesite ispravnu e-mail adresu."),
+              validator: FormBuilderValidators.compose([
+                FormBuilderValidators.required(errorText: "Polje ne smije biti prazno."),
+                FormBuilderValidators.email(errorText: "Unesite ispravnu email adresu."),
+              ]),
             ),
             SizedBox(height: 10),
             FormBuilderTextField(

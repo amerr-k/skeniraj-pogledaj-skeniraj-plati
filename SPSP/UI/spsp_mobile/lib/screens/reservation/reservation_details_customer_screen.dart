@@ -81,8 +81,11 @@ class _ReservationDetailsCustomerScreenState
 
   Future initForm() async {
     if (widget.reservation != null) {
-      var allowedActionsResult =
-          await _reservationProvider.getAllowedActions(widget.reservation!.id.toString());
+      List<String> allowedActionsResult = [];
+      if (widget.reservation!.status != "CANCELED") {
+        allowedActionsResult = await _reservationProvider
+            .getAllowedActions(widget.reservation!.id.toString());
+      }
       setState(() {
         allowedMethods = allowedActionsResult;
       });
@@ -104,10 +107,6 @@ class _ReservationDetailsCustomerScreenState
   }
 
   void updateStartTimeFormField(String newValue) async {
-    // setState(() {
-    //   // Update the value of the form field
-    //   _formKey.currentState?.fields["startTime"]?.didChange(newValue);
-    // });
     setState(() {
       _formKey.currentState?.fields["qrTableId"]?.didChange("");
     });
@@ -119,7 +118,6 @@ class _ReservationDetailsCustomerScreenState
         qrTableList = qrTableRequestResult.result;
       });
       setState(() {
-        // Update the value of the form field
         _formKey.currentState?.fields["startTime"]
             ?.didChange(_qrTableSelectorProvider.reservationDate!);
       });
@@ -183,56 +181,59 @@ class _ReservationDetailsCustomerScreenState
                                       MaterialStateProperty.all<Color>(Colors.black),
                                 ),
                                 onPressed: () async {
-                                  _formKey.currentState?.saveAndValidate();
-                                  var request =
-                                      new Map.from(_formKey.currentState!.value);
-                                  var startTime = request['startTime'] as DateTime;
+                                  var isValid =
+                                      _formKey.currentState?.saveAndValidate() ?? false;
+                                  if (isValid) {
+                                    var request =
+                                        new Map.from(_formKey.currentState!.value);
+                                    var startTime = request['startTime'] as DateTime;
 
-                                  var modifiedStartTime = DateTime(
-                                    startTime.year,
-                                    startTime.month,
-                                    startTime.day,
-                                    19,
-                                    0,
-                                  );
+                                    var modifiedStartTime = DateTime(
+                                      startTime.year,
+                                      startTime.month,
+                                      startTime.day,
+                                      19,
+                                      0,
+                                    );
 
-                                  request['startTime'] =
-                                      modifiedStartTime.toIso8601String();
+                                    request['startTime'] =
+                                        modifiedStartTime.toIso8601String();
 
-                                  try {
-                                    if (widget.reservation == null) {
-                                      await _reservationProvider.create(request);
-                                    } else {
-                                      await _reservationProvider.update(
-                                          widget.reservation!.id!, request);
+                                    try {
+                                      if (widget.reservation == null) {
+                                        await _reservationProvider.create(request);
+                                      } else {
+                                        await _reservationProvider.update(
+                                            widget.reservation!.id!, request);
+                                      }
+
+                                      Navigator.pushReplacement(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              ReservationListCustomerScreen(),
+                                        ),
+                                      );
+                                      ScaffoldMessenger.of(context).showSnackBar(
+                                        const SnackBar(
+                                          content: Text(
+                                            "Uspješno ste kreirali rezervaciju",
+                                            style: TextStyle(color: Colors.white),
+                                          ),
+                                          backgroundColor: Colors.green,
+                                        ),
+                                      );
+                                    } on Exception catch (e) {
+                                      ScaffoldMessenger.of(context).showSnackBar(
+                                        SnackBar(
+                                          content: Text(
+                                            e.toString(),
+                                            style: TextStyle(color: Colors.white),
+                                          ),
+                                          backgroundColor: Colors.red,
+                                        ),
+                                      );
                                     }
-
-                                    Navigator.pushReplacement(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) =>
-                                            ReservationListCustomerScreen(),
-                                      ),
-                                    );
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                      const SnackBar(
-                                        content: Text(
-                                          "Uspješno ste kreirali rezervaciju",
-                                          style: TextStyle(color: Colors.white),
-                                        ),
-                                        backgroundColor: Colors.green,
-                                      ),
-                                    );
-                                  } on Exception catch (e) {
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                      SnackBar(
-                                        content: Text(
-                                          e.toString(),
-                                          style: TextStyle(color: Colors.white),
-                                        ),
-                                        backgroundColor: Colors.red,
-                                      ),
-                                    );
                                   }
                                 },
                                 child: Text("Kreiraj"),

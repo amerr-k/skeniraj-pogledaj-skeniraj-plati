@@ -8,8 +8,5 @@ namespace SPSP.Models.Request.QRTable
 {
     public class QRTableUpdateRequest
     {
-        public string QRCode { get; set; }
-        public int? TableNumber { get; set; }
-        public bool? Valid { get; set; }
     }
 }

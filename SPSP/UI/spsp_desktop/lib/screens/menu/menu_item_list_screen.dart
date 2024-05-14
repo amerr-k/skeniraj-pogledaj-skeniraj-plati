@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:spsp_desktop/models/menu_item.dart';
+import 'package:spsp_desktop/models/menu_item/menu_item.dart';
 import 'package:spsp_desktop/models/search_result.dart';
 import 'package:spsp_desktop/providers/menu_item_provider.dart';
 import 'package:spsp_desktop/screens/menu/menu_item_detail_screen.dart';

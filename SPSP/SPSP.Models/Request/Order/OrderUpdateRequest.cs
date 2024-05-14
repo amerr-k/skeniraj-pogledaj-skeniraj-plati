@@ -9,9 +9,9 @@ namespace SPSP.Models.Request.Order
 
         public int? CustomerId { get; set; }
         public int? EmployeeId { get; set; }
-        [DataType(DataType.DateTime)]
         public decimal? TotalAmountWithVAT { get; set; }
         public decimal? VAT { get; set; }
+        [Required]
         public int QRTableId { get; set; }
 
     }

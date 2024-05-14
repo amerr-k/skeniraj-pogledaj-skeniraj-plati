@@ -1,7 +1,7 @@
 import 'package:json_annotation/json_annotation.dart';
 import 'package:spsp_desktop/models/cart.dart';
-import 'package:spsp_desktop/models/order_item.dart';
-import 'package:spsp_desktop/models/qr_table.dart';
+import 'package:spsp_desktop/models/order_item/order_item.dart';
+import 'package:spsp_desktop/models/qr_table/qr_table.dart';
 
 part 'order.g.dart';
 

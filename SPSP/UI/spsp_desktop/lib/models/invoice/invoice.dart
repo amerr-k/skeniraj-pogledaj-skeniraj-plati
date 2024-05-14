@@ -1,5 +1,5 @@
-import 'package:spsp_desktop/models/customer.dart';
-import 'package:spsp_desktop/models/supplier.dart';
+import 'package:spsp_desktop/models/invoice/customer.dart';
+import 'package:spsp_desktop/models/invoice/supplier.dart';
 
 class Invoice {
   final InvoiceInfo? info;

@@ -3,9 +3,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:spsp_desktop/models/cart.dart';
-import 'package:spsp_desktop/models/menu_item.dart';
-import 'package:spsp_desktop/models/order.dart';
-import 'package:spsp_desktop/models/qr_table.dart';
+import 'package:spsp_desktop/models/menu_item/menu_item.dart';
+import 'package:spsp_desktop/models/order/order.dart';
+import 'package:spsp_desktop/models/qr_table/qr_table.dart';
 import 'package:spsp_desktop/models/search_result.dart';
 import 'package:spsp_desktop/providers/cart_provider.dart';
 import 'package:spsp_desktop/providers/menu_item_provider.dart';

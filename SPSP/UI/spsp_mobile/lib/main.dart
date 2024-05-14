@@ -55,9 +55,6 @@ void main() async {
                     fontSize: 24,
                     fontWeight: FontWeight.bold,
                     fontStyle: FontStyle.italic))),
-
-        // Define the default `TextTheme`. Use this to specify the default
-        // text styling for headlines, titles, bodies of text, and more.
         textTheme: const TextTheme(
           headline1: TextStyle(fontSize: 72.0, fontWeight: FontWeight.bold),
           headline6: TextStyle(fontSize: 36.0, fontStyle: FontStyle.italic),
@@ -86,8 +83,6 @@ void main() async {
           return MaterialPageRoute(
               builder: (context) => MenuItemDetailsCustomerScreen(
                     id: id,
-                    // menuItem: MenuItem(
-                    //     1, "name", "description", 1, 10, "code", "image", 1, 1),
                   ));
         }
 
@@ -97,8 +92,6 @@ void main() async {
           return MaterialPageRoute(
             builder: (context) => ReservationDetailsCustomerScreen(
               id: id,
-              // menuItem: MenuItem(
-              //     1, "name", "description", 1, 10, "code", "image", 1, 1),
             ),
           );
         }
@@ -111,13 +104,10 @@ class HomePage extends StatelessWidget {
   TextEditingController _usernameController = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
   late UserProvider _userProvider;
-  // late MenuItemProvider _menuItemProvider;
   late AuthProvider _authProvider;
 
   @override
   Widget build(BuildContext context) {
-    // _userProvider = Provider.of<UserProvider>(context, listen: false);
-    // _menuItemProvider = Provider.of<MenuItemProvider>(context, listen: false);
     _authProvider = Provider.of<AuthProvider>(context, listen: false);
 
     return Scaffold(
@@ -126,28 +116,25 @@ class HomePage extends StatelessWidget {
           children: [
             Container(
               height: 400,
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                   image: DecorationImage(
                       image: AssetImage("assets/images/background.jpg"),
                       fit: BoxFit.fill)),
               child: Stack(children: [
-                Container(
-                  child: Center(
-                    child: Container(
-                      child: Padding(
-                        padding: EdgeInsets.only(left: 10.0, right: 10.0),
-                        child: Text(
-                          "SKENIRAJ - PLATI",
-                          style: TextStyle(
-                              // backgroundColor: Color.fromARGB(155, 226, 227, 240),
-                              color: Color.fromARGB(255, 118, 83, 243),
-                              fontSize: 40,
-                              fontWeight: FontWeight.bold),
-                        ),
-                      ),
-                      decoration: BoxDecoration(
-                        color: Color.fromARGB(155, 226, 227, 240), // Background color
-                        borderRadius: BorderRadius.circular(10), // Rounded border radius
+                Center(
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Color.fromARGB(155, 226, 227, 240),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: const Padding(
+                      padding: EdgeInsets.only(left: 10.0, right: 10.0),
+                      child: Text(
+                        "SKENIRAJ I PLATI!",
+                        style: TextStyle(
+                            color: Color.fromARGB(255, 18, 0, 85),
+                            fontSize: 40,
+                            fontWeight: FontWeight.bold),
                       ),
                     ),
                   ),
@@ -223,20 +210,18 @@ class HomePage extends StatelessWidget {
                 child: Center(child: Text("Prijava")),
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 40,
             ),
             InkWell(
               onTap: () {
                 Navigator.pushNamed(context, RegistrationScreenScreen.routeName);
               },
-              child: Container(
-                child: Text(
-                  'Kreirajte novi račun.',
-                  style: TextStyle(
-                    color: Colors.blue,
-                    decoration: TextDecoration.underline,
-                  ),
+              child: const Text(
+                'Kreirajte novi račun.',
+                style: TextStyle(
+                  color: Colors.blue,
+                  decoration: TextDecoration.underline,
                 ),
               ),
             ),

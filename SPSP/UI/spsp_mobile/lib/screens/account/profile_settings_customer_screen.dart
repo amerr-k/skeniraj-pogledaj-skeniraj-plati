@@ -62,7 +62,7 @@ class _ProfileSettingsCustomerScreenState extends State<ProfileSettingsCustomerS
 
   Widget build(BuildContext context) {
     return MasterScreenWidget(
-      title: "Podešavanje računa",
+      title: "Vaš profil",
       child: Column(
         children: [
           Expanded(
@@ -101,6 +101,8 @@ class _ProfileSettingsCustomerScreenState extends State<ProfileSettingsCustomerS
             SizedBox(height: 10),
             FormBuilderTextField(
               enabled: formEnabled,
+              validator: FormBuilderValidators.required(
+                  errorText: "Polje ne smije biti prazno."),
               decoration: const InputDecoration(
                 labelText: "Prezime",
                 labelStyle: TextStyle(color: Colors.black),
@@ -162,8 +164,8 @@ class _ProfileSettingsCustomerScreenState extends State<ProfileSettingsCustomerS
           padding: const EdgeInsets.all(10.0),
           child: ElevatedButton(
               onPressed: () async {
-                if (formEnabled) {
-                  _formKey.currentState?.saveAndValidate();
+                var isValid = _formKey.currentState?.saveAndValidate() ?? false;
+                if (formEnabled && isValid) {
                   var request = new Map.from(_formKey.currentState!.value);
                   request['userAccountId'] = customer!.userAccountId;
 

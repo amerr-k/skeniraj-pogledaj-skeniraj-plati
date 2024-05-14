@@ -11,7 +11,7 @@ namespace SPSP.Models.Request.Customer
     public class CustomerUpdateRequest : UserAccountUpdateRequest
     {
         public int UserAccountId { get; set; }
-        public string Address { get; set; }
-        public string Phone { get; set; }
+        public string? Address { get; set; }
+        public string? Phone { get; set; }
     }
 }

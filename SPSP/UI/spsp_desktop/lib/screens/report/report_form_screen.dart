@@ -1,17 +1,14 @@
-import 'dart:convert';
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:provider/provider.dart';
-import 'package:spsp_desktop/models/customer_report_data.dart';
+import 'package:spsp_desktop/models/customer_report_data/customer_report_data.dart';
 import 'package:spsp_desktop/models/enums/ReportParameter.dart';
-import 'package:spsp_desktop/models/invoice.dart';
-import 'package:spsp_desktop/models/menu.dart';
-import 'package:spsp_desktop/models/menu_item_report_data.dart';
+import 'package:spsp_desktop/models/invoice/invoice.dart';
+import 'package:spsp_desktop/models/menu/menu.dart';
+import 'package:spsp_desktop/models/menu_item_report_data/menu_item_report_data.dart';
 import 'package:spsp_desktop/models/search_result.dart';
-import 'package:spsp_desktop/models/supplier.dart';
+import 'package:spsp_desktop/models/invoice/supplier.dart';
 import 'package:spsp_desktop/pdf_utils/pdf_api.dart';
 import 'package:spsp_desktop/pdf_utils/pdf_customer_report_api.dart';
 import 'package:spsp_desktop/pdf_utils/pdf_menu_item_report_api.dart';
@@ -88,49 +85,51 @@ class _ReportFormScreenState extends State<ReportFormScreen> {
           padding: const EdgeInsets.all(10.0),
           child: ElevatedButton(
               onPressed: () async {
-                _formKey.currentState?.saveAndValidate();
-                var request = _formKey.currentState!.value;
+                var isValid = _formKey.currentState?.saveAndValidate() ?? false;
+                if (isValid) {
+                  var request = _formKey.currentState!.value;
 
-                try {
-                  const invoice = Invoice(
-                    supplier: Supplier(
-                        name: 'Caffe Pub - Skeniraj Plati',
-                        address: 'ul. Abdulaha Sidrana, Sarajevo, BiH',
-                        contactInfo: "+387 62 123 321"),
-                  );
+                  try {
+                    const invoice = Invoice(
+                      supplier: Supplier(
+                          name: 'Caffe Pub - Skeniraj Plati',
+                          address: 'ul. Abdulaha Sidrana, Sarajevo, BiH',
+                          contactInfo: "+387 62 123 321"),
+                    );
 
-                  switch (request['subject']) {
-                    case 'MENU_ITEM':
-                      menuItemReportData =
-                          await _reportProvider.getMenuItemsReportData(filter: request);
+                    switch (request['subject']) {
+                      case 'MENU_ITEM':
+                        menuItemReportData =
+                            await _reportProvider.getMenuItemsReportData(filter: request);
 
-                      await _generateMenuItemsReport(invoice, menuItemReportData);
+                        await _generateMenuItemsReport(invoice, menuItemReportData);
 
-                      break;
-                    case 'CUSTOMER':
-                      customerReportData =
-                          await _reportProvider.getCustomersReportData(filter: request);
+                        break;
+                      case 'CUSTOMER':
+                        customerReportData =
+                            await _reportProvider.getCustomersReportData(filter: request);
 
-                      await _generateCustomersReport(invoice, customerReportData);
+                        await _generateCustomersReport(invoice, customerReportData);
 
-                      break;
-                  }
-                } on Exception catch (e) {
-                  showDialog(
-                    context: context,
-                    builder: ((BuildContext context) => AlertDialog(
-                          title: Text("Error"),
-                          content: Text(
-                            e.toString(),
-                          ),
-                          actions: [
-                            TextButton(
-                              onPressed: () => Navigator.pop(context),
-                              child: Text("Uredu"),
+                        break;
+                    }
+                  } on Exception catch (e) {
+                    showDialog(
+                      context: context,
+                      builder: ((BuildContext context) => AlertDialog(
+                            title: Text("Error"),
+                            content: Text(
+                              e.toString(),
                             ),
-                          ],
-                        )),
-                  );
+                            actions: [
+                              TextButton(
+                                onPressed: () => Navigator.pop(context),
+                                child: Text("Uredu"),
+                              ),
+                            ],
+                          )),
+                    );
+                  }
                 }
               },
               child: const Text("Generiši izvještaj")),
@@ -178,8 +177,8 @@ class _ReportFormScreenState extends State<ReportFormScreen> {
             ],
           ),
           FormBuilderDropdown<String>(
-            validator: FormBuilderValidators.required(
-                errorText: "Odaberite predmet po kojem želite kreiran izvještaj."),
+            validator:
+                FormBuilderValidators.required(errorText: "Polje ne smije biti prazno."),
             name: 'subject',
             decoration: InputDecoration(
                 labelText: "Predmet",

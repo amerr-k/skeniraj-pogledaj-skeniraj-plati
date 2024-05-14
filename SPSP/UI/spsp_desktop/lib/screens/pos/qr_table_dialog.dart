@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:spsp_desktop/models/qr_table.dart';
+import 'package:spsp_desktop/models/qr_table/qr_table.dart';
 import 'package:spsp_desktop/providers/cart_provider.dart';
 import 'package:spsp_desktop/widgets/qr_table_screen.dart';
 

@@ -11,14 +11,16 @@ namespace SPSP.Models.Request.Order
 
         public int? CustomerId { get; set; }
         public int? EmployeeId { get; set; }
+        [Required]
         [DataType(DataType.DateTime)]
         public DateTime OrderDateTime { get; set; }
 
         public decimal? TotalAmountWithVAT { get; set; }
         public decimal? TotalAmount { get; set; }
-        public IEnumerable<OrderItemCreateRequest>? OrderItems { get; set; }
+        [Required]
+        public IEnumerable<OrderItemCreateRequest> OrderItems { get; set; }
+        [Required(AllowEmptyStrings =false)]
         public int QRTableId { get; set; }
-        //mozda ne trebaju stvari ispod
         public decimal? VAT { get; set; }
 
     }

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:spsp_desktop/models/qr_table.dart';
+import 'package:spsp_desktop/models/qr_table/qr_table.dart';
 
 class TableWidget extends StatelessWidget {
   final List<QRTable> qrTableList;

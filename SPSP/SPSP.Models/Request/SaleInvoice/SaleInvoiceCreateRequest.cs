@@ -1,12 +1,16 @@
 ﻿using SPSP.Models.Request.PaymentGatewayData;
 using SPSP.Models.Request.SaleInvoiceItem;
+using System.ComponentModel.DataAnnotations;
 
 namespace SPSP.Models.Request.SaleInvoice
 {
     public class SaleInvoiceCreateRequest
     {
+        [Required]
         public DateTime SaleDate { get; set; }
+        [Required]
         public decimal TotalAmount { get; set; }
+        [Required]
         public decimal TotalAmountWithVAT { get; set; }
         public decimal? VAT { get; set; }
         public PaymentGatewayDataCreateRequest? PaymentGatewayData { get; set; }

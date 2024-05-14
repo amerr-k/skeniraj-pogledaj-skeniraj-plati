@@ -3,8 +3,8 @@ import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-import 'package:spsp_desktop/models/menu_item.dart';
-import 'package:spsp_desktop/models/promotion.dart';
+import 'package:spsp_desktop/models/menu_item/menu_item.dart';
+import 'package:spsp_desktop/models/promotion/promotion.dart';
 import 'package:spsp_desktop/models/search_result.dart';
 import 'package:spsp_desktop/providers/menu_item_provider.dart';
 import 'package:spsp_desktop/providers/promotion_provider.dart';
@@ -142,6 +142,8 @@ class _PromotionDetailScreenState extends State<PromotionDetailScreen> {
         child: Column(
           children: [
             FormBuilderTextField(
+              validator: FormBuilderValidators.required(
+                  errorText: "Polje ne smije biti prazno."),
               decoration: const InputDecoration(labelText: "Opis"),
               name: "description",
             ),
@@ -174,8 +176,16 @@ class _PromotionDetailScreenState extends State<PromotionDetailScreen> {
                 Expanded(
                   child: FormBuilderDateTimePicker(
                     name: "endTime",
-                    decoration: const InputDecoration(
+                    decoration: InputDecoration(
                       labelText: "Datum kraja promocije",
+                      suffixIcon: IconButton(
+                        icon: const Icon(Icons.close),
+                        onPressed: () {
+                          setState(() {
+                            _formKey.currentState?.fields['endTime']?.reset();
+                          });
+                        },
+                      ),
                     ),
                     initialDate: DateTime.now(),
                     inputType: InputType.date,
@@ -196,18 +206,11 @@ class _PromotionDetailScreenState extends State<PromotionDetailScreen> {
               children: [
                 Expanded(
                   child: FormBuilderDropdown<String>(
+                    validator: FormBuilderValidators.required(
+                        errorText: "Polje ne smije biti prazno."),
                     name: 'menuItemId',
-                    decoration: InputDecoration(
-                        labelText: "Meni stavka",
-                        suffix: IconButton(
-                          icon: const Icon(
-                            Icons.close,
-                          ),
-                          onPressed: () {
-                            _formKey.currentState!.fields['menuItemId']?.reset();
-                          },
-                        ),
-                        hintText: "Odaberi meni stavku"),
+                    decoration: const InputDecoration(
+                        labelText: "Meni stavka", hintText: "Odaberi meni stavku"),
                     items: menuItems?.result
                             .map((item) => DropdownMenuItem(
                                   alignment: AlignmentDirectional.center,
