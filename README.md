@@ -27,13 +27,14 @@ Slike QR kodova se ubacuju na ovaj način:
 ![qr_code_slike_postavke_2](https://github.com/amerr-k/skeniraj-pogledaj-skeniraj-plati/assets/25527072/df45a5e7-3fef-4416-b9d1-1f172494a579)
 
 QR kod staviti na „Wall“ kao na slici jer još nisam shvatio kako da kamera tokom korištenja okruženja postane viša.
+
 Kroz okruženje kamere na emulatoru krećete se pomoću držanja ALT-a + WASD + miš
 
-Skener nije baš 100% efikasan iz svih uglova slikanja i veličina slika. Meni najbolje radi ukoliko kao na slici smanjim veličinu slike na 0.2 i prilikom skeniranja pomjeram se da bih hvatajući pravi ugao.
+Skener nije baš 100% efikasan iz svih uglova slikanja i veličina slika. Meni najbolje radi ukoliko kao na slici smanjim veličinu slike na 0.2 i prilikom skeniranja pomjeram se hvatajući pravi ugao.
 
 ![qr_code_1](https://github.com/amerr-k/skeniraj-pogledaj-skeniraj-plati/assets/25527072/a0661a0e-b583-4c88-96df-29500f89be25) ![qr_code_2](https://github.com/amerr-k/skeniraj-pogledaj-skeniraj-plati/assets/25527072/1b2841f7-843e-44e6-9a8d-958f3500843c)
 
-**POKRETANJE I BUILD API-ja KOMANDA**
+**POKRETANJE I BUILD API-ja**
 
 ```docker-compose up –build```
 
