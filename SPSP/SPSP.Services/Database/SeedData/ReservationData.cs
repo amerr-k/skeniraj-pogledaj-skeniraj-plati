@@ -12,6 +12,9 @@ namespace SPSP.Services.Database.SeedData
             // Specifično vrijeme danas (19:00)
             DateTime curentDayAt1900 = new DateTime(currentDate.Year, currentDate.Month, currentDate.Day, 19, 0, 0);
 
+            DateTime monthAfterAt1900 = new DateTime(currentDate.Year, currentDate.Month + 1, currentDate.Day, 19, 0, 0);
+            DateTime twoMonthAfterAt1900 = new DateTime(currentDate.Year, currentDate.Month + 2, currentDate.Day, 19, 0, 0);
+
             entity.HasData(
                 new Reservation
                 {
@@ -28,7 +31,7 @@ namespace SPSP.Services.Database.SeedData
                 new Reservation
                 {
                     Id = 2,
-                    QRTableId = 3,
+                    QRTableId = 2,
                     CustomerId = 2,
                     ContactInfo = "123 123 123",
                     SpecialRequest = "Ništa posebno, samo nek je čisto",
@@ -40,7 +43,7 @@ namespace SPSP.Services.Database.SeedData
                 new Reservation
                 {
                     Id = 3,
-                    QRTableId = 4,
+                    QRTableId = 3,
                     CustomerId = 3,
                     ContactInfo = "123 123 123",
                     SpecialRequest = "Ništa posebno, samo nek je čisto",
@@ -52,8 +55,8 @@ namespace SPSP.Services.Database.SeedData
                 new Reservation
                 {
                     Id = 4,
-                    QRTableId = 3,
-                    CustomerId = 2,
+                    QRTableId = 4,
+                    CustomerId = 1,
                     ContactInfo = "123 123 123",
                     SpecialRequest = "Ništa posebno, samo nek je čisto",
                     StartTime = curentDayAt1900,
@@ -64,8 +67,8 @@ namespace SPSP.Services.Database.SeedData
                 new Reservation
                 {
                     Id = 5,
-                    QRTableId = 4,
-                    CustomerId = 3,
+                    QRTableId = 5,
+                    CustomerId = 2,
                     ContactInfo = "123 123 123",
                     SpecialRequest = "Ništa posebno, samo nek je čisto",
                     StartTime = curentDayAt1900,
@@ -76,8 +79,8 @@ namespace SPSP.Services.Database.SeedData
                 new Reservation
                 {
                     Id = 6,
-                    QRTableId = 3,
-                    CustomerId = 2,
+                    QRTableId = 1,
+                    CustomerId = 3,
                     ContactInfo = "123 123 123",
                     SpecialRequest = "Ništa posebno, samo nek je čisto",
                     StartTime = curentDayAt1900,
@@ -88,12 +91,12 @@ namespace SPSP.Services.Database.SeedData
                 new Reservation
                 {
                     Id = 7,
-                    QRTableId = 4,
-                    CustomerId = 3,
+                    QRTableId = 2,
+                    CustomerId = 1,
                     ContactInfo = "123 123 123",
                     SpecialRequest = "Ništa posebno, samo nek je čisto",
-                    StartTime = curentDayAt1900,
-                    EndTime = curentDayAt1900.AddHours(2),
+                    StartTime = monthAfterAt1900,
+                    EndTime = monthAfterAt1900.AddHours(2),
                     Status = "CONFIRMED",
                     Valid = true
                 },
@@ -104,9 +107,9 @@ namespace SPSP.Services.Database.SeedData
                     CustomerId = 2,
                     ContactInfo = "123 123 123",
                     SpecialRequest = "Ništa posebno, samo nek je čisto",
-                    StartTime = curentDayAt1900.AddDays(2),
-                    EndTime = curentDayAt1900.AddDays(2).AddHours(2),
-                    Status = "PENDING_CONFIRMATION",
+                    StartTime = monthAfterAt1900,
+                    EndTime = monthAfterAt1900.AddHours(2),
+                    Status = "CONFIRMED",
                     Valid = true
                 },
                 new Reservation
@@ -116,8 +119,44 @@ namespace SPSP.Services.Database.SeedData
                     CustomerId = 3,
                     ContactInfo = "123 123 123",
                     SpecialRequest = "Ništa posebno, samo nek je čisto",
-                    StartTime = curentDayAt1900.AddDays(2),
-                    EndTime = curentDayAt1900.AddDays(2).AddHours(2),
+                    StartTime = monthAfterAt1900,
+                    EndTime = monthAfterAt1900.AddHours(2),
+                    Status = "CONFIRMED",
+                    Valid = true
+                },
+                new Reservation
+                {
+                    Id = 10,
+                    QRTableId = 5,
+                    CustomerId = 1,
+                    ContactInfo = "123 123 123",
+                    SpecialRequest = "Ništa posebno, samo nek je čisto",
+                    StartTime = twoMonthAfterAt1900.AddDays(2),
+                    EndTime = twoMonthAfterAt1900.AddDays(2).AddHours(2),
+                    Status = "PENDING_CONFIRMATION",
+                    Valid = true
+                },
+                new Reservation
+                {
+                    Id = 11,
+                    QRTableId = 1,
+                    CustomerId = 2,
+                    ContactInfo = "123 123 123",
+                    SpecialRequest = "Ništa posebno, samo nek je čisto",
+                    StartTime = twoMonthAfterAt1900.AddDays(2),
+                    EndTime = twoMonthAfterAt1900.AddDays(2).AddHours(2),
+                    Status = "PENDING_CONFIRMATION",
+                    Valid = true
+                },
+                new Reservation
+                {
+                    Id = 12,
+                    QRTableId = 2,
+                    CustomerId = 3,
+                    ContactInfo = "123 123 123",
+                    SpecialRequest = "Ništa posebno, samo nek je čisto",
+                    StartTime = twoMonthAfterAt1900.AddDays(2),
+                    EndTime = twoMonthAfterAt1900.AddDays(2).AddHours(2),
                     Status = "PENDING_CONFIRMATION",
                     Valid = true
                 }

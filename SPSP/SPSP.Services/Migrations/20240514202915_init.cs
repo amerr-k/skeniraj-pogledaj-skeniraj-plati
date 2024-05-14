@@ -604,7 +604,7 @@ namespace SPSP.Services.Migrations
                     { 13, 1, new DateTime(2024, 5, 13, 0, 0, 0, 0, DateTimeKind.Local), 3, "CANCELED", 8.51m, 10m, 0.17m, 1.49m, true },
                     { 14, 2, new DateTime(2024, 5, 13, 0, 0, 0, 0, DateTimeKind.Local), 4, "CANCELED", 12.82m, 15m, 0.17m, 2.18m, true },
                     { 15, 3, new DateTime(2024, 5, 13, 0, 0, 0, 0, DateTimeKind.Local), 5, "CANCELED", 17.09m, 20m, 0.17m, 2.91m, true },
-                    { 16, 1, new DateTime(2024, 5, 14, 17, 48, 26, 165, DateTimeKind.Local).AddTicks(3727), 5, "COMPLETED", 2.1m, 2.5m, 0.17m, 0.4m, true },
+                    { 16, 1, new DateTime(2024, 5, 14, 22, 29, 15, 385, DateTimeKind.Local).AddTicks(7600), 5, "COMPLETED", 2.1m, 2.5m, 0.17m, 0.4m, true },
                     { 17, 2, new DateTime(2024, 5, 13, 0, 0, 0, 0, DateTimeKind.Local), 5, "COMPLETED", 4.7m, 5.5m, 0.17m, 0.8m, true },
                     { 18, 3, new DateTime(2024, 5, 13, 0, 0, 0, 0, DateTimeKind.Local), 5, "COMPLETED", 5.1m, 6m, 0.17m, 0.9m, true },
                     { 19, 2, new DateTime(2024, 5, 13, 0, 0, 0, 0, DateTimeKind.Local), 5, "COMPLETED", 4.7m, 5.5m, 0.17m, 0.8m, true },
@@ -628,7 +628,7 @@ namespace SPSP.Services.Migrations
             migrationBuilder.InsertData(
                 table: "Promotion",
                 columns: new[] { "Id", "Active", "Description", "EndTime", "MenuItemId", "StartTime", "Valid" },
-                values: new object[] { 1, true, "Predstavljamo Vam naš novi proizvod.", null, 6, new DateTime(2024, 5, 14, 17, 48, 26, 165, DateTimeKind.Local).AddTicks(4119), true });
+                values: new object[] { 1, true, "Predstavljamo Vam naš novi proizvod.", null, 6, new DateTime(2024, 5, 14, 22, 29, 15, 385, DateTimeKind.Local).AddTicks(8012), true });
 
             migrationBuilder.InsertData(
                 table: "PurchaseInvoice",
@@ -646,14 +646,17 @@ namespace SPSP.Services.Migrations
                 values: new object[,]
                 {
                     { 1, "123 123 123", 1, new DateTime(2024, 3, 29, 22, 0, 0, 0, DateTimeKind.Unspecified), 1, "Ništa posebno, samo nek je čisto", new DateTime(2024, 3, 29, 19, 0, 0, 0, DateTimeKind.Unspecified), "CANCELED", true },
-                    { 2, "123 123 123", 2, new DateTime(2024, 3, 29, 22, 0, 0, 0, DateTimeKind.Unspecified), 3, "Ništa posebno, samo nek je čisto", new DateTime(2024, 3, 29, 19, 0, 0, 0, DateTimeKind.Unspecified), "CANCELED", true },
-                    { 3, "123 123 123", 3, new DateTime(2024, 3, 29, 22, 0, 0, 0, DateTimeKind.Unspecified), 4, "Ništa posebno, samo nek je čisto", new DateTime(2024, 3, 29, 19, 0, 0, 0, DateTimeKind.Unspecified), "CANCELED", true },
-                    { 4, "123 123 123", 2, new DateTime(2024, 5, 14, 21, 0, 0, 0, DateTimeKind.Unspecified), 3, "Ništa posebno, samo nek je čisto", new DateTime(2024, 5, 14, 19, 0, 0, 0, DateTimeKind.Unspecified), "CONFIRMED", true },
-                    { 5, "123 123 123", 3, new DateTime(2024, 5, 14, 21, 0, 0, 0, DateTimeKind.Unspecified), 4, "Ništa posebno, samo nek je čisto", new DateTime(2024, 5, 14, 19, 0, 0, 0, DateTimeKind.Unspecified), "CONFIRMED", true },
-                    { 6, "123 123 123", 2, new DateTime(2024, 5, 14, 21, 0, 0, 0, DateTimeKind.Unspecified), 3, "Ništa posebno, samo nek je čisto", new DateTime(2024, 5, 14, 19, 0, 0, 0, DateTimeKind.Unspecified), "CONFIRMED", true },
-                    { 7, "123 123 123", 3, new DateTime(2024, 5, 14, 21, 0, 0, 0, DateTimeKind.Unspecified), 4, "Ništa posebno, samo nek je čisto", new DateTime(2024, 5, 14, 19, 0, 0, 0, DateTimeKind.Unspecified), "CONFIRMED", true },
-                    { 8, "123 123 123", 2, new DateTime(2024, 5, 16, 21, 0, 0, 0, DateTimeKind.Unspecified), 3, "Ništa posebno, samo nek je čisto", new DateTime(2024, 5, 16, 19, 0, 0, 0, DateTimeKind.Unspecified), "PENDING_CONFIRMATION", true },
-                    { 9, "123 123 123", 3, new DateTime(2024, 5, 16, 21, 0, 0, 0, DateTimeKind.Unspecified), 4, "Ništa posebno, samo nek je čisto", new DateTime(2024, 5, 16, 19, 0, 0, 0, DateTimeKind.Unspecified), "PENDING_CONFIRMATION", true }
+                    { 2, "123 123 123", 2, new DateTime(2024, 3, 29, 22, 0, 0, 0, DateTimeKind.Unspecified), 2, "Ništa posebno, samo nek je čisto", new DateTime(2024, 3, 29, 19, 0, 0, 0, DateTimeKind.Unspecified), "CANCELED", true },
+                    { 3, "123 123 123", 3, new DateTime(2024, 3, 29, 22, 0, 0, 0, DateTimeKind.Unspecified), 3, "Ništa posebno, samo nek je čisto", new DateTime(2024, 3, 29, 19, 0, 0, 0, DateTimeKind.Unspecified), "CANCELED", true },
+                    { 4, "123 123 123", 1, new DateTime(2024, 5, 14, 21, 0, 0, 0, DateTimeKind.Unspecified), 4, "Ništa posebno, samo nek je čisto", new DateTime(2024, 5, 14, 19, 0, 0, 0, DateTimeKind.Unspecified), "CONFIRMED", true },
+                    { 5, "123 123 123", 2, new DateTime(2024, 5, 14, 21, 0, 0, 0, DateTimeKind.Unspecified), 5, "Ništa posebno, samo nek je čisto", new DateTime(2024, 5, 14, 19, 0, 0, 0, DateTimeKind.Unspecified), "CONFIRMED", true },
+                    { 6, "123 123 123", 3, new DateTime(2024, 5, 14, 21, 0, 0, 0, DateTimeKind.Unspecified), 1, "Ništa posebno, samo nek je čisto", new DateTime(2024, 5, 14, 19, 0, 0, 0, DateTimeKind.Unspecified), "CONFIRMED", true },
+                    { 7, "123 123 123", 1, new DateTime(2024, 6, 14, 21, 0, 0, 0, DateTimeKind.Unspecified), 2, "Ništa posebno, samo nek je čisto", new DateTime(2024, 6, 14, 19, 0, 0, 0, DateTimeKind.Unspecified), "CONFIRMED", true },
+                    { 8, "123 123 123", 2, new DateTime(2024, 6, 14, 21, 0, 0, 0, DateTimeKind.Unspecified), 3, "Ništa posebno, samo nek je čisto", new DateTime(2024, 6, 14, 19, 0, 0, 0, DateTimeKind.Unspecified), "CONFIRMED", true },
+                    { 9, "123 123 123", 3, new DateTime(2024, 6, 14, 21, 0, 0, 0, DateTimeKind.Unspecified), 4, "Ništa posebno, samo nek je čisto", new DateTime(2024, 6, 14, 19, 0, 0, 0, DateTimeKind.Unspecified), "CONFIRMED", true },
+                    { 10, "123 123 123", 1, new DateTime(2024, 7, 16, 21, 0, 0, 0, DateTimeKind.Unspecified), 5, "Ništa posebno, samo nek je čisto", new DateTime(2024, 7, 16, 19, 0, 0, 0, DateTimeKind.Unspecified), "PENDING_CONFIRMATION", true },
+                    { 11, "123 123 123", 2, new DateTime(2024, 7, 16, 21, 0, 0, 0, DateTimeKind.Unspecified), 1, "Ništa posebno, samo nek je čisto", new DateTime(2024, 7, 16, 19, 0, 0, 0, DateTimeKind.Unspecified), "PENDING_CONFIRMATION", true },
+                    { 12, "123 123 123", 3, new DateTime(2024, 7, 16, 21, 0, 0, 0, DateTimeKind.Unspecified), 2, "Ništa posebno, samo nek je čisto", new DateTime(2024, 7, 16, 19, 0, 0, 0, DateTimeKind.Unspecified), "PENDING_CONFIRMATION", true }
                 });
 
             migrationBuilder.InsertData(
@@ -751,15 +754,15 @@ namespace SPSP.Services.Migrations
                 columns: new[] { "Id", "CustomerId", "EmployeeId", "InvoiceNumber", "OrderId", "Processed", "SaleDate", "TotalAmount", "TotalAmountWithVAT", "VAT", "VATAmount", "Valid" },
                 values: new object[,]
                 {
-                    { 1, 1, 1, "123456701", 1, true, new DateTime(2024, 5, 14, 17, 48, 26, 165, DateTimeKind.Local).AddTicks(3936), 8.51m, 10m, 0.17m, 1.49m, true },
-                    { 2, 2, 1, "123456702", 1, true, new DateTime(2024, 5, 14, 17, 48, 26, 165, DateTimeKind.Local).AddTicks(3943), 12.82m, 15m, 0.17m, 2.18m, true },
-                    { 3, 3, 1, "123456703", 1, true, new DateTime(2024, 5, 14, 17, 48, 26, 165, DateTimeKind.Local).AddTicks(3946), 17.09m, 20m, 0.17m, 2.91m, true },
-                    { 4, 1, 1, "123456704", 1, true, new DateTime(2024, 5, 14, 17, 48, 26, 165, DateTimeKind.Local).AddTicks(3950), 8.51m, 10m, 0.17m, 1.49m, true },
-                    { 5, 2, 1, "123456705", 1, true, new DateTime(2024, 5, 14, 17, 48, 26, 165, DateTimeKind.Local).AddTicks(3953), 12.82m, 15m, 0.17m, 2.18m, true },
-                    { 6, 3, 1, "123456706", 1, true, new DateTime(2024, 5, 14, 17, 48, 26, 165, DateTimeKind.Local).AddTicks(3959), 17.09m, 20m, 0.17m, 2.91m, true },
-                    { 7, 1, 1, "123456707", 1, true, new DateTime(2024, 5, 14, 17, 48, 26, 165, DateTimeKind.Local).AddTicks(3995), 8.51m, 10m, 0.17m, 1.49m, true },
-                    { 8, 2, 1, "123456708", 1, true, new DateTime(2024, 5, 14, 17, 48, 26, 165, DateTimeKind.Local).AddTicks(3999), 12.82m, 15m, 0.17m, 2.18m, true },
-                    { 9, 3, 1, "123456709", 1, true, new DateTime(2024, 5, 14, 17, 48, 26, 165, DateTimeKind.Local).AddTicks(4001), 17.09m, 20m, 0.17m, 2.91m, true }
+                    { 1, 1, 1, "123456701", 1, true, new DateTime(2024, 5, 14, 22, 29, 15, 385, DateTimeKind.Local).AddTicks(7841), 8.51m, 10m, 0.17m, 1.49m, true },
+                    { 2, 2, 1, "123456702", 1, true, new DateTime(2024, 5, 14, 22, 29, 15, 385, DateTimeKind.Local).AddTicks(7849), 12.82m, 15m, 0.17m, 2.18m, true },
+                    { 3, 3, 1, "123456703", 1, true, new DateTime(2024, 5, 14, 22, 29, 15, 385, DateTimeKind.Local).AddTicks(7853), 17.09m, 20m, 0.17m, 2.91m, true },
+                    { 4, 1, 1, "123456704", 1, true, new DateTime(2024, 5, 14, 22, 29, 15, 385, DateTimeKind.Local).AddTicks(7857), 8.51m, 10m, 0.17m, 1.49m, true },
+                    { 5, 2, 1, "123456705", 1, true, new DateTime(2024, 5, 14, 22, 29, 15, 385, DateTimeKind.Local).AddTicks(7860), 12.82m, 15m, 0.17m, 2.18m, true },
+                    { 6, 3, 1, "123456706", 1, true, new DateTime(2024, 5, 14, 22, 29, 15, 385, DateTimeKind.Local).AddTicks(7863), 17.09m, 20m, 0.17m, 2.91m, true },
+                    { 7, 1, 1, "123456707", 1, true, new DateTime(2024, 5, 14, 22, 29, 15, 385, DateTimeKind.Local).AddTicks(7865), 8.51m, 10m, 0.17m, 1.49m, true },
+                    { 8, 2, 1, "123456708", 1, true, new DateTime(2024, 5, 14, 22, 29, 15, 385, DateTimeKind.Local).AddTicks(7868), 12.82m, 15m, 0.17m, 2.18m, true },
+                    { 9, 3, 1, "123456709", 1, true, new DateTime(2024, 5, 14, 22, 29, 15, 385, DateTimeKind.Local).AddTicks(7871), 17.09m, 20m, 0.17m, 2.91m, true }
                 });
 
             migrationBuilder.InsertData(

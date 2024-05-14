@@ -31,5 +31,9 @@
   <ItemGroup>
     <ProjectReference Include="..\SPSP.Models\SPSP.Models.csproj" />
   </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Migrations\" />
+  </ItemGroup>
   
 </Project>
