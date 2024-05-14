@@ -28,7 +28,7 @@ Slike QR kodova se ubacuju na ovaj način:
 
 QR kod staviti na „Wall“ kao na slici jer još nisam shvatio kako da kamera tokom korištenja okruženja postane viša.
 
-Kroz okruženje kamere na emulatoru krećete se pomoću držanja ALT-a + WASD + miš
+Kroz okruženje kamere na emulatoru krećete se pomoću držanja **ALT-a + WASD + miš**
 
 Skener nije baš 100% efikasan iz svih uglova slikanja i veličina slika. Meni najbolje radi ukoliko kao na slici smanjim veličinu slike na 0.2 i prilikom skeniranja pomjeram se hvatajući pravi ugao.
 
