@@ -25,6 +25,8 @@ namespace SPSP.Services.Database
         public int OrderId { get; set; }
         public virtual Order Order { get; set; }
         public bool? Processed { get; set; }
+        public int? PaymentGatewayDataId { get; set; }
+        public virtual PaymentGatewayData? PaymentGatewayData { get; set; }
         public bool? Valid { get; set; }
         public virtual ICollection<SaleInvoiceItem> SaleInvoiceItems { get; set; }
     }

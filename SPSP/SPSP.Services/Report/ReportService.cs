@@ -21,6 +21,7 @@ namespace SPSP.Services.Report
         public async Task<List<CustomerReportData>> GetTopCustomersReportData(ReportSearchObject search)
         {
             var dateRange = QuarterHelper.GetDateRange(search);
+            var numberOfResults = search.NumberOfResults;
 
             var query = (from c in context.Customers
                          join o in context.Orders on c.Id equals o.CustomerId
@@ -38,7 +39,7 @@ namespace SPSP.Services.Report
                              Email = grouped.Key.Email,
                              OrderCount = grouped.Count(),
                              TotalAmount = grouped.Sum(x => x.o.TotalAmountWithVAT)
-                         }).Take(10);
+                         }).Take(numberOfResults);
 
             return await query.ToListAsync();
         }
@@ -46,6 +47,7 @@ namespace SPSP.Services.Report
         public async Task<List<MenuItemReportData>> GetTopMenuItemsReportData(ReportSearchObject search)
         {
             var dateRange = QuarterHelper.GetDateRange(search);
+            var numberOfResults = search.NumberOfResults;
 
             var query = (from mi in context.MenuItems
                          join oi in context.OrderItems on mi.Id equals oi.MenuItemId
@@ -63,7 +65,7 @@ namespace SPSP.Services.Report
                              Price = g.Key.Price ?? 0,
                              OrderCount = g.Sum(x => x.oi.Quantity),
                              TotalAmount = g.Sum(x => x.oi.Subtotal) ?? 0
-                         }).Take(10);
+                         }).Take(numberOfResults);
 
             return await query.ToListAsync();
         }

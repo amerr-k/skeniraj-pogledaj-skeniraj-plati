@@ -42,11 +42,8 @@ class _OrderListScreenState extends State<OrderListScreen> {
 
     _orderProvider = context.read<OrderProvider>();
 
-    orderListRequestResult = await _orderProvider?.get(filter: {
-      "orderStatus": OrderStatus.ACTIVE.name,
-      "isOrderItemsIncluded": true,
-      "isQRTablesIncluded": true
-    });
+    orderListRequestResult = await _orderProvider?.get(
+        filter: {"orderStatus": OrderStatus.ACTIVE.name, "isOrderItemsIncluded": true, "isQRTablesIncluded": true});
     setState(() {
       orderList = orderListRequestResult!.result;
       isLoading = false;
@@ -134,7 +131,7 @@ class _OrderListScreenState extends State<OrderListScreen> {
                 initialDate: DateTime.now(),
                 firstDate: DateTime(2000),
                 lastDate: DateTime.now(),
-                inputType: InputType.date, // Set inputType to date
+                inputType: InputType.date,
                 format: DateFormat('dd.MM.yyyy'),
                 onChanged: (value) {},
                 onSaved: (value) {},
@@ -226,228 +223,199 @@ class _OrderListScreenState extends State<OrderListScreen> {
     }
 
     List<Widget> list = orderList
-        .map((x) => Container(
-              child: Column(
-                children: [
-                  Material(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
-                      side: const BorderSide(color: Colors.blue),
-                    ),
-                    color: Colors.blueAccent,
-                    child: Padding(
-                      padding: const EdgeInsets.all(9.0),
-                      child: Column(
-                        children: [
-                          Container(
-                              child: ListTile(
-                            dense: true,
-                            title: Text("Status narudžbe",
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold, color: Colors.black)),
-                            trailing: Text(
-                                OrderStatusExtension.enumFromString(x.status!).value,
-                                style: TextStyle(fontWeight: FontWeight.bold)),
-                          )),
-                          Container(
-                              child: ListTile(
-                            dense: true,
-                            title: Text("STO br.:",
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                )),
-                            trailing: Text(
-                                x.qrTable != null
-                                    ? x.qrTable!.tableNumber.toString()
-                                    : "",
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                )),
-                          )),
-                          Container(
-                              child: ListTile(
-                            dense: true,
-                            title: Text("Vrijeme narudžbe:",
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold, color: Colors.black)),
-                            trailing: Text(
-                              DateFormat('dd.MM.yyyy HH:mm').format(x.orderDateTime!),
-                              style: TextStyle(fontWeight: FontWeight.bold),
-                            ),
-                          )),
-                          Container(
-                              child: ListTile(
-                            dense: true,
-                            title: Text("PDV:",
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold, color: Colors.black)),
-                            trailing: Text((x.vat! * 100).toInt().toString() + "%",
-                                style: TextStyle(fontWeight: FontWeight.bold)),
-                          )),
-                          Container(
-                              child: ListTile(
-                            dense: true,
-                            title: Text("Iznos (bez uračunatog PDV-a):",
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold, color: Colors.black)),
-                            trailing: Text(formatNumber(x.totalAmount),
-                                style: TextStyle(fontWeight: FontWeight.bold)),
-                          )),
-                          Container(
-                              child: ListTile(
-                            dense: true,
-                            title: Text("Iznos:",
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold, color: Colors.black)),
-                            trailing: Text(formatNumber(x.totalAmountWithVAT),
-                                style: TextStyle(fontWeight: FontWeight.bold)),
-                          )),
-                          x.status == "ACTIVE"
-                              ? Padding(
-                                  padding: EdgeInsets.symmetric(vertical: 12.0),
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                    children: [
-                                      ElevatedButton(
-                                        style: ElevatedButton.styleFrom(
-                                          foregroundColor: Colors.blue,
-                                          backgroundColor: Colors.white,
-                                        ),
-                                        onPressed: () async {
-                                          try {
-                                            await _orderProvider.cancelOrder(x.id!);
-                                            setState(() {
-                                              isLoading = false;
-                                            });
-                                            orderListRequestResult =
-                                                await _orderProvider?.get(filter: {
-                                              "orderStatus": OrderStatus.ACTIVE.name,
-                                              "isOrderItemsIncluded": true,
-                                              "isQRTablesIncluded": true
-                                            });
-                                            setState(() {
-                                              orderList = orderListRequestResult!.result;
-                                              isLoading = false;
-                                            });
-                                            ScaffoldMessenger.of(context).showSnackBar(
-                                              const SnackBar(
-                                                content: Text(
-                                                  "Uspješno ste otkazali narudžbu",
-                                                  style: TextStyle(color: Colors.white),
-                                                ),
-                                                backgroundColor: Colors.green,
-                                              ),
-                                            );
-                                          } on Exception catch (e) {
-                                            ScaffoldMessenger.of(context).showSnackBar(
-                                              SnackBar(
-                                                content: Text(
-                                                  e.toString(),
-                                                  style: TextStyle(color: Colors.white),
-                                                ),
-                                                backgroundColor: Colors.red,
-                                              ),
-                                            );
-                                          }
-                                        },
-                                        child: const Text("Otkaži"),
+        .map((x) => Column(
+              children: [
+                Material(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                    side: const BorderSide(color: Colors.blue),
+                  ),
+                  color: Colors.blueAccent,
+                  child: Padding(
+                    padding: const EdgeInsets.all(9.0),
+                    child: Column(
+                      children: [
+                        ListTile(
+                          dense: true,
+                          title: Text("Status narudžbe",
+                              style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black)),
+                          trailing: Text(OrderStatusExtension.enumFromString(x.status!).value,
+                              style: TextStyle(fontWeight: FontWeight.bold)),
+                        ),
+                        ListTile(
+                          dense: true,
+                          title: Text("STO br.:",
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                              )),
+                          trailing: Text(x.qrTable != null ? x.qrTable!.tableNumber.toString() : "",
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                              )),
+                        ),
+                        ListTile(
+                          dense: true,
+                          title: Text("Vrijeme narudžbe:",
+                              style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black)),
+                          trailing: Text(
+                            DateFormat('dd.MM.yyyy HH:mm').format(x.orderDateTime!),
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                        ListTile(
+                          dense: true,
+                          title: Text("PDV:", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black)),
+                          trailing: Text((x.vat! * 100).toInt().toString() + "%",
+                              style: TextStyle(fontWeight: FontWeight.bold)),
+                        ),
+                        ListTile(
+                          dense: true,
+                          title: Text("Iznos (bez uračunatog PDV-a):",
+                              style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black)),
+                          trailing: Text(formatNumber(x.totalAmount), style: TextStyle(fontWeight: FontWeight.bold)),
+                        ),
+                        ListTile(
+                          dense: true,
+                          title: Text("Iznos:", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black)),
+                          trailing:
+                              Text(formatNumber(x.totalAmountWithVAT), style: TextStyle(fontWeight: FontWeight.bold)),
+                        ),
+                        x.status == "ACTIVE"
+                            ? Padding(
+                                padding: EdgeInsets.symmetric(vertical: 12.0),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                  children: [
+                                    ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                        foregroundColor: Colors.blue,
+                                        backgroundColor: Colors.white,
                                       ),
-                                      SizedBox(
-                                        width: 10,
-                                      ),
-                                      ElevatedButton(
-                                        style: ElevatedButton.styleFrom(
-                                          foregroundColor: Colors.blue,
-                                          backgroundColor: Colors.white,
-                                        ),
-                                        onPressed: () async {
-                                          final items = x.orderItems.map((orderItem) {
-                                            final name = orderItem.menuItem?.name ?? '';
-                                            final unitPrice =
-                                                orderItem.menuItem?.price ?? 0.0;
-                                            final subtotal = orderItem.subtotal ?? 0.0;
-                                            final quantity = orderItem.quantity ?? 0;
-
-                                            return InvoiceItem(
-                                                name: name,
-                                                quantity: quantity,
-                                                unitPrice: unitPrice,
-                                                subtotal: subtotal);
-                                          }).toList();
-
-                                          final invoice = Invoice(
-                                            supplier: Supplier(
-                                                name: 'Caffe Pub - Skeniraj Plati',
-                                                address:
-                                                    'ul. Abdulaha Sidrana, Sarajevo, BiH',
-                                                contactInfo: "+387 62 123 321"),
-                                            info: InvoiceInfo(
-                                              date: x.orderDateTime!,
-                                              number: x.id.toString(),
+                                      onPressed: () async {
+                                        try {
+                                          await _orderProvider.cancelOrder(x.id!);
+                                          setState(() {
+                                            isLoading = false;
+                                          });
+                                          orderListRequestResult = await _orderProvider?.get(filter: {
+                                            "orderStatus": OrderStatus.ACTIVE.name,
+                                            "isOrderItemsIncluded": true,
+                                            "isQRTablesIncluded": true
+                                          });
+                                          setState(() {
+                                            orderList = orderListRequestResult!.result;
+                                            isLoading = false;
+                                          });
+                                          ScaffoldMessenger.of(context).showSnackBar(
+                                            const SnackBar(
+                                              content: Text(
+                                                "Uspješno ste otkazali narudžbu",
+                                                style: TextStyle(color: Colors.white),
+                                              ),
+                                              backgroundColor: Colors.green,
                                             ),
-                                            orderDateTime: x.orderDateTime!,
-                                            totalAmount: x.totalAmount!,
-                                            totalAmountWithVAT: x.totalAmountWithVAT!,
-                                            vat: x.vat!,
-                                            items: items,
                                           );
-
-                                          try {
-                                            await _orderProvider.completeOrder(x.id!);
-
-                                            final pdfFile =
-                                                await PdfInvoiceApi.generateAsFile(
-                                                    invoice);
-
-                                            PdfApi.openFile(pdfFile);
-
-                                            setState(() {
-                                              isLoading = false;
-                                            });
-                                            orderListRequestResult =
-                                                await _orderProvider?.get(filter: {
-                                              "orderStatus": OrderStatus.ACTIVE.name,
-                                              "isOrderItemsIncluded": true,
-                                              "isQRTablesIncluded": true
-                                            });
-                                            setState(() {
-                                              orderList = orderListRequestResult!.result;
-                                              isLoading = false;
-                                            });
-
-                                            ScaffoldMessenger.of(context).showSnackBar(
-                                              const SnackBar(
-                                                content: Text(
-                                                  "Uspješno ste generisali račun",
-                                                  style: TextStyle(color: Colors.white),
-                                                ),
-                                                backgroundColor: Colors.green,
+                                        } on Exception catch (e) {
+                                          ScaffoldMessenger.of(context).showSnackBar(
+                                            SnackBar(
+                                              content: Text(
+                                                e.toString(),
+                                                style: TextStyle(color: Colors.white),
                                               ),
-                                            );
-                                          } on Exception catch (e) {
-                                            ScaffoldMessenger.of(context).showSnackBar(
-                                              SnackBar(
-                                                content: Text(
-                                                  e.toString(),
-                                                  style: TextStyle(color: Colors.white),
-                                                ),
-                                                backgroundColor: Colors.red,
+                                              backgroundColor: Colors.red,
+                                            ),
+                                          );
+                                        }
+                                      },
+                                      child: const Text("Otkaži"),
+                                    ),
+                                    SizedBox(
+                                      width: 10,
+                                    ),
+                                    ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                        foregroundColor: Colors.blue,
+                                        backgroundColor: Colors.white,
+                                      ),
+                                      onPressed: () async {
+                                        final items = x.orderItems.map((orderItem) {
+                                          final name = orderItem.menuItem?.name ?? '';
+                                          final unitPrice = orderItem.menuItem?.price ?? 0.0;
+                                          final subtotal = orderItem.subtotal ?? 0.0;
+                                          final quantity = orderItem.quantity ?? 0;
+
+                                          return InvoiceItem(
+                                              name: name, quantity: quantity, unitPrice: unitPrice, subtotal: subtotal);
+                                        }).toList();
+
+                                        final invoice = Invoice(
+                                          supplier: Supplier(
+                                              name: 'Caffe Pub - Skeniraj Plati',
+                                              address: 'ul. Abdulaha Sidrana, Sarajevo, BiH',
+                                              contactInfo: "+387 62 123 321"),
+                                          info: InvoiceInfo(
+                                            date: x.orderDateTime!,
+                                            number: x.id.toString(),
+                                          ),
+                                          orderDateTime: x.orderDateTime!,
+                                          totalAmount: x.totalAmount!,
+                                          totalAmountWithVAT: x.totalAmountWithVAT!,
+                                          vat: x.vat!,
+                                          items: items,
+                                        );
+
+                                        try {
+                                          await _orderProvider.completeOrder(x.id!);
+
+                                          final pdfFile = await PdfInvoiceApi.generateAsFile(invoice);
+
+                                          PdfApi.openFile(pdfFile);
+
+                                          setState(() {
+                                            isLoading = false;
+                                          });
+                                          orderListRequestResult = await _orderProvider?.get(filter: {
+                                            "orderStatus": OrderStatus.ACTIVE.name,
+                                            "isOrderItemsIncluded": true,
+                                            "isQRTablesIncluded": true
+                                          });
+                                          setState(() {
+                                            orderList = orderListRequestResult!.result;
+                                            isLoading = false;
+                                          });
+
+                                          ScaffoldMessenger.of(context).showSnackBar(
+                                            const SnackBar(
+                                              content: Text(
+                                                "Uspješno ste generisali račun",
+                                                style: TextStyle(color: Colors.white),
                                               ),
-                                            );
-                                          }
-                                        },
-                                        child: const Text("Generiši račun"),
-                                      )
-                                    ],
-                                  ),
-                                )
-                              : Container(),
-                        ],
-                      ),
+                                              backgroundColor: Colors.green,
+                                            ),
+                                          );
+                                        } on Exception catch (e) {
+                                          ScaffoldMessenger.of(context).showSnackBar(
+                                            SnackBar(
+                                              content: Text(
+                                                e.toString(),
+                                                style: TextStyle(color: Colors.white),
+                                              ),
+                                              backgroundColor: Colors.red,
+                                            ),
+                                          );
+                                        }
+                                      },
+                                      child: const Text("Generiši račun"),
+                                    )
+                                  ],
+                                ),
+                              )
+                            : Container(),
+                      ],
                     ),
                   ),
-                ],
-              ),
+                ),
+              ],
             ))
         .cast<Widget>()
         .toList();

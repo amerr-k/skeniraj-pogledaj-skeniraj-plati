@@ -10,7 +10,7 @@ Menu _$MenuFromJson(Map<String, dynamic> json) => Menu(
       json['id'] as int?,
       json['name'] as String?,
       json['qrCode'] as String?,
-      json['isActive'],
+      json['isActive'] as bool?,
     );
 
 Map<String, dynamic> _$MenuToJson(Menu instance) => <String, dynamic>{

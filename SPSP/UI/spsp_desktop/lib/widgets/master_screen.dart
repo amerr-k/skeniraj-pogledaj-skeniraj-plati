@@ -2,7 +2,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:spsp_desktop/main.dart';
-import 'package:spsp_desktop/screens/menu/menu_item_list_screen.dart';
+import 'package:spsp_desktop/screens/menu/menu_list_screen.dart';
+import 'package:spsp_desktop/screens/menu_item/menu_item_list_screen.dart';
 import 'package:spsp_desktop/screens/order/order_list_screen.dart';
 import 'package:spsp_desktop/screens/pos/pos_screen.dart';
 import 'package:spsp_desktop/screens/promotion/promotion_list_screen.dart';
@@ -29,43 +30,43 @@ class _MasterScreenWidgetState extends State<MasterScreenWidget> {
             ListTile(
               title: Text("Odjava"),
               onTap: () {
-                Navigator.of(context)
-                    .push(MaterialPageRoute(builder: (context) => LoginPage()));
+                Navigator.of(context).push(MaterialPageRoute(builder: (context) => LoginPage()));
               },
             ),
             ListTile(
               title: Text("Proizvodi"),
               onTap: () {
-                Navigator.of(context).push(
-                    MaterialPageRoute(builder: (context) => const MenuItemListScreen()));
+                Navigator.of(context).push(MaterialPageRoute(builder: (context) => MenuItemListScreen()));
               },
             ),
             ListTile(
               title: Text("POS"),
               onTap: () {
-                Navigator.of(context)
-                    .push(MaterialPageRoute(builder: (context) => POSScreen()));
+                Navigator.of(context).push(MaterialPageRoute(builder: (context) => POSScreen()));
               },
             ),
             ListTile(
               title: Text("Narudžbe"),
               onTap: () {
-                Navigator.of(context)
-                    .push(MaterialPageRoute(builder: (context) => OrderListScreen()));
+                Navigator.of(context).push(MaterialPageRoute(builder: (context) => OrderListScreen()));
               },
             ),
             ListTile(
               title: Text("Izvještaji"),
               onTap: () {
-                Navigator.of(context)
-                    .push(MaterialPageRoute(builder: (context) => ReportFormScreen()));
+                Navigator.of(context).push(MaterialPageRoute(builder: (context) => ReportFormScreen()));
               },
             ),
             ListTile(
               title: Text("Promocije"),
               onTap: () {
-                Navigator.of(context)
-                    .push(MaterialPageRoute(builder: (context) => PromotionListScreen()));
+                Navigator.of(context).push(MaterialPageRoute(builder: (context) => PromotionListScreen()));
+              },
+            ),
+            ListTile(
+              title: Text("Meniji"),
+              onTap: () {
+                Navigator.of(context).push(MaterialPageRoute(builder: (context) => MenuListScreen()));
               },
             )
           ],

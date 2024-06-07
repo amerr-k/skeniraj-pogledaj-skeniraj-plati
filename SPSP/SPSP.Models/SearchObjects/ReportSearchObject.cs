@@ -9,5 +9,6 @@ namespace SPSP.Models.SearchObjects
     public class ReportSearchObject
     {
         public string? Quarter { get; set; }
+        public int NumberOfResults { get; set; }
     }
 }

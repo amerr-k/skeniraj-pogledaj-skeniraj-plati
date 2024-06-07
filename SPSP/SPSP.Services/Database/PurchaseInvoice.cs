@@ -21,8 +21,8 @@ namespace SPSP.Services.Database
         public string Note { get; set; }
 
         public bool? Valid { get; set; }
-        public int? PaymentGatewayDataId { get; set; }
-        public virtual PaymentGatewayData? PaymentGatewayData {  get; set; }
+        //public int? PaymentGatewayDataId { get; set; }
+        //public virtual PaymentGatewayData? PaymentGatewayData {  get; set; }
         public int? EmployeeId { get; set; }
         public virtual Employee? Employee { get; set; }
         public virtual ICollection<PurchaseInvoiceItem> PurchaseInvoiceItems { get; set; }

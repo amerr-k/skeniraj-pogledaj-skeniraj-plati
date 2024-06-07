@@ -12,13 +12,13 @@ import 'package:spsp_desktop/pdf_utils/pdf_api.dart';
 
 class PdfCustomerReportApi {
   static Future<File> generateAsFile(
-      Invoice invoice, List<CustomerReportData> menuItemReportData) async {
-    var pdf = await generatePdfDocument(invoice, menuItemReportData);
+      Invoice invoice, List<CustomerReportData> menuItemReportData, int numberOfResults, bool withDetails) async {
+    var pdf = await generatePdfDocument(invoice, menuItemReportData, numberOfResults, withDetails);
     return PdfApi.saveDocument(name: 'customer_report.pdf', pdf: pdf);
   }
 
   static Future<Document> generatePdfDocument(
-      Invoice invoice, List<CustomerReportData> menuItemReportData) async {
+      Invoice invoice, List<CustomerReportData> menuItemReportData, int numberOfResults, bool withDetails) async {
     final pdf = Document(
         theme: ThemeData.withFont(
       base: Font.ttf(await rootBundle.load("assets/fonts/Roboto-Regular.ttf")),
@@ -29,9 +29,8 @@ class PdfCustomerReportApi {
     pdf.addPage(MultiPage(
       build: (context) => [
         buildHeader(invoice),
-        SizedBox(height: 3 * PdfPageFormat.cm),
-        buildTitle(invoice),
-        buildInvoice(menuItemReportData),
+        buildTitle(invoice, numberOfResults),
+        buildInvoice(menuItemReportData, withDetails),
         Divider(),
       ],
       footer: (context) => buildFooter(invoice),
@@ -62,7 +61,7 @@ class PdfCustomerReportApi {
       );
 
   static Widget buildInvoiceInfo(InvoiceInfo info) {
-    final titles = <String>['Broj racuna:', 'Datum narudzbe:'];
+    final titles = <String>['Broj računa:', 'Datum narudžbe:'];
     final data = <String>[info.number, DateFormat('dd.MM.yyyy').format(info.date)];
 
     return Column(
@@ -85,35 +84,43 @@ class PdfCustomerReportApi {
         ],
       );
 
-  static Widget buildTitle(Invoice invoice) => Column(
+  static Widget buildTitle(Invoice invoice, int numberOfResults) => Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            "Izvještaj za 10 najboljih kupaca",
-            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            "Izvještaj za $numberOfResults najboljih kupaca",
+            style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
           ),
-          SizedBox(height: 0.8 * PdfPageFormat.cm),
           SizedBox(height: 0.8 * PdfPageFormat.cm),
         ],
       );
 
-  static Widget buildInvoice(List<CustomerReportData> customerReportData) {
-    final headers = ['Ime', 'Prezime', 'Email', 'Broj narudzbi', 'Ukupan prihod'];
+  static Widget buildInvoice(List<CustomerReportData> customerReportData, bool withDetails) {
+    final List<String> headers = withDetails
+        ? ['Ime', 'Prezime', 'Email', 'Broj narudžbi', 'Ukupan prihod']
+        : ['Ime', 'Prezime', 'Ukupan prihod'];
+
     final data = customerReportData.map((item) {
-      return [
-        item.firstName,
-        item.lastName,
-        item.email,
-        item.orderCount,
-        '${item.totalAmount.toStringAsFixed(2)} KM ',
-      ];
+      return withDetails
+          ? [
+              item.firstName,
+              item.lastName,
+              item.email,
+              item.orderCount,
+              '${item.totalAmount.toStringAsFixed(2)} KM ',
+            ]
+          : [
+              item.firstName,
+              item.lastName,
+              '${item.totalAmount.toStringAsFixed(2)} KM',
+            ];
     }).toList();
 
     return Table.fromTextArray(
       headers: headers,
       data: data,
       border: null,
-      headerStyle: TextStyle(fontWeight: FontWeight.bold),
+      headerStyle: TextStyle(fontWeight: FontWeight.bold, fontSize: 11),
       headerDecoration: BoxDecoration(color: PdfColors.grey300),
       cellHeight: 30,
       cellAlignments: {

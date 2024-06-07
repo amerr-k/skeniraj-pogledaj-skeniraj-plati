@@ -12,6 +12,7 @@ namespace SPSP.Services.Database.SeedData
                     Id = 1,
                     Name = "Glavni meni - Verzija 1",
                     QRCode = "",
+                    IsActive = true,
                     Valid = true
                 }
             );

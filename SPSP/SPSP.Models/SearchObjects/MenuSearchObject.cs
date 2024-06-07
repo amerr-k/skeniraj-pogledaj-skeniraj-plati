@@ -9,5 +9,6 @@ namespace SPSP.Models.SearchObjects
     public class MenuSearchObject : BaseSearchObject
     {
         public bool? IsMenuItemsIncluded { get; set; }
+        public string? Name { get; set; }
     }
 }

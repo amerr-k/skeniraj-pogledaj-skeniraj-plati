@@ -9,7 +9,7 @@ class Menu {
   String? qrCode;
   bool? isActive;
 
-  Menu(this.id, this.name, this.qrCode, isActive);
+  Menu(this.id, this.name, this.qrCode, this.isActive);
 
   /// A necessary factory constructor for creating a new User instance
   /// from a map. Pass the map to the generated `_$UserFromJson()` constructor.

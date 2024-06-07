@@ -60,7 +60,7 @@ class _PromotionListScreenState extends State<PromotionListScreen> {
                 DataColumn(
                   label: Expanded(
                     child: Text(
-                      'Id',
+                      'Redni broj',
                       style: TextStyle(fontStyle: FontStyle.italic),
                     ),
                   ),
@@ -106,45 +106,35 @@ class _PromotionListScreenState extends State<PromotionListScreen> {
                   ),
                 ),
               ],
-              rows: searchResult?.result
-                      .map(
-                        (e) => DataRow(
-                            onSelectChanged: (selected) => {
-                                  if (selected == true)
-                                    {
-                                      Navigator.of(context).push(
-                                        MaterialPageRoute(
-                                          builder: (context) => PromotionDetailScreen(
-                                            promotion: e,
-                                          ),
-                                        ),
-                                      )
-                                    }
-                                },
-                            cells: [
-                              DataCell(
-                                Text(e.id?.toString() ?? ""),
-                              ),
-                              DataCell(
-                                Text(e.description ?? ""),
-                              ),
-                              DataCell(
-                                Text(Utils.formatDate(e.startTime!) ?? ""),
-                              ),
-                              DataCell(
-                                Text(e.endTime != null
-                                    ? Utils.formatDate(e.endTime!)
-                                    : ""),
-                              ),
-                              DataCell(
-                                Text(e.menuItem!.name! ?? ""),
-                              ),
-                              DataCell(
-                                Text(e.active ? "Aktivna" : "Neaktivna"),
-                              ),
-                            ]),
-                      )
-                      .toList() ??
+              rows: searchResult?.result.asMap().entries.map(
+                    (entry) {
+                      int index = entry.key;
+                      var e = entry.value;
+
+                      return DataRow(
+                        onSelectChanged: (selected) => {
+                          if (selected == true)
+                            {
+                              Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (context) => PromotionDetailScreen(
+                                    promotion: e,
+                                  ),
+                                ),
+                              )
+                            }
+                        },
+                        cells: [
+                          DataCell(Text((index + 1).toString())),
+                          DataCell(Text(e.description ?? "")),
+                          DataCell(Text(Utils.formatDate(e.startTime!) ?? "")),
+                          DataCell(Text(e.endTime != null ? Utils.formatDate(e.endTime!) : "")),
+                          DataCell(Text(e.menuItem!.name! ?? "")),
+                          DataCell(Text(e.active ? "Aktivna" : "Neaktivna")),
+                        ],
+                      );
+                    },
+                  ).toList() ??
                   []),
         ),
       ],

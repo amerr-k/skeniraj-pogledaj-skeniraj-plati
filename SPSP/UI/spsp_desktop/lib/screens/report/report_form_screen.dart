@@ -99,17 +99,17 @@ class _ReportFormScreenState extends State<ReportFormScreen> {
 
                     switch (request['subject']) {
                       case 'MENU_ITEM':
-                        menuItemReportData =
-                            await _reportProvider.getMenuItemsReportData(filter: request);
+                        menuItemReportData = await _reportProvider.getMenuItemsReportData(filter: request);
 
-                        await _generateMenuItemsReport(invoice, menuItemReportData);
+                        await _generateMenuItemsReport(
+                            invoice, menuItemReportData, request['numberOfResults'], request['withDetails']);
 
                         break;
                       case 'CUSTOMER':
-                        customerReportData =
-                            await _reportProvider.getCustomersReportData(filter: request);
+                        customerReportData = await _reportProvider.getCustomersReportData(filter: request);
 
-                        await _generateCustomersReport(invoice, customerReportData);
+                        await _generateCustomersReport(
+                            invoice, customerReportData, request['numberOfResults'], request['withDetails']);
 
                         break;
                     }
@@ -117,14 +117,14 @@ class _ReportFormScreenState extends State<ReportFormScreen> {
                     showDialog(
                       context: context,
                       builder: ((BuildContext context) => AlertDialog(
-                            title: Text("Error"),
+                            title: const Text("Error"),
                             content: Text(
                               e.toString(),
                             ),
                             actions: [
                               TextButton(
                                 onPressed: () => Navigator.pop(context),
-                                child: Text("Uredu"),
+                                child: const Text("Uredu"),
                               ),
                             ],
                           )),
@@ -177,8 +177,7 @@ class _ReportFormScreenState extends State<ReportFormScreen> {
             ],
           ),
           FormBuilderDropdown<String>(
-            validator:
-                FormBuilderValidators.required(errorText: "Polje ne smije biti prazno."),
+            validator: FormBuilderValidators.required(errorText: "Polje ne smije biti prazno."),
             name: 'subject',
             decoration: InputDecoration(
                 labelText: "Predmet",
@@ -187,7 +186,7 @@ class _ReportFormScreenState extends State<ReportFormScreen> {
                     Icons.close,
                   ),
                   onPressed: () {
-                    _formKey.currentState!.fields['menuId']?.reset();
+                    _formKey.currentState!.fields['subject']?.reset();
                   },
                 ),
                 hintText: "Predmet po kojem želite kreiran izvještaj."),
@@ -201,24 +200,87 @@ class _ReportFormScreenState extends State<ReportFormScreen> {
                 child: Text(ReportSubjectParameter.MENU_ITEM.value),
               ),
             ],
-          )
+          ),
+          FormBuilderDropdown<int>(
+            validator: FormBuilderValidators.required(errorText: "Polje ne smije biti prazno."),
+            name: 'numberOfResults',
+            decoration: InputDecoration(
+                labelText: "Broj stavki",
+                suffix: IconButton(
+                  icon: const Icon(
+                    Icons.close,
+                  ),
+                  onPressed: () {
+                    _formKey.currentState!.fields['numberOfResults']?.reset();
+                  },
+                ),
+                hintText: "Broj rezultata koje će izvještaj vratiti ukoliko podaci postoje."),
+            items: const [
+              DropdownMenuItem<int>(
+                value: 1,
+                child: Text("1"),
+              ),
+              DropdownMenuItem<int>(
+                value: 5,
+                child: Text("5"),
+              ),
+              DropdownMenuItem<int>(
+                value: 10,
+                child: Text("10"),
+              ),
+              DropdownMenuItem<int>(
+                value: 15,
+                child: Text("15"),
+              ),
+              DropdownMenuItem<int>(
+                value: 20,
+                child: Text("20"),
+              ),
+            ],
+          ),
+          FormBuilderDropdown<bool>(
+            validator: FormBuilderValidators.required(errorText: "Polje ne smije biti prazno."),
+            initialValue: false,
+            name: 'withDetails',
+            decoration: InputDecoration(
+                labelText: "Uključiti širi set podataka",
+                suffix: IconButton(
+                  icon: const Icon(
+                    Icons.close,
+                  ),
+                  onPressed: () {
+                    _formKey.currentState!.fields['details']?.reset();
+                  },
+                ),
+                hintText: "Uključen širi set podataka."),
+            items: const [
+              DropdownMenuItem<bool>(
+                value: true,
+                child: Text("Da"),
+              ),
+              DropdownMenuItem<bool>(
+                value: false,
+                child: Text("Ne"),
+              ),
+            ],
+          ),
         ],
       ),
     );
   }
 
   Future _generateCustomersReport(
-      Invoice invoice, List<CustomerReportData> customerReportData) async {
+      Invoice invoice, List<CustomerReportData> customerReportData, int numberOfResults, bool withDetails) async {
     final pdfFile =
-        await PdfCustomerReportApi.generateAsFile(invoice, customerReportData);
+        await PdfCustomerReportApi.generateAsFile(invoice, customerReportData, numberOfResults, withDetails);
 
     PdfApi.openFile(pdfFile);
   }
 
   Future _generateMenuItemsReport(
-      Invoice invoice, List<MenuItemReportData> menuItemReportData) async {
+      Invoice invoice, List<MenuItemReportData> menuItemReportData, int numberOfResults, bool withDetails) async {
     final pdfFile =
-        await PdfMenuItemReportApi.generateAsFile(invoice, menuItemReportData);
+        await PdfMenuItemReportApi.generateAsFile(invoice, menuItemReportData, numberOfResults, withDetails);
 
     PdfApi.openFile(pdfFile);
   }

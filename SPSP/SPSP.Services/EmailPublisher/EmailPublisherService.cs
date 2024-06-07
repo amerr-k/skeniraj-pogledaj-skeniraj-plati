@@ -17,7 +17,6 @@ namespace SPSP.Services.OrderEmailPublisher
             var rabbitMQConnectionString = $"host={rabbitMQHost};username={rabbitMQUsername};password={rabbitMQPassword};virtualHost={rabbitMQVirtualHost}";
 
             this.bus = RabbitHutch.CreateBus(rabbitMQConnectionString);
-            //this.bus = RabbitHutch.CreateBus("host=localhost");
         }
         public void PublishSaleInvoiceEmail(Models.EmailMessage emailMessage)
         {

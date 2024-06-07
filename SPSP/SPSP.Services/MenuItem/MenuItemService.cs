@@ -50,6 +50,17 @@ namespace SPSP.Services.MenuItem
                 query = query.Where(x => x.Name.Contains(search.FTS) || x.Code.Contains(search.FTS) || x.Description.Contains(search.FTS));
             }
 
+            if(search?.MenuId != null)
+            {
+                query = query.Where(x => x.MenuId == search.MenuId);
+            } 
+
+            if(search?.IsMenuActive != null)
+            {
+                query = query.Include(x => x.Menu).Where(y => y.Menu.IsActive == search.IsMenuActive);
+
+            }
+
             return base.AddFilter(query, search);
         }
 

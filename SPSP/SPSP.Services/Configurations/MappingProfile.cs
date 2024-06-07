@@ -21,6 +21,8 @@ namespace SPSP.Services.Configurations
         public MappingProfile()
         {
             CreateMap<Database.Menu, Models.Menu>();
+            CreateMap<MenuCreateRequest, Database.Menu>();
+            CreateMap<MenuUpdateRequest, Database.Menu>();
 
             CreateMap<Database.MenuItem, Models.MenuItem>();
             CreateMap<MenuItemCreateRequest, Database.MenuItem>();

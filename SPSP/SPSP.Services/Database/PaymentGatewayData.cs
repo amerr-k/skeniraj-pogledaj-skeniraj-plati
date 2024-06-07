@@ -13,6 +13,6 @@ namespace SPSP.Services.Database
         public string Message { get; set; }
         public string Data { get; set; } 
         public bool? Valid { get; set; }
-        public virtual ICollection<PurchaseInvoice> PurchaseInvoices { get; set; }
+        public virtual ICollection<SaleInvoice> SaleInvoices { get; set; }
     }
 }

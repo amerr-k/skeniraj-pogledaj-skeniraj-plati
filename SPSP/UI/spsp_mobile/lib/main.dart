@@ -51,13 +51,10 @@ void main() async {
         textButtonTheme: TextButtonThemeData(
             style: TextButton.styleFrom(
                 foregroundColor: Colors.deepPurple,
-                textStyle: const TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                    fontStyle: FontStyle.italic))),
+                textStyle: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold, fontStyle: FontStyle.italic))),
         textTheme: const TextTheme(
-          headline1: TextStyle(fontSize: 72.0, fontWeight: FontWeight.bold),
-          headline6: TextStyle(fontSize: 36.0, fontStyle: FontStyle.italic),
+          displayLarge: TextStyle(fontSize: 72.0, fontWeight: FontWeight.bold),
+          titleLarge: TextStyle(fontSize: 36.0, fontStyle: FontStyle.italic),
         ),
       ),
       home: HomePage(),
@@ -72,13 +69,11 @@ void main() async {
           return MaterialPageRoute(builder: ((context) => OrderListCustomerScreen()));
         }
         if (settings.name == ReservationListCustomerScreen.routeName) {
-          return MaterialPageRoute(
-              builder: ((context) => ReservationListCustomerScreen()));
+          return MaterialPageRoute(builder: ((context) => ReservationListCustomerScreen()));
         }
 
         var uri = Uri.parse(settings.name!);
-        if (uri.pathSegments.length == 2 &&
-            "/${uri.pathSegments.first}" == MenuItemDetailsCustomerScreen.routeName) {
+        if (uri.pathSegments.length == 2 && "/${uri.pathSegments.first}" == MenuItemDetailsCustomerScreen.routeName) {
           var id = uri.pathSegments[1];
           return MaterialPageRoute(
               builder: (context) => MenuItemDetailsCustomerScreen(
@@ -117,9 +112,7 @@ class HomePage extends StatelessWidget {
             Container(
               height: 400,
               decoration: const BoxDecoration(
-                  image: DecorationImage(
-                      image: AssetImage("assets/images/background.jpg"),
-                      fit: BoxFit.fill)),
+                  image: DecorationImage(image: AssetImage("assets/images/background.jpg"), fit: BoxFit.fill)),
               child: Stack(children: [
                 Center(
                   child: Container(
@@ -131,10 +124,8 @@ class HomePage extends StatelessWidget {
                       padding: EdgeInsets.only(left: 10.0, right: 10.0),
                       child: Text(
                         "SKENIRAJ I PLATI!",
-                        style: TextStyle(
-                            color: Color.fromARGB(255, 18, 0, 85),
-                            fontSize: 40,
-                            fontWeight: FontWeight.bold),
+                        style:
+                            TextStyle(color: Color.fromARGB(255, 18, 0, 85), fontSize: 40, fontWeight: FontWeight.bold),
                       ),
                     ),
                   ),
@@ -144,13 +135,11 @@ class HomePage extends StatelessWidget {
             Padding(
               padding: EdgeInsets.all(40),
               child: Container(
-                decoration: BoxDecoration(
-                    color: Colors.white, borderRadius: BorderRadius.circular(10)),
+                decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(10)),
                 child: Column(children: [
                   Container(
                     padding: EdgeInsets.all(8),
-                    decoration: BoxDecoration(
-                        border: Border(bottom: BorderSide(color: Colors.grey))),
+                    decoration: BoxDecoration(border: Border(bottom: BorderSide(color: Colors.grey))),
                     child: TextField(
                       controller: _usernameController,
                       decoration: InputDecoration(
@@ -165,9 +154,7 @@ class HomePage extends StatelessWidget {
                       obscureText: true,
                       controller: _passwordController,
                       decoration: InputDecoration(
-                          border: InputBorder.none,
-                          hintText: "Pasword",
-                          hintStyle: TextStyle(color: Colors.grey[400])),
+                          border: InputBorder.none, hintText: "Pasword", hintStyle: TextStyle(color: Colors.grey[400])),
                     ),
                   ),
                 ]),
@@ -181,10 +168,8 @@ class HomePage extends StatelessWidget {
               margin: EdgeInsets.fromLTRB(40, 0, 40, 0),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),
-                gradient: const LinearGradient(colors: [
-                  Color.fromRGBO(143, 148, 251, 1),
-                  Color.fromRGBO(143, 148, 251, .6)
-                ]),
+                gradient:
+                    const LinearGradient(colors: [Color.fromRGBO(143, 148, 251, 1), Color.fromRGBO(143, 148, 251, .6)]),
               ),
               child: InkWell(
                 onTap: () async {

@@ -8,7 +8,7 @@ using SPSP.Services.MenuItem;
 
 namespace SPSP.Controllers
 {
-    [ApiController] // mora ostati u konkretnom kontroleru zbog swaggera
+    [ApiController]
     public class MenuItemController
         : BaseCRUDController<Models.MenuItem, MenuItemSearchObject, MenuItemCreateRequest, MenuItemUpdateRequest>
     {

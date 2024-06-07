@@ -12,13 +12,13 @@ import 'package:spsp_desktop/pdf_utils/pdf_api.dart';
 
 class PdfMenuItemReportApi {
   static Future<File> generateAsFile(
-      Invoice invoice, List<MenuItemReportData> menuItemReportData) async {
-    var pdf = await generatePdfDocument(invoice, menuItemReportData);
+      Invoice invoice, List<MenuItemReportData> menuItemReportData, int numberOfResults, bool withDetails) async {
+    var pdf = await generatePdfDocument(invoice, menuItemReportData, numberOfResults, withDetails);
     return PdfApi.saveDocument(name: 'menu_item_report.pdf', pdf: pdf);
   }
 
   static Future<Document> generatePdfDocument(
-      Invoice invoice, List<MenuItemReportData> menuItemReportData) async {
+      Invoice invoice, List<MenuItemReportData> menuItemReportData, int numberOfResults, bool withDetails) async {
     final pdf = Document(
         theme: ThemeData.withFont(
       base: Font.ttf(await rootBundle.load("assets/fonts/Roboto-Regular.ttf")),
@@ -29,9 +29,8 @@ class PdfMenuItemReportApi {
     pdf.addPage(MultiPage(
       build: (context) => [
         buildHeader(invoice),
-        SizedBox(height: 3 * PdfPageFormat.cm),
-        buildTitle(invoice),
-        buildInvoice(menuItemReportData),
+        buildTitle(invoice, numberOfResults),
+        buildInvoice(menuItemReportData, withDetails),
         Divider(),
       ],
       footer: (context) => buildFooter(invoice),
@@ -85,35 +84,43 @@ class PdfMenuItemReportApi {
         ],
       );
 
-  static Widget buildTitle(Invoice invoice) => Column(
+  static Widget buildTitle(Invoice invoice, int numberOfResults) => Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            "Izvještaj za 10 najprodavanijih proizvoda",
-            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            "Izvještaj za $numberOfResults najprodavanijih proizvoda",
+            style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
           ),
-          SizedBox(height: 0.8 * PdfPageFormat.cm),
           SizedBox(height: 0.8 * PdfPageFormat.cm),
         ],
       );
 
-  static Widget buildInvoice(List<MenuItemReportData> customerReportData) {
-    final headers = ['Naziv', 'Kategorija', 'Cijena', 'Broj narudzbi', 'Ukupan prihod'];
+  static Widget buildInvoice(List<MenuItemReportData> customerReportData, bool withDetails) {
+    final List<String> headers = withDetails
+        ? ['Naziv', 'Kategorija', 'Cijena', 'Broj narudžbi', 'Ukupan prihod']
+        : ['Naziv', 'Broj narudžbi', 'Ukupan prihod'];
+
     final data = customerReportData.map((item) {
-      return [
-        item.name,
-        item.category,
-        item.price,
-        item.orderCount,
-        '${item.totalAmount.toStringAsFixed(2)} KM ',
-      ];
+      return withDetails
+          ? [
+              item.name,
+              item.category,
+              item.price.toStringAsFixed(2),
+              item.orderCount,
+              '${item.totalAmount.toStringAsFixed(2)} KM',
+            ]
+          : [
+              item.name,
+              item.orderCount,
+              '${item.totalAmount.toStringAsFixed(2)} KM',
+            ];
     }).toList();
 
     return Table.fromTextArray(
       headers: headers,
       data: data,
       border: null,
-      headerStyle: TextStyle(fontWeight: FontWeight.bold),
+      headerStyle: TextStyle(fontWeight: FontWeight.bold, fontSize: 11),
       headerDecoration: BoxDecoration(color: PdfColors.grey300),
       cellHeight: 30,
       cellAlignments: {
@@ -122,7 +129,6 @@ class PdfMenuItemReportApi {
         2: Alignment.centerRight,
         3: Alignment.centerRight,
         4: Alignment.centerRight,
-        5: Alignment.centerRight,
       },
     );
   }

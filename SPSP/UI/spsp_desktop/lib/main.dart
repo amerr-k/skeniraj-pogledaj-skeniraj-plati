@@ -11,7 +11,7 @@ import 'package:spsp_desktop/providers/promotion_provider.dart';
 import 'package:spsp_desktop/providers/qr_table_provider.dart';
 import 'package:spsp_desktop/providers/report_provider.dart';
 import 'package:spsp_desktop/utils/util.dart';
-import 'screens/menu/menu_item_list_screen.dart';
+import 'screens/menu_item/menu_item_list_screen.dart';
 
 void main() {
   runApp(
@@ -68,8 +68,7 @@ class LoginPage extends StatelessWidget {
                     const SizedBox(height: 8),
                     _buildPasswordField(_passwordController),
                     const SizedBox(height: 8),
-                    _buildLoginButton(context, _usernameController, _passwordController,
-                        _menuItemProvider)
+                    _buildLoginButton(context, _usernameController, _passwordController, _menuItemProvider)
                   ],
                 ),
               ),
@@ -85,8 +84,7 @@ Widget _buildLogo() {
 
 Widget _buildUsernameTextField(TextEditingController usernameController) {
   return TextField(
-    decoration:
-        const InputDecoration(labelText: "Korisničko ime", prefixIcon: Icon(Icons.email)),
+    decoration: const InputDecoration(labelText: "Korisničko ime", prefixIcon: Icon(Icons.email)),
     controller: usernameController,
   );
 }
@@ -96,8 +94,7 @@ Widget _buildPasswordField(TextEditingController passwordController) {
     obscureText: true,
     enableSuggestions: false,
     autocorrect: false,
-    decoration:
-        const InputDecoration(labelText: "Lozinka", prefixIcon: Icon(Icons.password)),
+    decoration: const InputDecoration(labelText: "Lozinka", prefixIcon: Icon(Icons.password)),
     controller: passwordController,
   );
 }
@@ -113,11 +110,13 @@ Widget _buildLoginButton(BuildContext context, TextEditingController usernameCon
         Authorization.password = password;
 
         try {
-          await menuItemProvider.get();
+          await menuItemProvider.get(filter: {
+            "isMenuActive": true,
+          });
 
           Navigator.of(context).push(
             MaterialPageRoute(
-              builder: (context) => const MenuItemListScreen(),
+              builder: (context) => MenuItemListScreen(),
             ),
           );
         } on Exception catch (e) {

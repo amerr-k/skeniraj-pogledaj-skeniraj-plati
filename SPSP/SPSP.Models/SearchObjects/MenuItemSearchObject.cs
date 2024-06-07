@@ -13,5 +13,7 @@ namespace SPSP.Models.SearchObjects
         public bool? IsCategoryIncluded { get; set; }
         public bool? IsMenuIncluded { get; set; }
         public bool? IsRecommendedIncluded {  get; set; }
+        public bool? IsMenuActive { get; set; }
+        public int? MenuId { get; set; }
     }
 }

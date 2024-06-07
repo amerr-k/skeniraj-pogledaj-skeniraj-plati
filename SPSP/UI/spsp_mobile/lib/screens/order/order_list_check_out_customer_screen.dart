@@ -3,6 +3,7 @@
 import 'dart:ffi';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_paypal_checkout/flutter_paypal_checkout.dart';
 import 'package:provider/provider.dart';
 import 'package:spsp_mobile/environment_config.dart';
@@ -22,29 +23,24 @@ import 'package:spsp_mobile/pdf_utils/pdf_invoice_api.dart';
 import 'package:spsp_mobile/providers/order_provider.dart';
 import 'package:spsp_mobile/providers/sale_invoice_provider.dart';
 import 'package:spsp_mobile/providers/transaction_provider.dart';
+import 'package:spsp_mobile/utils/util.dart';
 
 class OrderListCheckOutCustomerScreen extends StatefulWidget {
   final String? qrTableId;
 
-  const OrderListCheckOutCustomerScreen({Key? key, required this.qrTableId})
-      : super(key: key);
+  const OrderListCheckOutCustomerScreen({Key? key, required this.qrTableId}) : super(key: key);
 
   @override
-  _OrderListCheckOutCustomerScreenState createState() =>
-      _OrderListCheckOutCustomerScreenState();
+  _OrderListCheckOutCustomerScreenState createState() => _OrderListCheckOutCustomerScreenState();
 }
 
-class _OrderListCheckOutCustomerScreenState
-    extends State<OrderListCheckOutCustomerScreen> {
+class _OrderListCheckOutCustomerScreenState extends State<OrderListCheckOutCustomerScreen> {
   RequestResult<Order>? orders;
   List<bool> _isChecked = [];
   late TransactionProvider _transactionProvider = TransactionProvider();
   late SaleInvoiceProvider _saleInvoiceProvider = SaleInvoiceProvider();
   late OrderProvider _orderProvider = OrderProvider();
-  var CLIENT_ID_VALUE = String.fromEnvironment('CLIENT_ID_VALUE',
-      defaultValue: EnvironmentConfig.CLIENT_ID_VALUE);
-  var SECRET_KEY_VALUE = String.fromEnvironment('SECRET_KEY_VALUE',
-      defaultValue: EnvironmentConfig.SECRET_KEY_VALUE);
+
   @override
   void initState() {
     super.initState();
@@ -64,11 +60,8 @@ class _OrderListCheckOutCustomerScreenState
   }
 
   Future<void> _getOrders() async {
-    final fetchedOrders = await _orderProvider.get(filter: {
-      "qrTableId": widget.qrTableId,
-      "orderStatus": OrderStatus.ACTIVE.name,
-      "isOrderItemsIncluded": true
-    });
+    final fetchedOrders = await _orderProvider.get(
+        filter: {"qrTableId": widget.qrTableId, "orderStatus": OrderStatus.ACTIVE.name, "isOrderItemsIncluded": true});
     setState(() {
       orders = fetchedOrders;
       _isChecked = List<bool>.filled(fetchedOrders?.result.length ?? 0, false);
@@ -81,8 +74,7 @@ class _OrderListCheckOutCustomerScreenState
       appBar: AppBar(
         title: Text('Lista narudžbi'),
       ),
-      body:
-          orders != null ? _buildOrderList() : Center(child: CircularProgressIndicator()),
+      body: orders != null ? _buildOrderList() : Center(child: CircularProgressIndicator()),
       bottomNavigationBar: BottomAppBar(
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -124,22 +116,22 @@ class _OrderListCheckOutCustomerScreenState
     );
   }
 
-  void _openPaypalGateway(
-      BuildContext context, List<Transaction> transactions, List<Order> selectedOrders) {
+  void _openPaypalGateway(BuildContext context, List<Transaction> transactions, List<Order> selectedOrders) {
     Navigator.of(context).push(
       MaterialPageRoute(
         builder: (BuildContext context) => SafeArea(
           child: PaypalCheckout(
             sandboxMode: true,
-            clientId: CLIENT_ID_VALUE,
-            secretKey: SECRET_KEY_VALUE,
-            returnURL: "success.snippetcoder.com",
-            cancelURL: "cancel.snippetcoder.com",
+            clientId: String.fromEnvironment('CLIENT_ID_VALUE', defaultValue: dotenv.env['CLIENT_ID_VALUE'] ?? ''),
+            secretKey: String.fromEnvironment('SECRET_KEY_VALUE', defaultValue: dotenv.env['SECRET_KEY_VALUE'] ?? ''),
+            returnURL: String.fromEnvironment('RETURN_URL_VALUE', defaultValue: 'success.snippetcoder.com'),
+            cancelURL: String.fromEnvironment('CANCEL_URL_VALUE', defaultValue: 'cancel.snippetcoder.com'),
             transactions: transactions,
-            note: "Uživajte u vašem piću i dođite nam ponovo.",
+            note:
+                String.fromEnvironment('PAYPAL_NOTE_VALUE', defaultValue: 'Uživajte u vašem piću i dođite nam ponovo.'),
             onSuccess: (Map params) async {
-              var paymentGatewayData = PaymentGatewayData(params["data"].toString(),
-                  params["message"].toString(), params["error"]);
+              var paymentGatewayData =
+                  PaymentGatewayData(params["data"].toString(), params["message"].toString(), params["error"]);
 
               _clearOrderItems();
 
@@ -198,11 +190,12 @@ class _OrderListCheckOutCustomerScreenState
       itemCount: orders!.result.length,
       itemBuilder: (context, index) {
         final order = orders!.result[index];
+        final orderNumber = index + 1;
         return Column(
           children: [
             CheckboxListTile(
-              title: Text('ID narudžbe: ${order.id}'),
-              subtitle: Text('Ukupno: ${order.totalAmountWithVAT}'),
+              title: Text('Broj narudžbe: $orderNumber'),
+              subtitle: Text('Ukupno: ${formatNumber(order.totalAmountWithVAT)}'),
               value: _isChecked[index],
               onChanged: (value) {
                 setState(() {
@@ -221,7 +214,7 @@ class _OrderListCheckOutCustomerScreenState
                     children: [
                       Text('Artikal: ${item.menuItem!.name}'),
                       Text('Količina: ${item.quantity}'),
-                      Text('Cijena: ${item.subtotal}'),
+                      Text('Cijena: ${formatNumber(item.subtotal)}'),
                     ],
                   ),
                 );
@@ -276,8 +269,7 @@ class _OrderListCheckOutCustomerScreenState
 
     List<Items> items = [];
     order.orderItems.forEach((orderItem) {
-      var item = Items(orderItem.menuItem!.name!, orderItem.quantity!,
-          orderItem.menuItem!.price!, currency);
+      var item = Items(orderItem.menuItem!.name!, orderItem.quantity!, orderItem.menuItem!.price!, currency);
       items.add(item);
     });
 
@@ -300,14 +292,14 @@ class _OrderListCheckOutCustomerScreenState
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text("Success"),
-          content: Text("Your transaction has been processed successfully."),
+          title: Text("Čestitamo!"),
+          content: Text("Vaša transakcija je uspješno procesuirana."),
           actions: [
             TextButton(
               onPressed: () {
                 Navigator.pop(context);
               },
-              child: Text("OK"),
+              child: Text("Uredu"),
             ),
           ],
         );
@@ -322,8 +314,7 @@ class _OrderListCheckOutCustomerScreenState
       final subtotal = orderItem.subtotal ?? 0.0;
       final quantity = orderItem.quantity ?? 0;
 
-      return InvoiceItemPdf(
-          name: name, quantity: quantity, unitPrice: unitPrice, subtotal: subtotal);
+      return InvoiceItemPdf(name: name, quantity: quantity, unitPrice: unitPrice, subtotal: subtotal);
     }).toList();
 
     final invoice = InvoicePdf(

@@ -20,8 +20,7 @@ class ReservationListCustomerScreen extends StatefulWidget {
   const ReservationListCustomerScreen({super.key});
 
   @override
-  State<ReservationListCustomerScreen> createState() =>
-      _ReservationListCustomerScreenState();
+  State<ReservationListCustomerScreen> createState() => _ReservationListCustomerScreenState();
 }
 
 class _ReservationListCustomerScreenState extends State<ReservationListCustomerScreen> {
@@ -90,14 +89,10 @@ class _ReservationListCustomerScreenState extends State<ReservationListCustomerS
                       isSearchVisible = !isSearchVisible;
                     });
                   },
-                  child: const Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                            child: Text("Filteri")),
-                        Icon(Icons.filter_list),
-                      ]),
+                  child: const Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+                    Padding(padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10), child: Text("Filteri")),
+                    Icon(Icons.filter_list),
+                  ]),
                 ),
               ),
               Container(
@@ -110,14 +105,12 @@ class _ReservationListCustomerScreenState extends State<ReservationListCustomerS
                       ),
                     );
                   },
-                  child: const Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                            child: Text("Kreiraj rezervaciju")),
-                        Icon(Icons.add),
-                      ]),
+                  child: const Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+                    Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                        child: Text("Kreiraj rezervaciju")),
+                    Icon(Icons.add),
+                  ]),
                 ),
               ),
             ],
@@ -146,8 +139,7 @@ class _ReservationListCustomerScreenState extends State<ReservationListCustomerS
                 top: BorderSide(color: Colors.grey),
               ),
             ),
-            child:
-                _buildProductCard(reservationListRequestResult!.result[index], rowNumber),
+            child: _buildProductCard(reservationListRequestResult!.result[index], rowNumber),
           );
         },
       ),
@@ -168,7 +160,7 @@ class _ReservationListCustomerScreenState extends State<ReservationListCustomerS
           );
         },
         leading: Text(rowNumber.toString()),
-        title: Text('${Utils.formatDate(item.startTime!)}'),
+        title: Text('Datum rezervacije: ${Utils.formatDate(item.startTime!)}'),
         subtitle: Text("Sto br: ${item.qrTable!.tableNumber.toString()}"),
         trailing: Text('${Utils.formatTime(item.startTime!)}h'));
   }
@@ -226,8 +218,7 @@ class _ReservationListCustomerScreenState extends State<ReservationListCustomerS
             Expanded(
               child: FormBuilderDropdown<String>(
                 name: 'reservationStatus',
-                decoration: InputDecoration(
-                    labelText: "Status rezervacije", hintText: "Odaberi status narudžbe"),
+                decoration: InputDecoration(labelText: "Status rezervacije", hintText: "Odaberi status narudžbe"),
                 items: [
                   DropdownMenuItem<String>(
                     value: ReservationStatus.PENDING_CONFIRMATION.name,
@@ -254,8 +245,7 @@ class _ReservationListCustomerScreenState extends State<ReservationListCustomerS
                     request['isQRTableIncluded'] = true;
                     request['searchByCustomer'] = true;
 
-                    var reservationListSearchResult =
-                        await _reservationProvider.get(filter: request);
+                    var reservationListSearchResult = await _reservationProvider.get(filter: request);
                     setState(() {
                       reservationListRequestResult = reservationListSearchResult!;
                     });

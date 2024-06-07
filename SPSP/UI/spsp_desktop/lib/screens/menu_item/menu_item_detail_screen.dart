@@ -13,7 +13,7 @@ import 'package:spsp_desktop/models/search_result.dart';
 import 'package:spsp_desktop/providers/category_provider.dart';
 import 'package:spsp_desktop/providers/menu_item_provider.dart';
 import 'package:spsp_desktop/providers/menu_provider.dart';
-import 'package:spsp_desktop/screens/menu/menu_item_list_screen.dart';
+import 'package:spsp_desktop/screens/menu_item/menu_item_list_screen.dart';
 import 'package:spsp_desktop/utils/util.dart';
 import 'package:spsp_desktop/widgets/master_screen.dart';
 
@@ -73,7 +73,7 @@ class _MenuItemDetailScreenState extends State<MenuItemDetailScreen> {
   @override
   Widget build(BuildContext context) {
     return MasterScreenWidget(
-      title: widget.menuItem?.name ?? "Product details",
+      title: widget.menuItem?.name ?? "Meni stavke detalji",
       child: Column(
         children: [
           isLoading ? Container() : _buildForm(),
@@ -94,8 +94,7 @@ class _MenuItemDetailScreenState extends State<MenuItemDetailScreen> {
                       var isValid = _formKey.currentState?.saveAndValidate() ?? false;
                       if (isValid) {
                         var request = new Map.from(_formKey.currentState!.value);
-                        request['image'] =
-                            _base64Image != null ? previewImage : widget.menuItem?.image;
+                        request['image'] = _base64Image != null ? previewImage : widget.menuItem?.image;
                         try {
                           if (widget.menuItem == null) {
                             await _menuItemProvider.create(request);
@@ -105,7 +104,9 @@ class _MenuItemDetailScreenState extends State<MenuItemDetailScreen> {
                           Navigator.pushReplacement(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => const MenuItemListScreen(),
+                                builder: (context) => MenuItemListScreen(
+                                  menuId: int.parse(request['menuId'].toString()),
+                                ),
                               ));
                           ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(
@@ -148,8 +149,7 @@ class _MenuItemDetailScreenState extends State<MenuItemDetailScreen> {
             children: [
               Expanded(
                 child: FormBuilderTextField(
-                  validator: FormBuilderValidators.required(
-                      errorText: "Polje ne smije biti prazno."),
+                  validator: FormBuilderValidators.required(errorText: "Polje ne smije biti prazno."),
                   decoration: const InputDecoration(labelText: "Naziv"),
                   name: "name",
                 ),
@@ -159,8 +159,7 @@ class _MenuItemDetailScreenState extends State<MenuItemDetailScreen> {
               ),
               Expanded(
                 child: FormBuilderTextField(
-                  validator: FormBuilderValidators.required(
-                      errorText: "Polje ne smije biti prazno."),
+                  validator: FormBuilderValidators.required(errorText: "Polje ne smije biti prazno."),
                   decoration: const InputDecoration(labelText: "Šifra"),
                   name: "code",
                 ),
@@ -221,8 +220,7 @@ class _MenuItemDetailScreenState extends State<MenuItemDetailScreen> {
               SizedBox(width: 10),
               Expanded(
                 child: FormBuilderDropdown<String>(
-                  validator: FormBuilderValidators.required(
-                      errorText: "Polje ne smije biti prazno."),
+                  validator: FormBuilderValidators.required(errorText: "Polje ne smije biti prazno."),
                   name: 'menuId',
                   decoration: InputDecoration(
                       labelText: "Meni",

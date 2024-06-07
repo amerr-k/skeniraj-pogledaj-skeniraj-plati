@@ -240,11 +240,6 @@ namespace SPSP.Services.Database
                     .IsRequired()
                     .HasDefaultValueSql("((1))");
 
-                entity.HasOne(d => d.PaymentGatewayData)
-                    .WithMany(p => p.PurchaseInvoices)
-                    .HasForeignKey(d => d.PaymentGatewayDataId)
-                    .HasConstraintName("FK_PurchaseInvoice_PaymentGatewayDataId");
-
                 entity.HasOne(d => d.Employee)
                     .WithMany(p => p.PurchaseInvoices)
                     .HasForeignKey(d => d.EmployeeId)
@@ -358,6 +353,11 @@ namespace SPSP.Services.Database
                 entity.Property(e => e.Valid)
                     .IsRequired()
                     .HasDefaultValueSql("((1))");
+
+                entity.HasOne(d => d.PaymentGatewayData)
+                    .WithMany(p => p.SaleInvoices)
+                    .HasForeignKey(d => d.PaymentGatewayDataId)
+                    .HasConstraintName("FK_SaleInvoice_PaymentGatewayDataId");
 
                 entity.HasOne(d => d.Employee)
                     .WithMany(p => p.SaleInvoices)

@@ -38,7 +38,9 @@ class _MenuItemListCustomerScreenState extends State<MenuItemListCustomerScreen>
   }
 
   _loadData() async {
-    var menuItemsGetSearchResult = await _menuItemProvider.get();
+    var menuItemsGetSearchResult = await _menuItemProvider.get(filter: {
+      "isMenuActive": true,
+    });
     var promotionGetSearchResult = await _promotionProvider.get(filter: {
       'IsOnlyTodaysIncluded': true,
     });
@@ -54,7 +56,9 @@ class _MenuItemListCustomerScreenState extends State<MenuItemListCustomerScreen>
     super.didChangeDependencies();
 
     _menuItemProvider = context.read<MenuItemProvider>();
-    var menuItemsGetSearchResult = await _menuItemProvider.get();
+    var menuItemsGetSearchResult = await _menuItemProvider.get(filter: {
+      "isMenuActive": true,
+    });
     setState(() {
       menuItems = menuItemsGetSearchResult;
     });
@@ -132,8 +136,7 @@ class _MenuItemListCustomerScreenState extends State<MenuItemListCustomerScreen>
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) =>
-                      MenuItemDetailsCustomerScreen(id: item.menuItem!.id!.toString()),
+                  builder: (context) => MenuItemDetailsCustomerScreen(id: item.menuItem!.id!.toString()),
                 ),
               )
             },
@@ -164,8 +167,7 @@ class _MenuItemListCustomerScreenState extends State<MenuItemListCustomerScreen>
   Widget _buildMenuItemCard(MenuItem item) {
     return ListTile(
       onTap: () {
-        Navigator.pushNamed(
-            context, "${MenuItemDetailsCustomerScreen.routeName}/${item.id}");
+        Navigator.pushNamed(context, "${MenuItemDetailsCustomerScreen.routeName}/${item.id}");
       },
       leading: imageFromBase64String(item!.image!),
       title: Text(item.name ?? ""),
@@ -195,6 +197,7 @@ class _MenuItemListCustomerScreenState extends State<MenuItemListCustomerScreen>
               var data = await _menuItemProvider.get(filter: {
                 'fts': _ftsController.text,
                 'name': _nameController.text,
+                'isMenuActive': true,
               });
               setState(() {
                 menuItems = data;
