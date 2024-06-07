@@ -1,9 +1,4 @@
-import 'dart:convert';
-import 'dart:io';
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:intl/intl.dart';
@@ -21,18 +16,15 @@ import 'package:spsp_mobile/widgets/master_screen.dart';
 class ReservationDetailsCustomerScreen extends StatefulWidget {
   static const String routeName = "/reservation-form";
 
-  //ovo je ono sto se prosljedjuje prilikom pusha i
   String? id;
   Reservation? reservation;
 
   ReservationDetailsCustomerScreen({super.key, this.reservation, this.id});
   @override
-  State<ReservationDetailsCustomerScreen> createState() =>
-      _ReservationDetailsCustomerScreenState();
+  State<ReservationDetailsCustomerScreen> createState() => _ReservationDetailsCustomerScreenState();
 }
 
-class _ReservationDetailsCustomerScreenState
-    extends State<ReservationDetailsCustomerScreen> {
+class _ReservationDetailsCustomerScreenState extends State<ReservationDetailsCustomerScreen> {
   final _formKey = GlobalKey<FormBuilderState>();
   Map<String, dynamic> _initialValue = {};
 
@@ -52,8 +44,7 @@ class _ReservationDetailsCustomerScreenState
   void initState() {
     super.initState();
     _initialValue = {
-      'startTime':
-          widget.reservation != null ? widget.reservation?.startTime : DateTime.now(),
+      'startTime': widget.reservation != null ? widget.reservation?.startTime : DateTime.now(),
       'qrTableId': widget.reservation?.qrTableId.toString(),
       'specialRequest': widget.reservation?.specialRequest,
       'contactInfo': widget.reservation?.contactInfo,
@@ -71,8 +62,8 @@ class _ReservationDetailsCustomerScreenState
     _qrTableSelectorProvider = context.watch<QRTableSelectorProvider>();
     _qrTableProvider = context.read<QRTableProvider>();
 
-    var qrTableRequestResult = await QRTableProvider()
-        .getAllByReservationDate(filter: {"reservationDate": DateTime.now()});
+    var qrTableRequestResult =
+        await QRTableProvider().getAllByReservationDate(filter: {"reservationDate": DateTime.now()});
 
     setState(() {
       qrTableDropdownList = qrTableRequestResult.result;
@@ -83,8 +74,7 @@ class _ReservationDetailsCustomerScreenState
     if (widget.reservation != null) {
       List<String> allowedActionsResult = [];
       if (widget.reservation!.status != "CANCELED") {
-        allowedActionsResult = await _reservationProvider
-            .getAllowedActions(widget.reservation!.id.toString());
+        allowedActionsResult = await _reservationProvider.getAllowedActions(widget.reservation!.id.toString());
       }
       setState(() {
         allowedMethods = allowedActionsResult;
@@ -118,8 +108,7 @@ class _ReservationDetailsCustomerScreenState
         qrTableList = qrTableRequestResult.result;
       });
       setState(() {
-        _formKey.currentState?.fields["startTime"]
-            ?.didChange(_qrTableSelectorProvider.reservationDate!);
+        _formKey.currentState?.fields["startTime"]?.didChange(_qrTableSelectorProvider.reservationDate!);
       });
     }
   }
@@ -175,17 +164,13 @@ class _ReservationDetailsCustomerScreenState
                               padding: const EdgeInsets.all(10.0),
                               child: ElevatedButton(
                                 style: ButtonStyle(
-                                  backgroundColor:
-                                      MaterialStateProperty.all<Color>(Colors.green),
-                                  foregroundColor:
-                                      MaterialStateProperty.all<Color>(Colors.black),
+                                  backgroundColor: MaterialStateProperty.all<Color>(Colors.green),
+                                  foregroundColor: MaterialStateProperty.all<Color>(Colors.black),
                                 ),
                                 onPressed: () async {
-                                  var isValid =
-                                      _formKey.currentState?.saveAndValidate() ?? false;
+                                  var isValid = _formKey.currentState?.saveAndValidate() ?? false;
                                   if (isValid) {
-                                    var request =
-                                        new Map.from(_formKey.currentState!.value);
+                                    var request = Map.from(_formKey.currentState!.value);
                                     var startTime = request['startTime'] as DateTime;
 
                                     var modifiedStartTime = DateTime(
@@ -196,22 +181,19 @@ class _ReservationDetailsCustomerScreenState
                                       0,
                                     );
 
-                                    request['startTime'] =
-                                        modifiedStartTime.toIso8601String();
+                                    request['startTime'] = modifiedStartTime.toIso8601String();
 
                                     try {
                                       if (widget.reservation == null) {
                                         await _reservationProvider.create(request);
                                       } else {
-                                        await _reservationProvider.update(
-                                            widget.reservation!.id!, request);
+                                        await _reservationProvider.update(widget.reservation!.id!, request);
                                       }
 
                                       Navigator.pushReplacement(
                                         context,
                                         MaterialPageRoute(
-                                          builder: (context) =>
-                                              ReservationListCustomerScreen(),
+                                          builder: (context) => ReservationListCustomerScreen(),
                                         ),
                                       );
                                       ScaffoldMessenger.of(context).showSnackBar(
@@ -353,20 +335,17 @@ class _ReservationDetailsCustomerScreenState
                 children: [
                   Expanded(
                     child: FormBuilderDropdown<String>(
-                      validator: FormBuilderValidators.required(
-                          errorText: "Polje ne smije biti prazno."),
+                      validator: FormBuilderValidators.required(errorText: "Polje ne smije biti prazno."),
                       name: 'qrTableId',
                       enabled: false,
-                      decoration:
-                          InputDecoration(labelText: "Sto", hintText: "Odaberi sto"),
+                      decoration: const InputDecoration(labelText: "Sto", hintText: "Odaberi sto"),
                       items: qrTableDropdownList != null
                           ? qrTableDropdownList!
                               .map((item) => DropdownMenuItem(
                                     // alignment: AlignmentDirectional.,
                                     value: item.id != null ? item.id.toString() : "",
                                     child: Text(
-                                        "Sto br. ${item.tableNumber.toString()} (${item.locationDescription})" ??
-                                            ""),
+                                        "Sto br. ${item.tableNumber.toString()} (${item.locationDescription})" ?? ""),
                                   ))
                               .toList()
                           : [],
@@ -380,8 +359,7 @@ class _ReservationDetailsCustomerScreenState
               height: 10,
             ),
             FormBuilderTextField(
-              decoration: const InputDecoration(
-                  labelText: "Specijalni zahtjevi, molbe ili napomene"),
+              decoration: const InputDecoration(labelText: "Specijalni zahtjevi, molbe ili napomene"),
               name: "specialRequest",
             ),
             const SizedBox(

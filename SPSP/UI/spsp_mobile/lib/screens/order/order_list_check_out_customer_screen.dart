@@ -53,6 +53,15 @@ class _OrderListCheckOutCustomerScreenState extends State<OrderListCheckOutCusto
 
   late ScaffoldMessengerState _scaffoldMessengerState;
 
+  final CLIENT_ID = String.fromEnvironment('CLIENT_ID_VALUE', defaultValue: dotenv.env['CLIENT_ID_VALUE'] ?? '');
+  final SECRET_KEY = String.fromEnvironment('SECRET_KEY_VALUE', defaultValue: dotenv.env['SECRET_KEY_VALUE'] ?? '');
+  final RETURN_URL = String.fromEnvironment('RETURN_URL_VALUE', defaultValue: 'success.snippetcoder.com');
+  final CANCEL_URL = String.fromEnvironment('CANCEL_URL_VALUE', defaultValue: 'cancel.snippetcoder.com');
+  final PAYPAL_NOTE =
+      String.fromEnvironment('PAYPAL_NOTE_VALUE', defaultValue: 'Uživajte u vašem piću i dođite nam ponovo.');
+
+  final CURRENCY = String.fromEnvironment('DEFAULT_CURRENCY_VALUE', defaultValue: 'USD');
+
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
@@ -122,13 +131,12 @@ class _OrderListCheckOutCustomerScreenState extends State<OrderListCheckOutCusto
         builder: (BuildContext context) => SafeArea(
           child: PaypalCheckout(
             sandboxMode: true,
-            clientId: String.fromEnvironment('CLIENT_ID_VALUE', defaultValue: dotenv.env['CLIENT_ID_VALUE'] ?? ''),
-            secretKey: String.fromEnvironment('SECRET_KEY_VALUE', defaultValue: dotenv.env['SECRET_KEY_VALUE'] ?? ''),
-            returnURL: String.fromEnvironment('RETURN_URL_VALUE', defaultValue: 'success.snippetcoder.com'),
-            cancelURL: String.fromEnvironment('CANCEL_URL_VALUE', defaultValue: 'cancel.snippetcoder.com'),
+            clientId: CLIENT_ID,
+            secretKey: SECRET_KEY,
+            returnURL: RETURN_URL,
+            cancelURL: CANCEL_URL,
             transactions: transactions,
-            note:
-                String.fromEnvironment('PAYPAL_NOTE_VALUE', defaultValue: 'Uživajte u vašem piću i dođite nam ponovo.'),
+            note: PAYPAL_NOTE,
             onSuccess: (Map params) async {
               var paymentGatewayData =
                   PaymentGatewayData(params["data"].toString(), params["message"].toString(), params["error"]);
@@ -227,7 +235,7 @@ class _OrderListCheckOutCustomerScreenState extends State<OrderListCheckOutCusto
   }
 
   List<Transaction> _createCheckedTransactions() {
-    var currency = "USD";
+    var currency = CURRENCY;
     double totalAmount = 0;
     ItemList itemList = ItemList([]);
 
@@ -245,7 +253,7 @@ class _OrderListCheckOutCustomerScreenState extends State<OrderListCheckOutCusto
   }
 
   List<Transaction> _createAllTransactions() {
-    var currency = "USD";
+    var currency = CURRENCY;
     double totalAmount = 0;
     ItemList itemList = ItemList([]);
 
@@ -261,8 +269,8 @@ class _OrderListCheckOutCustomerScreenState extends State<OrderListCheckOutCusto
   }
 
   Transaction createNewTransaction(Order order) {
+    var currency = CURRENCY;
     var total = order.totalAmountWithVAT!;
-    var currency = "USD";
     var subtotal = order.totalAmountWithVAT!;
     var details = Details(subtotal);
     var amount = Amount(total, currency, details);
