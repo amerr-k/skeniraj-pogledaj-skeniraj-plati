@@ -9,16 +9,17 @@ import 'package:spsp_desktop/models/invoice/invoice.dart';
 import 'package:spsp_desktop/models/menu_item_report_data/menu_item_report_data.dart';
 import 'package:spsp_desktop/models/invoice/supplier.dart';
 import 'package:spsp_desktop/pdf_utils/pdf_api.dart';
+import 'package:spsp_desktop/utils/util.dart';
 
 class PdfMenuItemReportApi {
-  static Future<File> generateAsFile(
-      Invoice invoice, List<MenuItemReportData> menuItemReportData, int numberOfResults, bool withDetails) async {
-    var pdf = await generatePdfDocument(invoice, menuItemReportData, numberOfResults, withDetails);
+  static Future<File> generateAsFile(Invoice invoice, List<MenuItemReportData> menuItemReportData, int numberOfResults,
+      bool withDetails, bool withSum) async {
+    var pdf = await generatePdfDocument(invoice, menuItemReportData, numberOfResults, withDetails, withSum);
     return PdfApi.saveDocument(name: 'menu_item_report.pdf', pdf: pdf);
   }
 
-  static Future<Document> generatePdfDocument(
-      Invoice invoice, List<MenuItemReportData> menuItemReportData, int numberOfResults, bool withDetails) async {
+  static Future<Document> generatePdfDocument(Invoice invoice, List<MenuItemReportData> menuItemReportData,
+      int numberOfResults, bool withDetails, bool withSum) async {
     final pdf = Document(
         theme: ThemeData.withFont(
       base: Font.ttf(await rootBundle.load("assets/fonts/Roboto-Regular.ttf")),
@@ -32,6 +33,7 @@ class PdfMenuItemReportApi {
         buildTitle(invoice, numberOfResults),
         buildInvoice(menuItemReportData, withDetails),
         Divider(),
+        if (withSum) buildTotal(menuItemReportData),
       ],
       footer: (context) => buildFooter(invoice),
     ));
@@ -130,6 +132,43 @@ class PdfMenuItemReportApi {
         3: Alignment.centerRight,
         4: Alignment.centerRight,
       },
+    );
+  }
+
+  static Widget buildTotal(List<MenuItemReportData> menuItemReportData) {
+    double totalAmount = 0;
+    menuItemReportData.forEach((x) {
+      totalAmount += x.totalAmount;
+    });
+
+    return Container(
+      alignment: Alignment.centerRight,
+      child: Row(
+        children: [
+          Spacer(flex: 6),
+          Expanded(
+            flex: 4,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                buildText(
+                  title: 'Ukupan iznos',
+                  titleStyle: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.bold,
+                  ),
+                  value: Utils.formatPrice(totalAmount).toString(),
+                  unite: true,
+                ),
+                SizedBox(height: 2 * PdfPageFormat.mm),
+                Container(height: 1, color: PdfColors.grey400),
+                SizedBox(height: 0.5 * PdfPageFormat.mm),
+                Container(height: 1, color: PdfColors.grey400),
+              ],
+            ),
+          ),
+        ],
+      ),
     );
   }
 

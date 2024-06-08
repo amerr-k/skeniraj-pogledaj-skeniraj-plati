@@ -144,7 +144,7 @@ class _MenuDetailScreenState extends State<MenuDetailScreen> {
             children: [
               Expanded(
                 child: FormBuilderTextField(
-                  validator: FormBuilderValidators.required(errorText: "Polje ne smije biti prazno."),
+                  validator: FormBuilderValidators.required(errorText: "Polje je obavezno."),
                   decoration: const InputDecoration(labelText: "Naziv"),
                   name: "name",
                 ),

@@ -2,14 +2,12 @@ import 'dart:io';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:pdf/pdf.dart';
-import 'package:pdf/widgets.dart' as pw;
 import 'package:pdf/widgets.dart';
 import 'package:spsp_desktop/models/invoice/customer.dart';
 import 'package:spsp_desktop/models/invoice/invoice.dart';
 import 'package:spsp_desktop/models/invoice/supplier.dart';
 import 'package:spsp_desktop/pdf_utils/pdf_api.dart';
 import 'package:spsp_desktop/utils/util.dart';
-import 'dart:convert';
 
 class PdfInvoiceApi {
   static Future<File> generateAsFile(Invoice invoice) async {

@@ -1,12 +1,9 @@
 // ignore_for_file: prefer_const_constructors, non_constant_identifier_names, prefer_typing_uninitialized_variables
 
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_paypal_checkout/flutter_paypal_checkout.dart';
 import 'package:provider/provider.dart';
-import 'package:spsp_mobile/environment_config.dart';
 import 'package:spsp_mobile/models/enums/OrderStatus.dart';
 import 'package:spsp_mobile/models/invoice_pdf.dart';
 import 'package:spsp_mobile/models/order.dart';
@@ -22,7 +19,6 @@ import 'package:spsp_mobile/models/pdf/supplier_pdf.dart';
 import 'package:spsp_mobile/pdf_utils/pdf_invoice_api.dart';
 import 'package:spsp_mobile/providers/order_provider.dart';
 import 'package:spsp_mobile/providers/sale_invoice_provider.dart';
-import 'package:spsp_mobile/providers/transaction_provider.dart';
 import 'package:spsp_mobile/utils/util.dart';
 
 class OrderListCheckOutCustomerScreen extends StatefulWidget {
@@ -37,14 +33,12 @@ class OrderListCheckOutCustomerScreen extends StatefulWidget {
 class _OrderListCheckOutCustomerScreenState extends State<OrderListCheckOutCustomerScreen> {
   RequestResult<Order>? orders;
   List<bool> _isChecked = [];
-  late TransactionProvider _transactionProvider = TransactionProvider();
   late SaleInvoiceProvider _saleInvoiceProvider = SaleInvoiceProvider();
   late OrderProvider _orderProvider = OrderProvider();
 
   @override
   void initState() {
     super.initState();
-    _transactionProvider = context.read<TransactionProvider>();
     _saleInvoiceProvider = context.read<SaleInvoiceProvider>();
     _orderProvider = context.read<OrderProvider>();
 
@@ -61,6 +55,11 @@ class _OrderListCheckOutCustomerScreenState extends State<OrderListCheckOutCusto
       String.fromEnvironment('PAYPAL_NOTE_VALUE', defaultValue: 'Uživajte u vašem piću i dođite nam ponovo.');
 
   final CURRENCY = String.fromEnvironment('DEFAULT_CURRENCY_VALUE', defaultValue: 'USD');
+  final BUSSINESS_NAME = String.fromEnvironment('BUSSINESS_NAME_VALUE', defaultValue: 'Caffe Pub - Skeniraj Plati');
+  final BUSSINESS_ADDRESS =
+      String.fromEnvironment('BUSSINESS_ADDRESS_VALUE', defaultValue: 'ul. Abdulaha Sidrana, Sarajevo, BiH');
+  final BUSSINESS_CONTACT_INFO =
+      String.fromEnvironment('BUSSINESS_CONTACT_INFO_VALUE', defaultValue: '+387 62 123 321');
 
   @override
   void didChangeDependencies() {
@@ -291,8 +290,6 @@ class _OrderListCheckOutCustomerScreenState extends State<OrderListCheckOutCusto
       orders!.count = 0;
       orders!.result = [];
     });
-
-    _transactionProvider.setIsPaymentProcessed(true);
   }
 
   void _showPaymentSuccessAlert() {
@@ -326,10 +323,7 @@ class _OrderListCheckOutCustomerScreenState extends State<OrderListCheckOutCusto
     }).toList();
 
     final invoice = InvoicePdf(
-      supplier: SupplierPdf(
-          name: 'Caffe Pub - Skeniraj Plati',
-          address: 'ul. Abdulaha Sidrana, Sarajevo, BiH',
-          contactInfo: "+387 62 123 321"),
+      supplier: SupplierPdf(name: BUSSINESS_NAME, address: BUSSINESS_ADDRESS, contactInfo: BUSSINESS_CONTACT_INFO),
       info: InvoiceInfoPdf(
         date: x.orderDateTime!,
         number: x.id.toString(),

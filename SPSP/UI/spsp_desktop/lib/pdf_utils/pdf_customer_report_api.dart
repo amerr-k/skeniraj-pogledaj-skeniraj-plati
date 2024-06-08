@@ -9,16 +9,17 @@ import 'package:spsp_desktop/models/customer_report_data/customer_report_data.da
 import 'package:spsp_desktop/models/invoice/invoice.dart';
 import 'package:spsp_desktop/models/invoice/supplier.dart';
 import 'package:spsp_desktop/pdf_utils/pdf_api.dart';
+import 'package:spsp_desktop/utils/util.dart';
 
 class PdfCustomerReportApi {
-  static Future<File> generateAsFile(
-      Invoice invoice, List<CustomerReportData> menuItemReportData, int numberOfResults, bool withDetails) async {
-    var pdf = await generatePdfDocument(invoice, menuItemReportData, numberOfResults, withDetails);
+  static Future<File> generateAsFile(Invoice invoice, List<CustomerReportData> customerReportData, int numberOfResults,
+      bool withDetails, bool withSum) async {
+    var pdf = await generatePdfDocument(invoice, customerReportData, numberOfResults, withDetails, withSum);
     return PdfApi.saveDocument(name: 'customer_report.pdf', pdf: pdf);
   }
 
-  static Future<Document> generatePdfDocument(
-      Invoice invoice, List<CustomerReportData> menuItemReportData, int numberOfResults, bool withDetails) async {
+  static Future<Document> generatePdfDocument(Invoice invoice, List<CustomerReportData> customerReportData,
+      int numberOfResults, bool withDetails, bool withSum) async {
     final pdf = Document(
         theme: ThemeData.withFont(
       base: Font.ttf(await rootBundle.load("assets/fonts/Roboto-Regular.ttf")),
@@ -30,8 +31,9 @@ class PdfCustomerReportApi {
       build: (context) => [
         buildHeader(invoice),
         buildTitle(invoice, numberOfResults),
-        buildInvoice(menuItemReportData, withDetails),
+        buildInvoice(customerReportData, withDetails),
         Divider(),
+        if (withSum) buildTotal(customerReportData),
       ],
       footer: (context) => buildFooter(invoice),
     ));
@@ -131,6 +133,43 @@ class PdfCustomerReportApi {
         4: Alignment.centerRight,
         5: Alignment.centerRight,
       },
+    );
+  }
+
+  static Widget buildTotal(List<CustomerReportData> menuItemReportData) {
+    double totalAmount = 0;
+    menuItemReportData.forEach((x) {
+      totalAmount += x.totalAmount;
+    });
+
+    return Container(
+      alignment: Alignment.centerRight,
+      child: Row(
+        children: [
+          Spacer(flex: 6),
+          Expanded(
+            flex: 4,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                buildText(
+                  title: 'Ukupan iznos',
+                  titleStyle: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.bold,
+                  ),
+                  value: Utils.formatPrice(totalAmount).toString(),
+                  unite: true,
+                ),
+                SizedBox(height: 2 * PdfPageFormat.mm),
+                Container(height: 1, color: PdfColors.grey400),
+                SizedBox(height: 0.5 * PdfPageFormat.mm),
+                Container(height: 1, color: PdfColors.grey400),
+              ],
+            ),
+          ),
+        ],
+      ),
     );
   }
 

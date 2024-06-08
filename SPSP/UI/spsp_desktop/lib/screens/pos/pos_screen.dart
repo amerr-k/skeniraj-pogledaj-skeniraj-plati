@@ -53,7 +53,9 @@ class _POSScreenState extends State<POSScreen> {
   }
 
   Future loadMenuItemList() async {
-    menuItemListResult = await _menuItemProvider?.get();
+    menuItemListResult = await _menuItemProvider?.get(filter: {
+      "isMenuActive": true,
+    });
     setState(() {
       menuItemList = menuItemListResult!.result;
     });
@@ -81,8 +83,7 @@ class _POSScreenState extends State<POSScreen> {
           SizedBox(
             width: MediaQuery.of(context).size.width * 0.2,
             child: Container(
-              decoration: BoxDecoration(
-                  border: Border.all(color: const Color.fromARGB(255, 0, 1, 2))),
+              decoration: BoxDecoration(border: Border.all(color: const Color.fromARGB(255, 0, 1, 2))),
               child: Column(
                 children: [
                   Expanded(child: _buildOrderList()),
@@ -99,19 +100,14 @@ class _POSScreenState extends State<POSScreen> {
                     child: ListTile(
                       onTap: () => showDialog<String>(
                         context: context,
-                        builder: (context) => QRTableDialog(
-                            qrTableList: qrTableList,
-                            cartProvider: _cartProvider!,
-                            setState: setState),
+                        builder: (context) =>
+                            QRTableDialog(qrTableList: qrTableList, cartProvider: _cartProvider!, setState: setState),
                       ),
-                      title: Text("Sto br.:",
-                          style: TextStyle(
-                              fontStyle: FontStyle.italic, fontWeight: FontWeight.bold)),
+                      title:
+                          Text("Sto br.:", style: TextStyle(fontStyle: FontStyle.italic, fontWeight: FontWeight.bold)),
                       trailing: _cartProvider?.cart.qrTable != null
                           ? Text(_cartProvider!.cart.qrTable!.tableNumber.toString(),
-                              style: TextStyle(
-                                  fontStyle: FontStyle.italic,
-                                  fontWeight: FontWeight.bold))
+                              style: TextStyle(fontStyle: FontStyle.italic, fontWeight: FontWeight.bold))
                           : Text(""),
                     ),
                   ),
@@ -127,11 +123,9 @@ class _POSScreenState extends State<POSScreen> {
                     alignment: Alignment.bottomCenter,
                     child: ListTile(
                       title: Text("Cijena (sa PDV-om):",
-                          style: TextStyle(
-                              fontStyle: FontStyle.italic, fontWeight: FontWeight.bold)),
+                          style: TextStyle(fontStyle: FontStyle.italic, fontWeight: FontWeight.bold)),
                       trailing: Text(_cartProvider!.cart.totalAmountWithVAT.toString(),
-                          style: TextStyle(
-                              fontStyle: FontStyle.italic, fontWeight: FontWeight.bold)),
+                          style: TextStyle(fontStyle: FontStyle.italic, fontWeight: FontWeight.bold)),
                     ),
                   ),
                 ],
@@ -239,10 +233,8 @@ class _POSScreenState extends State<POSScreen> {
               if (_cartProvider?.cart.qrTable == null) {
                 showDialog<String>(
                   context: context,
-                  builder: (context) => QRTableDialog(
-                      qrTableList: qrTableList,
-                      cartProvider: _cartProvider!,
-                      setState: setState),
+                  builder: (context) =>
+                      QRTableDialog(qrTableList: qrTableList, cartProvider: _cartProvider!, setState: setState),
                 );
               } else {
                 if (_cartProvider!.cart.items.isNotEmpty) {

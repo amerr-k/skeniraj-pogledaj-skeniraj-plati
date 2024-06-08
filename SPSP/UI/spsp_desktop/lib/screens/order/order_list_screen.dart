@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, non_constant_identifier_names
 
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
@@ -36,6 +36,13 @@ class _OrderListScreenState extends State<OrderListScreen> {
   List<Order> orderList = [];
   List<QRTable> qrTableList = [];
   bool isLoading = true;
+
+  final BUSSINESS_NAME = String.fromEnvironment('BUSSINESS_NAME_VALUE', defaultValue: 'Caffe Pub - Skeniraj Plati');
+  final BUSSINESS_ADDRESS =
+      String.fromEnvironment('BUSSINESS_ADDRESS_VALUE', defaultValue: 'ul. Abdulaha Sidrana, Sarajevo, BiH');
+  final BUSSINESS_CONTACT_INFO =
+      String.fromEnvironment('BUSSINESS_CONTACT_INFO_VALUE', defaultValue: '+387 62 123 321');
+
   @override
   void didChangeDependencies() async {
     super.didChangeDependencies();
@@ -350,9 +357,9 @@ class _OrderListScreenState extends State<OrderListScreen> {
 
                                         final invoice = Invoice(
                                           supplier: Supplier(
-                                              name: 'Caffe Pub - Skeniraj Plati',
-                                              address: 'ul. Abdulaha Sidrana, Sarajevo, BiH',
-                                              contactInfo: "+387 62 123 321"),
+                                              name: BUSSINESS_NAME,
+                                              address: BUSSINESS_ADDRESS,
+                                              contactInfo: BUSSINESS_CONTACT_INFO),
                                           info: InvoiceInfo(
                                             date: x.orderDateTime!,
                                             number: x.id.toString(),

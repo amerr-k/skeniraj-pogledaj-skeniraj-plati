@@ -94,8 +94,7 @@ class _PromotionDetailScreenState extends State<PromotionDetailScreen> {
                           if (widget.promotion == null) {
                             await _promotionProvider.create(request);
                           } else {
-                            await _promotionProvider.update(
-                                widget.promotion!.id!, request);
+                            await _promotionProvider.update(widget.promotion!.id!, request);
                           }
                           Navigator.pushReplacement(
                               context,
@@ -142,8 +141,7 @@ class _PromotionDetailScreenState extends State<PromotionDetailScreen> {
         child: Column(
           children: [
             FormBuilderTextField(
-              validator: FormBuilderValidators.required(
-                  errorText: "Polje ne smije biti prazno."),
+              validator: FormBuilderValidators.required(errorText: "Polje je obavezno."),
               decoration: const InputDecoration(labelText: "Opis"),
               name: "description",
             ),
@@ -155,8 +153,7 @@ class _PromotionDetailScreenState extends State<PromotionDetailScreen> {
                 Expanded(
                   child: FormBuilderDateTimePicker(
                     name: "startTime",
-                    validator: FormBuilderValidators.required(
-                        errorText: "Polje ne smije biti prazno."),
+                    validator: FormBuilderValidators.required(errorText: "Polje je obavezno."),
                     decoration: const InputDecoration(
                       labelText: "Datum početka promocije",
                     ),
@@ -206,11 +203,9 @@ class _PromotionDetailScreenState extends State<PromotionDetailScreen> {
               children: [
                 Expanded(
                   child: FormBuilderDropdown<String>(
-                    validator: FormBuilderValidators.required(
-                        errorText: "Polje ne smije biti prazno."),
+                    validator: FormBuilderValidators.required(errorText: "Polje je obavezno."),
                     name: 'menuItemId',
-                    decoration: const InputDecoration(
-                        labelText: "Meni stavka", hintText: "Odaberi meni stavku"),
+                    decoration: const InputDecoration(labelText: "Meni stavka", hintText: "Odaberi meni stavku"),
                     items: menuItems?.result
                             .map((item) => DropdownMenuItem(
                                   alignment: AlignmentDirectional.center,

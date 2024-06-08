@@ -1,3 +1,5 @@
+// ignore_for_file: non_constant_identifier_names
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
@@ -31,6 +33,12 @@ class _ReportFormScreenState extends State<ReportFormScreen> {
   List<MenuItemReportData> menuItemReportData = [];
   List<CustomerReportData> customerReportData = [];
 
+  var BUSSINESS_NAME = String.fromEnvironment('BUSSINESS_NAME_VALUE', defaultValue: 'Caffe Pub - Skeniraj Plati');
+  final BUSSINESS_ADDRESS =
+      String.fromEnvironment('BUSSINESS_ADDRESS_VALUE', defaultValue: 'ul. Abdulaha Sidrana, Sarajevo, BiH');
+  final BUSSINESS_CONTACT_INFO =
+      String.fromEnvironment('BUSSINESS_CONTACT_INFO_VALUE', defaultValue: '+387 62 123 321');
+
   @override
   void initState() {
     super.initState();
@@ -58,7 +66,7 @@ class _ReportFormScreenState extends State<ReportFormScreen> {
       title: "Izvještaji",
       child: Center(
         child: Container(
-          constraints: const BoxConstraints(maxWidth: 400, maxHeight: 400),
+          constraints: const BoxConstraints(maxWidth: 400, maxHeight: 500),
           child: Card(
             child: Padding(
               padding: EdgeInsets.all(16.0),
@@ -90,26 +98,24 @@ class _ReportFormScreenState extends State<ReportFormScreen> {
                   var request = _formKey.currentState!.value;
 
                   try {
-                    const invoice = Invoice(
+                    final invoice = Invoice(
                       supplier: Supplier(
-                          name: 'Caffe Pub - Skeniraj Plati',
-                          address: 'ul. Abdulaha Sidrana, Sarajevo, BiH',
-                          contactInfo: "+387 62 123 321"),
+                          name: BUSSINESS_NAME, address: BUSSINESS_ADDRESS, contactInfo: BUSSINESS_CONTACT_INFO),
                     );
 
                     switch (request['subject']) {
                       case 'MENU_ITEM':
                         menuItemReportData = await _reportProvider.getMenuItemsReportData(filter: request);
 
-                        await _generateMenuItemsReport(
-                            invoice, menuItemReportData, request['numberOfResults'], request['withDetails']);
+                        await _generateMenuItemsReport(invoice, menuItemReportData, request['numberOfResults'],
+                            request['withDetails'], request['withSum']);
 
                         break;
                       case 'CUSTOMER':
                         customerReportData = await _reportProvider.getCustomersReportData(filter: request);
 
-                        await _generateCustomersReport(
-                            invoice, customerReportData, request['numberOfResults'], request['withDetails']);
+                        await _generateCustomersReport(invoice, customerReportData, request['numberOfResults'],
+                            request['withDetails'], request['withSum']);
 
                         break;
                     }
@@ -177,7 +183,7 @@ class _ReportFormScreenState extends State<ReportFormScreen> {
             ],
           ),
           FormBuilderDropdown<String>(
-            validator: FormBuilderValidators.required(errorText: "Polje ne smije biti prazno."),
+            validator: FormBuilderValidators.required(errorText: "Polje je obavezno."),
             name: 'subject',
             decoration: InputDecoration(
                 labelText: "Predmet",
@@ -202,7 +208,7 @@ class _ReportFormScreenState extends State<ReportFormScreen> {
             ],
           ),
           FormBuilderDropdown<int>(
-            validator: FormBuilderValidators.required(errorText: "Polje ne smije biti prazno."),
+            validator: FormBuilderValidators.required(errorText: "Polje je obavezno."),
             name: 'numberOfResults',
             decoration: InputDecoration(
                 labelText: "Broj stavki",
@@ -239,20 +245,46 @@ class _ReportFormScreenState extends State<ReportFormScreen> {
             ],
           ),
           FormBuilderDropdown<bool>(
-            validator: FormBuilderValidators.required(errorText: "Polje ne smije biti prazno."),
+            validator: FormBuilderValidators.required(errorText: "Polje je obavezno."),
             initialValue: false,
             name: 'withDetails',
             decoration: InputDecoration(
-                labelText: "Uključiti širi set podataka",
-                suffix: IconButton(
-                  icon: const Icon(
-                    Icons.close,
-                  ),
-                  onPressed: () {
-                    _formKey.currentState!.fields['details']?.reset();
-                  },
-                ),
+                labelText: "Uključiti širi set informacija za odabrane podatke",
+                // suffix: IconButton(
+                //   icon: const Icon(
+                //     Icons.close,
+                //   ),
+                //   onPressed: () {
+                //     _formKey.currentState!.fields['details']?.reset();
+                //   },
+                // ),
                 hintText: "Uključen širi set podataka."),
+            items: const [
+              DropdownMenuItem<bool>(
+                value: true,
+                child: Text("Da"),
+              ),
+              DropdownMenuItem<bool>(
+                value: false,
+                child: Text("Ne"),
+              ),
+            ],
+          ),
+          FormBuilderDropdown<bool>(
+            validator: FormBuilderValidators.required(errorText: "Polje je obavezno."),
+            initialValue: false,
+            name: 'withSum',
+            decoration: InputDecoration(
+                labelText: "Uključiti izračunutu ukupna sumu prihoda za odabrane podatke",
+                // suffix: IconButton(
+                //   icon: const Icon(
+                //     Icons.close,
+                //   ),
+                //   onPressed: () {
+                //     _formKey.currentState!.fields['details']?.reset();
+                //   },
+                // ),
+                hintText: "Uključena izračunutu ukupna sumu prihoda odabranog izvještaja."),
             items: const [
               DropdownMenuItem<bool>(
                 value: true,
@@ -269,18 +301,18 @@ class _ReportFormScreenState extends State<ReportFormScreen> {
     );
   }
 
-  Future _generateCustomersReport(
-      Invoice invoice, List<CustomerReportData> customerReportData, int numberOfResults, bool withDetails) async {
+  Future _generateCustomersReport(Invoice invoice, List<CustomerReportData> customerReportData, int numberOfResults,
+      bool withDetails, bool withSum) async {
     final pdfFile =
-        await PdfCustomerReportApi.generateAsFile(invoice, customerReportData, numberOfResults, withDetails);
+        await PdfCustomerReportApi.generateAsFile(invoice, customerReportData, numberOfResults, withDetails, withSum);
 
     PdfApi.openFile(pdfFile);
   }
 
-  Future _generateMenuItemsReport(
-      Invoice invoice, List<MenuItemReportData> menuItemReportData, int numberOfResults, bool withDetails) async {
+  Future _generateMenuItemsReport(Invoice invoice, List<MenuItemReportData> menuItemReportData, int numberOfResults,
+      bool withDetails, bool withSum) async {
     final pdfFile =
-        await PdfMenuItemReportApi.generateAsFile(invoice, menuItemReportData, numberOfResults, withDetails);
+        await PdfMenuItemReportApi.generateAsFile(invoice, menuItemReportData, numberOfResults, withDetails, withSum);
 
     PdfApi.openFile(pdfFile);
   }

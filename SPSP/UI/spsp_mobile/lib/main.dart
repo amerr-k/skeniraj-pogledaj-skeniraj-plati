@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:provider/provider.dart';
-import 'package:spsp_mobile/models/pdf/customer_pdf.dart';
 import 'package:spsp_mobile/providers/auth_provider.dart';
 import 'package:spsp_mobile/providers/promotion_provider.dart';
 import 'package:spsp_mobile/providers/qr_table_selector_provider.dart';
@@ -14,7 +13,6 @@ import 'package:spsp_mobile/providers/prediction_menu_item_provider.dart';
 import 'package:spsp_mobile/providers/qr_table_provider.dart';
 import 'package:spsp_mobile/providers/reservation_provider.dart';
 import 'package:spsp_mobile/providers/sale_invoice_provider.dart';
-import 'package:spsp_mobile/providers/transaction_provider.dart';
 import 'package:spsp_mobile/providers/user_provider.dart';
 import 'package:spsp_mobile/screens/menu/menu_item_details_customer_screen.dart';
 import 'package:spsp_mobile/screens/menu/menu_item_list_customer_screen.dart';
@@ -35,7 +33,6 @@ void main() async {
       ChangeNotifierProvider(create: (_) => UserProvider()),
       ChangeNotifierProvider(create: (_) => QRTableSelectorProvider()),
       ChangeNotifierProvider(create: (_) => OrderProvider()),
-      ChangeNotifierProvider(create: (_) => TransactionProvider()),
       ChangeNotifierProvider(create: (_) => SaleInvoiceProvider()),
       ChangeNotifierProvider(create: (_) => MenuItemPredictionProvider()),
       ChangeNotifierProvider(create: (_) => ReservationProvider()),
@@ -96,8 +93,8 @@ void main() async {
 }
 
 class HomePage extends StatelessWidget {
-  TextEditingController _usernameController = TextEditingController();
-  TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _usernameController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
   late UserProvider _userProvider;
   late AuthProvider _authProvider;
 
@@ -117,7 +114,7 @@ class HomePage extends StatelessWidget {
                 Center(
                   child: Container(
                     decoration: BoxDecoration(
-                      color: Color.fromARGB(155, 226, 227, 240),
+                      color: const Color.fromARGB(155, 226, 227, 240),
                       borderRadius: BorderRadius.circular(10),
                     ),
                     child: const Padding(
@@ -133,13 +130,13 @@ class HomePage extends StatelessWidget {
               ]),
             ),
             Padding(
-              padding: EdgeInsets.all(40),
+              padding: const EdgeInsets.all(40),
               child: Container(
                 decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(10)),
                 child: Column(children: [
                   Container(
-                    padding: EdgeInsets.all(8),
-                    decoration: BoxDecoration(border: Border(bottom: BorderSide(color: Colors.grey))),
+                    padding: const EdgeInsets.all(8),
+                    decoration: const BoxDecoration(border: Border(bottom: BorderSide(color: Colors.grey))),
                     child: TextField(
                       controller: _usernameController,
                       decoration: InputDecoration(
@@ -149,7 +146,7 @@ class HomePage extends StatelessWidget {
                     ),
                   ),
                   Container(
-                    padding: EdgeInsets.all(8),
+                    padding: const EdgeInsets.all(8),
                     child: TextField(
                       obscureText: true,
                       controller: _passwordController,
@@ -160,12 +157,12 @@ class HomePage extends StatelessWidget {
                 ]),
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 2,
             ),
             Container(
               height: 50,
-              margin: EdgeInsets.fromLTRB(40, 0, 40, 0),
+              margin: const EdgeInsets.fromLTRB(40, 0, 40, 0),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),
                 gradient:
@@ -185,14 +182,14 @@ class HomePage extends StatelessWidget {
                       SnackBar(
                         content: Text(
                           e.toString(),
-                          style: TextStyle(color: Colors.white),
+                          style: const TextStyle(color: Colors.white),
                         ),
                         backgroundColor: Colors.red,
                       ),
                     );
                   }
                 },
-                child: Center(child: Text("Prijava")),
+                child: const Center(child: Text("Prijava")),
               ),
             ),
             const SizedBox(
@@ -210,7 +207,7 @@ class HomePage extends StatelessWidget {
                 ),
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 40,
             ),
           ],

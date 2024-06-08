@@ -149,7 +149,7 @@ class _MenuItemDetailScreenState extends State<MenuItemDetailScreen> {
             children: [
               Expanded(
                 child: FormBuilderTextField(
-                  validator: FormBuilderValidators.required(errorText: "Polje ne smije biti prazno."),
+                  validator: FormBuilderValidators.required(errorText: "Polje je obavezno."),
                   decoration: const InputDecoration(labelText: "Naziv"),
                   name: "name",
                 ),
@@ -159,7 +159,11 @@ class _MenuItemDetailScreenState extends State<MenuItemDetailScreen> {
               ),
               Expanded(
                 child: FormBuilderTextField(
-                  validator: FormBuilderValidators.required(errorText: "Polje ne smije biti prazno."),
+                  validator: FormBuilderValidators.compose([
+                    FormBuilderValidators.required(errorText: 'Polje je obavezno.'),
+                    FormBuilderValidators.maxLength(10, errorText: "Šifra ne smije biti duža od 10 karaktera."),
+                    FormBuilderValidators.minLength(1, errorText: "Šifra mora da sadrži minimalno 1 karakter."),
+                  ]),
                   decoration: const InputDecoration(labelText: "Šifra"),
                   name: "code",
                 ),
@@ -220,7 +224,7 @@ class _MenuItemDetailScreenState extends State<MenuItemDetailScreen> {
               SizedBox(width: 10),
               Expanded(
                 child: FormBuilderDropdown<String>(
-                  validator: FormBuilderValidators.required(errorText: "Polje ne smije biti prazno."),
+                  validator: FormBuilderValidators.required(errorText: "Polje je obavezno."),
                   name: 'menuId',
                   decoration: InputDecoration(
                       labelText: "Meni",
