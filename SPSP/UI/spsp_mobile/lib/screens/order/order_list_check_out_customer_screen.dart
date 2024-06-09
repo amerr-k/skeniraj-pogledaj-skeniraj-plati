@@ -1,7 +1,6 @@
-// ignore_for_file: prefer_const_constructors, non_constant_identifier_names, prefer_typing_uninitialized_variables
+// ignore_for_file: prefer_const_constructors, non_constant_identifier_names, prefer_typing_uninitialized_variables, constant_identifier_names
 
 import 'package:flutter/material.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_paypal_checkout/flutter_paypal_checkout.dart';
 import 'package:provider/provider.dart';
 import 'package:spsp_mobile/models/enums/OrderStatus.dart';
@@ -31,6 +30,21 @@ class OrderListCheckOutCustomerScreen extends StatefulWidget {
 }
 
 class _OrderListCheckOutCustomerScreenState extends State<OrderListCheckOutCustomerScreen> {
+  static const CLIENT_ID = String.fromEnvironment("CLIENT_ID_VALUE", defaultValue: '');
+  static const SECRET_KEY = String.fromEnvironment("SECRET_KEY_VALUE", defaultValue: '');
+  static const RETURN_URL = String.fromEnvironment("RETURN_URL_VALUE", defaultValue: 'success.snippetcoder.com');
+  static const CANCEL_URL = String.fromEnvironment("CANCEL_URL_VALUE", defaultValue: 'cancel.snippetcoder.com');
+  static const PAYPAL_NOTE =
+      String.fromEnvironment('PAYPAL_NOTE_VALUE', defaultValue: 'Uživajte u vašem piću i dođite nam ponovo.');
+
+  static const CURRENCY = String.fromEnvironment('DEFAULT_CURRENCY_VALUE', defaultValue: 'USD');
+  static const BUSSINESS_NAME =
+      String.fromEnvironment('BUSSINESS_NAME_VALUE', defaultValue: 'Caffe Pub - Skeniraj Plati');
+  static const BUSSINESS_ADDRESS =
+      String.fromEnvironment('BUSSINESS_ADDRESS_VALUE', defaultValue: 'ul. Abdulaha Sidrana, Sarajevo, BiH');
+  static const BUSSINESS_CONTACT_INFO =
+      String.fromEnvironment('BUSSINESS_CONTACT_INFO_VALUE', defaultValue: '+387 62 123 321');
+
   RequestResult<Order>? orders;
   List<bool> _isChecked = [];
   late SaleInvoiceProvider _saleInvoiceProvider = SaleInvoiceProvider();
@@ -46,20 +60,6 @@ class _OrderListCheckOutCustomerScreenState extends State<OrderListCheckOutCusto
   }
 
   late ScaffoldMessengerState _scaffoldMessengerState;
-
-  final CLIENT_ID = String.fromEnvironment('CLIENT_ID_VALUE', defaultValue: dotenv.env['CLIENT_ID_VALUE'] ?? '');
-  final SECRET_KEY = String.fromEnvironment('SECRET_KEY_VALUE', defaultValue: dotenv.env['SECRET_KEY_VALUE'] ?? '');
-  final RETURN_URL = String.fromEnvironment('RETURN_URL_VALUE', defaultValue: 'success.snippetcoder.com');
-  final CANCEL_URL = String.fromEnvironment('CANCEL_URL_VALUE', defaultValue: 'cancel.snippetcoder.com');
-  final PAYPAL_NOTE =
-      String.fromEnvironment('PAYPAL_NOTE_VALUE', defaultValue: 'Uživajte u vašem piću i dođite nam ponovo.');
-
-  final CURRENCY = String.fromEnvironment('DEFAULT_CURRENCY_VALUE', defaultValue: 'USD');
-  final BUSSINESS_NAME = String.fromEnvironment('BUSSINESS_NAME_VALUE', defaultValue: 'Caffe Pub - Skeniraj Plati');
-  final BUSSINESS_ADDRESS =
-      String.fromEnvironment('BUSSINESS_ADDRESS_VALUE', defaultValue: 'ul. Abdulaha Sidrana, Sarajevo, BiH');
-  final BUSSINESS_CONTACT_INFO =
-      String.fromEnvironment('BUSSINESS_CONTACT_INFO_VALUE', defaultValue: '+387 62 123 321');
 
   @override
   void didChangeDependencies() {
