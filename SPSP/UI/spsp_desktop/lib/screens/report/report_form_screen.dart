@@ -249,15 +249,7 @@ class _ReportFormScreenState extends State<ReportFormScreen> {
             initialValue: false,
             name: 'withDetails',
             decoration: InputDecoration(
-                labelText: "Uključiti širi set informacija za odabrane podatke",
-                // suffix: IconButton(
-                //   icon: const Icon(
-                //     Icons.close,
-                //   ),
-                //   onPressed: () {
-                //     _formKey.currentState!.fields['details']?.reset();
-                //   },
-                // ),
+                labelText: "Uključiti širi set informacija za odabrane predmete",
                 hintText: "Uključen širi set podataka."),
             items: const [
               DropdownMenuItem<bool>(
@@ -275,15 +267,7 @@ class _ReportFormScreenState extends State<ReportFormScreen> {
             initialValue: false,
             name: 'withSum',
             decoration: InputDecoration(
-                labelText: "Uključiti izračunutu ukupna sumu prihoda za odabrane podatke",
-                // suffix: IconButton(
-                //   icon: const Icon(
-                //     Icons.close,
-                //   ),
-                //   onPressed: () {
-                //     _formKey.currentState!.fields['details']?.reset();
-                //   },
-                // ),
+                labelText: "Uključiti izračunutu ukupna sumu prihoda za odabrane predmete",
                 hintText: "Uključena izračunutu ukupna sumu prihoda odabranog izvještaja."),
             items: const [
               DropdownMenuItem<bool>(

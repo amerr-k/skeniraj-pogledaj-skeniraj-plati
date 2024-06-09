@@ -76,7 +76,12 @@ class _MenuItemDetailScreenState extends State<MenuItemDetailScreen> {
       title: widget.menuItem?.name ?? "Meni stavke detalji",
       child: Column(
         children: [
-          isLoading ? Container() : _buildForm(),
+          isLoading
+              ? Container()
+              : Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: _buildForm(),
+                ),
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
@@ -262,6 +267,9 @@ class _MenuItemDetailScreenState extends State<MenuItemDetailScreen> {
                 ),
               ),
             ],
+          ),
+          const SizedBox(
+            height: 10,
           ),
           Column(
             children: [
