@@ -29,6 +29,7 @@ using Quartz;
 using SPSP.Services.Report;
 using SPSP.Services.Promotion;
 using SPSP.Filters;
+using SPSP.Services.Base;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -46,8 +47,8 @@ builder.Services.AddQuartz(options =>
 
     var jobKey = JobKey.Create(nameof(RecommenderJob));
 
-    // JOB KOJI �E SE IZVR�AVATI SVAKA 24 SATA, 
-    // ZA POTREBE TESTIRANJA, JOB �E IZVR�ITI SAMO JEDNOM I 
+    // JOB KOJI ĆE SE IZVRŠAVATI SVAKA 24 SATA, 
+    // ZA POTREBE TESTIRANJA, JOB ĆE IZVRŽITI SAMO JEDNOM I 
     // POPUNITI TABELU MenuItemPrediction I TrainedData
     //options.AddJob<RecommenderJob>(jobKey)
     //    .AddTrigger(trigger => trigger.ForJob(jobKey)
@@ -134,6 +135,10 @@ builder.Services.AddAutoMapper(typeof(ICustomerService));
 //builder.Services.AddAuthentication("BasicAuthentication")
 //    .AddScheme<AuthenticationSchemeOptions, BasicAuthenticationHandler>("BasicAuthentication", null);
 
+var issuer = builder.Configuration["TokenConfig:Issuer"] ?? "";
+var audience = builder.Configuration["TokenConfig:Audience"] ?? "";
+var signingKey = builder.Configuration["TokenConfig:SigningKey"] ?? "";
+
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = "BasicAuthentication"; // Set BasicAuthentication as default
@@ -147,15 +152,12 @@ builder.Services.AddAuthentication(options =>
         ValidateIssuer = true,
         ValidateAudience = true,
         ValidateIssuerSigningKey = true,
-        ValidIssuer = "spspIssuer",
-        ValidAudience = "spspAudience",
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("mojkljucstavigauappsettingsmojkljucstavigauappsettings")),
+        ValidIssuer = issuer,
+        ValidAudience = audience,
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(signingKey)),
         ClockSkew = TimeSpan.Zero
     };
 });
-
-
-
 
 var app = builder.Build();
 

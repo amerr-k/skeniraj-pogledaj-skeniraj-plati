@@ -10,16 +10,20 @@ using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using SPSP.Models;
+using System.Configuration;
+using Microsoft.Extensions.Configuration;
 
 namespace SPSP.Services.UserAccount
 {
 
     public class UserAccountService : BaseCRUDService<Models.UserAccount, Database.UserAccount, UserAccountSearchObject, UserAccountCreateRequest, UserAccountUpdateRequest>, IUserAccountService
     {
+        private readonly IConfiguration configuration;
 
-        public UserAccountService(DataDbContext context, IMapper mapper)
+        public UserAccountService(DataDbContext context, IMapper mapper, IConfiguration configuration)
             : base(context, mapper)
         {
+            this.configuration = configuration;
         }
 
         public override async Task PrepareBeforeCreate(Database.UserAccount entity, UserAccountCreateRequest create)
@@ -97,6 +101,10 @@ namespace SPSP.Services.UserAccount
 
         public string GenerateJwtToken(Models.UserAccount userAccount)
         {
+            var issuer = configuration.GetValue<string>("TokenConfig:Issuer");
+            var audience = configuration.GetValue<string>("TokenConfig:Audience");
+            var signingKey = configuration.GetValue<string>("TokenConfig:SigningKey");
+
             var claims = new[]
             {
                 new Claim(ClaimTypes.Name, userAccount.Username),
@@ -104,12 +112,12 @@ namespace SPSP.Services.UserAccount
                 new Claim(ClaimTypes.NameIdentifier, userAccount.Id.ToString()),
              };
 
-            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("mojkljucstavigauappsettingsmojkljucstavigauappsettings"));
+            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(signingKey));
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
             var token = new JwtSecurityToken(
-                issuer: "spspIssuer",
-                audience: "spspAudience",
+                issuer: issuer,
+                audience: audience,
                 claims: claims,
                 expires: DateTime.UtcNow.AddDays(7),
                 signingCredentials: credentials);

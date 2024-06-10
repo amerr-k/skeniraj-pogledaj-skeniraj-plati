@@ -19,9 +19,11 @@ namespace SPSP
     public class BasicAuthenticationHandler : AuthenticationHandler<AuthenticationSchemeOptions>
     {
         IUserAccountService userAccountService;
-        public BasicAuthenticationHandler(IUserAccountService userAccountService, IOptionsMonitor<AuthenticationSchemeOptions> options, ILoggerFactory logger, UrlEncoder encoder, ISystemClock clock) : base(options, logger, encoder, clock)
+        private readonly IConfiguration configuration;
+        public BasicAuthenticationHandler(IUserAccountService userAccountService, IOptionsMonitor<AuthenticationSchemeOptions> options, ILoggerFactory logger, UrlEncoder encoder, ISystemClock clock, IConfiguration configuration) : base(options, logger, encoder, clock)
         {
             this.userAccountService = userAccountService;
+            this.configuration = configuration;
         }
 
 
@@ -50,6 +52,10 @@ namespace SPSP
 
         private async Task<AuthenticateResult> HandleJwtAuthenticationAsync(string token)
         {
+            var issuer = configuration.GetValue<string>("TokenConfig:Issuer");
+            var audience = configuration.GetValue<string>("TokenConfig:Audience");
+            var signingKey = configuration.GetValue<string>("TokenConfig:SigningKey");
+
             try
             {
                 var tokenHandler = new JwtSecurityTokenHandler();
@@ -59,9 +65,9 @@ namespace SPSP
                     ValidateIssuer = true, 
                     ValidateAudience = true, 
                     ValidateIssuerSigningKey = true, 
-                    ValidIssuer = "spspIssuer", 
-                    ValidAudience = "spspAudience", 
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("mojkljucstavigauappsettingsmojkljucstavigauappsettings")), 
+                    ValidIssuer = issuer, 
+                    ValidAudience = audience, 
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(signingKey)), 
                     ValidateLifetime = true, 
                     ClockSkew = TimeSpan.Zero 
                 };
