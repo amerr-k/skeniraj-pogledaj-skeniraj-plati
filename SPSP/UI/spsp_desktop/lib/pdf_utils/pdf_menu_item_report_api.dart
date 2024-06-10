@@ -90,7 +90,7 @@ class PdfMenuItemReportApi {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            "Izvještaj za $numberOfResults najprodavanijih proizvoda",
+            "Izvještaj za $numberOfResults najprofitabilniji proizvoda",
             style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
           ),
           SizedBox(height: 0.8 * PdfPageFormat.cm),

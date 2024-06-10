@@ -90,7 +90,7 @@ class PdfCustomerReportApi {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            "Izvještaj za $numberOfResults najboljih kupaca",
+            "Izvještaj za $numberOfResults najvećih potrošača",
             style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
           ),
           SizedBox(height: 0.8 * PdfPageFormat.cm),
