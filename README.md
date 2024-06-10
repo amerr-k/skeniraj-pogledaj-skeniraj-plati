@@ -46,19 +46,19 @@ Email: spsp.customer@gmail.com
 
 Lozinka: poslana na **amel.music@edu.fit.ba i rs.ii@edu.fit.ba**
 
-**ENV FAJL ZA PAY PAL SECRET_ID I CLIENT_ID:**
+**ENV FAJL ZA PAY PAL SECRET_KEY I CLIENT_ID:**
 
-Prije builda UI mobile aplikacije potrebno je imati ```.env``` fajl u kojem se nalaze ```CLIENT_ID_VALUE``` i ```SECRET_ID_VALUE``` za PAYPAL GATEWAY.
+Prije builda UI mobile aplikacije potrebno je imati ```.env``` fajl u kojem se nalaze ```CLIENT_ID_VALUE``` i ```SECRET_KEY_VALUE``` za PAYPAL GATEWAY.
 
 ```.env``` fajl sam poslao na sljedeće mailove: **amel.music@edu.fit.ba i rs.ii@edu.fit.ba**. Ukoliko mi DLWMS dozvoli, postavit ću i tu.
 
-Fajl ```.env``` je potrebno kopirati u ```/spsp_mobile``` folder tj. odmah uz prisutne ```pubsec``` fajlove.
+Varijable iz ```.env``` fajla je potrebno kopirati u flutter run komandu.
 
 **POKRETANJE UI APLIKACIJA**
 
 desktop: ```flutter run -d windows```
 
-mobile: ```flutter run -d emulator-5554```
+mobile: ```flutter run -d emulator-5554 --dart-define=CLIENT_ID_VALUE=$CLIENT_ID_VALUE --dart-define=SECRET_KEY_VALUE=$SECRET_KEY_VALUE```
 
 ![emulator-5554](https://github.com/amerr-k/skeniraj-pogledaj-skeniraj-plati/assets/25527072/8c93cbc5-1ab2-418d-bd72-813eb0b2443d)
 
