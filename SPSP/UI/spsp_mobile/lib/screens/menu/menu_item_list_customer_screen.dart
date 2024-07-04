@@ -83,17 +83,6 @@ class _MenuItemListCustomerScreenState extends State<MenuItemListCustomerScreen>
     );
   }
 
-  // Widget _buildDismissiblePromotion() {
-  //   return Dismissible(
-  //     key: UniqueKey(),
-  //     background: Container(
-  //       color: Colors.red,
-  //       child: Icon(Icons.delete),
-  //     ),
-  //     child: _buildPromotionCardList(),
-  //   );
-  // }
-
   Widget _buildDismissiblePromotion() {
     return Dismissible(
       key: UniqueKey(),

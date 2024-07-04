@@ -1,4 +1,6 @@
-﻿using SPSP.Models;
+﻿using Microsoft.AspNetCore.Mvc;
+using SPSP.Models;
+using SPSP.Models.Request.Auth;
 using SPSP.Models.Request.Customer;
 using SPSP.Models.Request.UserAccount;
 using SPSP.Models.SearchObjects;
@@ -11,5 +13,6 @@ namespace SPSP.Services.Customer
     {
         public Models.Customer GetCustomerAccountInfo();
         Task<UserAuthInfo> Register(CustomerCreateRequest customerCreateRequest);
+        public Task<Models.UserAuthInfo> MobileLogin(string username, string password);
     }
 }

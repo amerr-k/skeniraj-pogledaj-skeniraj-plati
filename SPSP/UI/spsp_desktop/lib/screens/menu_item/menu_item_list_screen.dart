@@ -9,7 +9,6 @@ import 'package:spsp_desktop/widgets/master_screen.dart';
 
 class MenuItemListScreen extends StatefulWidget {
   int? menuId;
-  // MenuItemListScreen({super.key, menuId});
   MenuItemListScreen({Key? key, this.menuId}) : super(key: key);
   @override
   State<MenuItemListScreen> createState() => _MenuItemListScreenState();
@@ -45,27 +44,6 @@ class _MenuItemListScreenState extends State<MenuItemListScreen> {
     });
   }
 
-  // @override
-  // void didChangeDependencies() async {
-  //   super.didChangeDependencies();
-
-  //   _menuItemProvider = context.read<MenuItemProvider>();
-  //   RequestResult<MenuItem> data;
-  //   if (widget.menuId != null) {
-  //     data = await _menuItemProvider.get(filter: {
-  //       "menuId": widget.menuId,
-  //     });
-  //   } else {
-  //     data = await _menuItemProvider.get(filter: {
-  //       "isMenuActive": true,
-  //     });
-  //   }
-
-  //   setState(() {
-  //     searchResult = data;
-  //   });
-  // }
-
   @override
   Widget build(BuildContext context) {
     return MasterScreenWidget(
@@ -91,15 +69,9 @@ class _MenuItemListScreenState extends State<MenuItemListScreen> {
         Expanded(
           child: DataTable(
               showCheckboxColumn: false,
+              // horizontalMargin: 100,
+              columnSpacing: 150,
               columns: const [
-                DataColumn(
-                  label: Expanded(
-                    child: Text(
-                      'Redni broj',
-                      style: TextStyle(fontStyle: FontStyle.italic),
-                    ),
-                  ),
-                ),
                 DataColumn(
                   label: Expanded(
                     child: Text(
@@ -159,7 +131,6 @@ class _MenuItemListScreenState extends State<MenuItemListScreen> {
                           }
                         },
                         cells: [
-                          DataCell(Text((index + 1).toString())),
                           DataCell(Text(e.code ?? "")),
                           DataCell(Text(e.name ?? "")),
                           DataCell(Text(e.description ?? "")),
@@ -246,52 +217,3 @@ class _MenuItemListScreenState extends State<MenuItemListScreen> {
     );
   }
 }
-
-              // rows: searchResult?.result
-              //         .map(
-              //           (e) => DataRow(
-              //               onSelectChanged: (selected) => {
-              //                     if (selected == true)
-              //                       {
-              //                         Navigator.of(context).push(
-              //                           MaterialPageRoute(
-              //                             builder: (context) => MenuItemDetailScreen(
-              //                               menuItem: e,
-              //                             ),
-              //                           ),
-              //                         )
-              //                       }
-              //                   },
-              //               cells: [
-              //                 DataCell(
-              //                   Text(e.id?.toString() ?? ""),
-              //                 ),
-              //                 DataCell(
-              //                   Text(e.code ?? ""),
-              //                 ),
-              //                 DataCell(
-              //                   Text(e.name ?? ""),
-              //                 ),
-              //                 DataCell(
-              //                   Text(e.description ?? ""),
-              //                 ),
-              //                 DataCell(
-              //                   Text(formatNumber(e.price)),
-              //                 ),
-              //                 DataCell(
-              //                   Container(
-              //                     width: 50,
-              //                     height: 50,
-              //                     decoration: BoxDecoration(
-              //                       border: Border.all(
-              //                         color: Colors.black,
-              //                         width: 1,
-              //                       ),
-              //                     ),
-              //                     child: imageFromBase64String(e.image!),
-              //                   ),
-              //                 ),
-              //               ]),
-              //         )
-              //         .toList() ??
-              //     [],

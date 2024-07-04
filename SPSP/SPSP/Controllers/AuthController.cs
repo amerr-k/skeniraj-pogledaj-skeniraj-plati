@@ -25,9 +25,9 @@ namespace SPSP.Controllers
         }
 
         [HttpPost("login")]
-        public async Task<Models.UserAuthInfo> Login([FromBody] LoginRequest loginRequest)
+        public async Task<Models.UserAuthInfo> MobileLogin([FromBody] LoginRequest loginRequest)
         {
-            return await userAccountService.Login(loginRequest.Username, loginRequest.Password);
+            return await customerService.MobileLogin(loginRequest.Username, loginRequest.Password);
         }
 
         [HttpPost("register")]

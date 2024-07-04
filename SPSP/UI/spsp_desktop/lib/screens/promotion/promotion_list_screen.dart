@@ -56,15 +56,8 @@ class _PromotionListScreenState extends State<PromotionListScreen> {
         Expanded(
           child: DataTable(
               showCheckboxColumn: false,
+              columnSpacing: 100,
               columns: const [
-                DataColumn(
-                  label: Expanded(
-                    child: Text(
-                      'Redni broj',
-                      style: TextStyle(fontStyle: FontStyle.italic),
-                    ),
-                  ),
-                ),
                 DataColumn(
                   label: Expanded(
                     child: Text(
@@ -108,7 +101,7 @@ class _PromotionListScreenState extends State<PromotionListScreen> {
               ],
               rows: searchResult?.result.asMap().entries.map(
                     (entry) {
-                      int index = entry.key;
+                      var index = entry.key;
                       var e = entry.value;
 
                       return DataRow(
@@ -125,7 +118,6 @@ class _PromotionListScreenState extends State<PromotionListScreen> {
                             }
                         },
                         cells: [
-                          DataCell(Text((index + 1).toString())),
                           DataCell(Text(e.description ?? "")),
                           DataCell(Text(Utils.formatDate(e.startTime!) ?? "")),
                           DataCell(Text(e.endTime != null ? Utils.formatDate(e.endTime!) : "")),

@@ -132,21 +132,20 @@ class _ReservationListCustomerScreenState extends State<ReservationListCustomerS
       child: ListView.builder(
         itemCount: reservationListRequestResult?.count,
         itemBuilder: (context, index) {
-          var rowNumber = index + 1;
           return Container(
             decoration: BoxDecoration(
               border: Border(
                 top: BorderSide(color: Colors.grey),
               ),
             ),
-            child: _buildProductCard(reservationListRequestResult!.result[index], rowNumber),
+            child: _buildProductCard(reservationListRequestResult!.result[index]),
           );
         },
       ),
     );
   }
 
-  Widget _buildProductCard(Reservation item, int rowNumber) {
+  Widget _buildProductCard(Reservation item) {
     return ListTile(
         onTap: () {
           // Navigator.pushNamed(
@@ -159,7 +158,6 @@ class _ReservationListCustomerScreenState extends State<ReservationListCustomerS
             ),
           );
         },
-        leading: Text(rowNumber.toString()),
         title: Text('Datum rezervacije: ${Utils.formatDate(item.startTime!)}'),
         subtitle: Text("Sto br: ${item.qrTable!.tableNumber.toString()}"),
         trailing: Text('${Utils.formatTime(item.startTime!)}h'));

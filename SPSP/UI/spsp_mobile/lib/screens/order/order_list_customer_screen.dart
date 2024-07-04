@@ -38,11 +38,8 @@ class _OrderListCustomerScreenState extends State<OrderListCustomerScreen> {
 
     _orderProvider = context.read<OrderProvider>();
 
-    orderListRequestResult = await _orderProvider?.get(filter: {
-      "orderStatus": OrderStatus.COMPLETED.name,
-      "isOrderItemsIncluded": true,
-      "searchByCustomer": true
-    });
+    orderListRequestResult = await _orderProvider?.get(
+        filter: {"orderStatus": OrderStatus.COMPLETED.name, "isOrderItemsIncluded": true, "searchByCustomer": true});
     setState(() {
       orderListRequestResult = orderListRequestResult!;
       isLoading = false;
@@ -69,8 +66,7 @@ class _OrderListCustomerScreenState extends State<OrderListCustomerScreen> {
                   isSearchVisible = !isSearchVisible;
                 });
               },
-              child:
-                  const Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+              child: const Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
                 Text("Pretraga po filterima"),
                 Icon(Icons.filter_list),
               ]),
@@ -93,23 +89,21 @@ class _OrderListCustomerScreenState extends State<OrderListCustomerScreen> {
       child: ListView.builder(
         itemCount: orderListRequestResult?.count,
         itemBuilder: (context, index) {
-          var rowNumber = index + 1;
           return Container(
             decoration: BoxDecoration(
               border: Border(
                 top: BorderSide(color: Colors.grey),
               ),
             ),
-            child: _buildProductCard(orderListRequestResult!.result[index], rowNumber),
+            child: _buildProductCard(orderListRequestResult!.result[index]),
           );
         },
       ),
     );
   }
 
-  Widget _buildProductCard(Order item, int rowNumber) {
+  Widget _buildProductCard(Order item) {
     return ListTile(
-      leading: Text(rowNumber.toString()),
       title: Text(Utils.formatDate(item.orderDateTime!)),
       subtitle: Text(" ${item.totalAmountWithVAT.toString()} KM"),
     );

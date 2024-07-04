@@ -59,14 +59,6 @@ class _MenuItemListScreenState extends State<MenuListScreen> {
                 DataColumn(
                   label: Expanded(
                     child: Text(
-                      'Redni broj',
-                      style: TextStyle(fontStyle: FontStyle.italic),
-                    ),
-                  ),
-                ),
-                DataColumn(
-                  label: Expanded(
-                    child: Text(
                       'Naziv',
                       style: TextStyle(fontStyle: FontStyle.italic),
                     ),
@@ -75,7 +67,7 @@ class _MenuItemListScreenState extends State<MenuListScreen> {
               ],
               rows: searchResult?.result.asMap().entries.map(
                     (entry) {
-                      int index = entry.key;
+                      var index = entry.key;
                       var e = entry.value;
 
                       return DataRow(
@@ -91,7 +83,6 @@ class _MenuItemListScreenState extends State<MenuListScreen> {
                           }
                         },
                         cells: [
-                          DataCell(Text((index + 1).toString())),
                           DataCell(Text(e.name ?? "")),
                         ],
                       );

@@ -6,11 +6,7 @@ using SPSP.Models.Request.UserAccount;
 using System.Security.Cryptography;
 using System.Text;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
 using SPSP.Models;
-using System.Configuration;
 using Microsoft.Extensions.Configuration;
 
 namespace SPSP.Services.UserAccount
@@ -41,7 +37,7 @@ namespace SPSP.Services.UserAccount
 
             return Convert.ToBase64String(byteArray);
         }
-        public static string GenerateHash(string salt, string password)
+        public string  GenerateHash(string salt, string password)
         {
             byte[] src = Convert.FromBase64String(salt);
             byte[] bytes = Encoding.Unicode.GetBytes(password);
@@ -83,58 +79,9 @@ namespace SPSP.Services.UserAccount
             return mapper.Map<Models.UserAccount>(entity);
         }
 
-        public async Task<Models.UserAuthInfo> Login(string username, string password)
-        {
-            //SHOULD RETURN TOKEN AFTER LOGIN
-
-            var userAccount = await GetAuthenticatedUserAccount(username, password);
-
-            if(userAccount == null)
-            {
-                throw new AppException("Unijeli ste pogrešne kredencijale.");
-            }
-
-            var jwtToken = GenerateJwtToken(userAccount);
-
-            return new UserAuthInfo(userAccount, jwtToken);
-        }
-
-        public string GenerateJwtToken(Models.UserAccount userAccount)
-        {
-            var issuer = configuration.GetValue<string>("TokenConfig:Issuer");
-            var audience = configuration.GetValue<string>("TokenConfig:Audience");
-            var signingKey = configuration.GetValue<string>("TokenConfig:SigningKey");
-
-            var claims = new[]
-            {
-                new Claim(ClaimTypes.Name, userAccount.Username),
-                new Claim(ClaimTypes.Email, userAccount.Email),
-                new Claim(ClaimTypes.NameIdentifier, userAccount.Id.ToString()),
-             };
-
-            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(signingKey));
-            var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
-
-            var token = new JwtSecurityToken(
-                issuer: issuer,
-                audience: audience,
-                claims: claims,
-                expires: DateTime.UtcNow.AddDays(7),
-                signingCredentials: credentials);
-
-            return new JwtSecurityTokenHandler().WriteToken(token);
-        }
-
         public async Task<UserAuthInfo> Register(UserAccountCreateRequest userAccountCreateRequest)
         {
             var userAccount = await Create(userAccountCreateRequest);
-
-            //context.Customers.Add(new Database.Customer
-            //{
-            //    UserAccountId = userAccount.Id
-            //});
-
-            //await context.SaveChangesAsync();
 
             return new UserAuthInfo(userAccount, "");
         }

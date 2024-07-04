@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using SPSP.Services.Employee;
 using SPSP.Services.UserAccount;
 using System;
 using System.Collections.Generic;
@@ -18,11 +19,12 @@ namespace SPSP
 {
     public class BasicAuthenticationHandler : AuthenticationHandler<AuthenticationSchemeOptions>
     {
-        IUserAccountService userAccountService;
+        //IUserAccountService userAccountService;
+        private readonly IEmployeeService employeeService;
         private readonly IConfiguration configuration;
-        public BasicAuthenticationHandler(IUserAccountService userAccountService, IOptionsMonitor<AuthenticationSchemeOptions> options, ILoggerFactory logger, UrlEncoder encoder, ISystemClock clock, IConfiguration configuration) : base(options, logger, encoder, clock)
+        public BasicAuthenticationHandler(IEmployeeService employeeService, IOptionsMonitor<AuthenticationSchemeOptions> options, ILoggerFactory logger, UrlEncoder encoder, ISystemClock clock, IConfiguration configuration) : base(options, logger, encoder, clock)
         {
-            this.userAccountService = userAccountService;
+            this.employeeService = employeeService;
             this.configuration = configuration;
         }
 
@@ -92,9 +94,9 @@ namespace SPSP
             var username = credentials[0];
             var password = credentials[1];
 
-            var userAccount = await userAccountService.GetAuthenticatedUserAccount(username, password);
+            var employee = await employeeService.GetAuthenticatedEmployee(username, password);
 
-            if (userAccount == null)
+            if (employee == null || employee.UserAccount == null)
             {
                 return AuthenticateResult.Fail("Incorrect username or password");
             }
@@ -102,11 +104,11 @@ namespace SPSP
             {
                 var claims = new List<Claim>()
                 {
-                    new Claim(ClaimTypes.Name, userAccount.FirstName),
-                    new Claim(ClaimTypes.NameIdentifier, userAccount.Id.ToString())
+                    new Claim(ClaimTypes.Name, employee.UserAccount.FirstName),
+                    new Claim(ClaimTypes.NameIdentifier, employee.UserAccount.Id.ToString())
                 };
 
-                foreach (var role in userAccount.UserAccountUserRoles)
+                foreach (var role in employee.UserAccount.UserAccountUserRoles)
                 {
                     claims.Add(new Claim(ClaimTypes.Role, role.UserRole.Name));
                 }

@@ -229,25 +229,36 @@ abstract class BaseProvider<T> with ChangeNotifier {
 
   bool isValidResponseCode(Response response) {
     if (response.statusCode == 200) {
-      if (response.body != "") {
+      if (response.body.isNotEmpty) {
         return true;
       } else {
         return false;
       }
     } else if (response.statusCode == 204) {
       return true;
-    } else if (response.statusCode == 400) {
-      throw Exception("Bad request");
-    } else if (response.statusCode == 401) {
-      throw Exception("Unauthorized");
-    } else if (response.statusCode == 403) {
-      throw Exception("Forbidden");
-    } else if (response.statusCode == 404) {
-      throw Exception("Not found");
-    } else if (response.statusCode == 500) {
-      throw Exception("Internal server error");
     } else {
-      throw Exception("Exception... handle this gracefully");
+      String errorMessage;
+      try {
+        var errorResponse = json.decode(response.body);
+        errorMessage = errorResponse['errors']['error'][0] ?? "Unknown error";
+      } catch (e) {
+        errorMessage = "Greška prilikom dekodiranja: ${response.body}";
+      }
+
+      switch (response.statusCode) {
+        case 400:
+          throw Exception("Bad request: $errorMessage");
+        case 401:
+          throw Exception("Unauthorized: $errorMessage");
+        case 403:
+          throw Exception("Forbidden: $errorMessage");
+        case 404:
+          throw Exception("Not found: $errorMessage");
+        case 500:
+          throw Exception("Internal server error: $errorMessage");
+        default:
+          throw Exception("Exception... handle this gracefully: $errorMessage");
+      }
     }
   }
 }

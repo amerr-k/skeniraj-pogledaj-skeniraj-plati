@@ -92,6 +92,7 @@ class _PromotionDetailScreenState extends State<PromotionDetailScreen> {
 
                         try {
                           if (widget.promotion == null) {
+                            request['active'] = true;
                             await _promotionProvider.create(request);
                           } else {
                             await _promotionProvider.update(widget.promotion!.id!, request);
@@ -221,16 +222,18 @@ class _PromotionDetailScreenState extends State<PromotionDetailScreen> {
             const SizedBox(
               height: 20,
             ),
-            Row(
-              children: [
-                Expanded(
-                  child: FormBuilderSwitch(
-                    name: "active",
-                    title: const Text("Promocija aktivna"),
-                  ),
-                ),
-              ],
-            ),
+            widget.promotion != null
+                ? Row(
+                    children: [
+                      Expanded(
+                        child: FormBuilderSwitch(
+                          name: "active",
+                          title: const Text("Promocija aktivna"),
+                        ),
+                      ),
+                    ],
+                  )
+                : const SizedBox.shrink()
           ],
         ),
       ),
