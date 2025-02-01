@@ -58,10 +58,9 @@ namespace SPSP.Services.Customer
 
         public override IQueryable<Database.Customer> AddInclude(IQueryable<Database.Customer> query, CustomerSearchObject search = null)
         {
-            if (search.IsUserAccountIncluded == true)
-            {
+
                 query = query.Include(x => x.UserAccount);
-            }
+            
 
             return base.AddInclude(query, search);
         }

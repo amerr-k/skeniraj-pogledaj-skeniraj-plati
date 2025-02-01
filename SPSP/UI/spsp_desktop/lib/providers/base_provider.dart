@@ -20,7 +20,7 @@ abstract class BaseProvider<T> with ChangeNotifier {
     _endpoint = endpoint;
     _baseUrl = const String.fromEnvironment(
       "baseUrl",
-      defaultValue: "http://localhost:7011/",
+      defaultValue: "https://localhost:7011/",
     );
     http = IOClient();
   }

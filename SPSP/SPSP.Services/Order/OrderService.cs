@@ -56,12 +56,6 @@ namespace SPSP.Services.Order
 
             List<Models.OrderItem> orderItems;
             var order = mapper.Map<Models.Order>(orderEntity);
-            
-            //if (create.OrderItems  != null)
-            //{
-            //    orderItems = await orderItemService.CreateMultiple(create.OrderItems, orderEntity.Id);
-            //    order.OrderItems = orderItems;
-            //}
 
             await qrTableService.SetIsTaken(create.QRTableId, true);
 

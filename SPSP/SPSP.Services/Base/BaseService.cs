@@ -66,15 +66,3 @@ namespace SPSP.Services.Base
 
     }
 }
-
-
-//public Models.MenuItem Insert(MenuItemInsertRequest request)
-//{
-//    var entity = new Database.MenuItem();
-//    mapper.Map(request, entity);
-
-//    context.MenuItems.Add(entity);
-//    context.SaveChanges();
-
-//    return mapper.Map<Models.MenuItem>(entity);
-//}

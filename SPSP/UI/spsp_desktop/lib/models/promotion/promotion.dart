@@ -14,8 +14,8 @@ class Promotion {
   MenuItem? menuItem;
   bool? valid;
 
-  Promotion(this.id, this.startTime, this.endTime, this.description, this.active,
-      this.menuItemId, this.menuItem, this.valid);
+  Promotion(
+      this.id, this.startTime, this.endTime, this.description, this.active, this.menuItemId, this.menuItem, this.valid);
 
   factory Promotion.fromJson(Map<String, dynamic> json) => _$PromotionFromJson(json);
 

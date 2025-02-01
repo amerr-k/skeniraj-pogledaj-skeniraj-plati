@@ -12,8 +12,8 @@ using SPSP.Services.Database;
 namespace SPSP.Services.Migrations
 {
     [DbContext(typeof(DataDbContext))]
-    [Migration("20240604112555_addIsActiveAndFixSaleInvoice")]
-    partial class addIsActiveAndFixSaleInvoice
+    [Migration("20250130115120_addMood")]
+    partial class addMood
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -589,6 +589,39 @@ namespace SPSP.Services.Migrations
                     b.ToTable("MenuItemPrediction", (string)null);
                 });
 
+            modelBuilder.Entity("SPSP.Services.Database.MoodTracker", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int?>("CustomerId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("DatumEvidencije")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("DodatniOpis")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("MoodTrackerStatus")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool?>("Valid")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValueSql("((1))");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CustomerId");
+
+                    b.ToTable("MoodTracker", (string)null);
+                });
+
             modelBuilder.Entity("SPSP.Services.Database.Order", b =>
                 {
                     b.Property<int>("Id")
@@ -642,7 +675,7 @@ namespace SPSP.Services.Migrations
                         {
                             Id = 1,
                             CustomerId = 1,
-                            OrderDateTime = new DateTime(2024, 6, 3, 0, 0, 0, 0, DateTimeKind.Local),
+                            OrderDateTime = new DateTime(2025, 1, 29, 0, 0, 0, 0, DateTimeKind.Local),
                             QRTableId = 3,
                             Status = "COMPLETED",
                             TotalAmount = 8.51m,
@@ -655,7 +688,7 @@ namespace SPSP.Services.Migrations
                         {
                             Id = 2,
                             CustomerId = 2,
-                            OrderDateTime = new DateTime(2024, 6, 3, 0, 0, 0, 0, DateTimeKind.Local),
+                            OrderDateTime = new DateTime(2025, 1, 29, 0, 0, 0, 0, DateTimeKind.Local),
                             QRTableId = 4,
                             Status = "COMPLETED",
                             TotalAmount = 12.82m,
@@ -668,7 +701,7 @@ namespace SPSP.Services.Migrations
                         {
                             Id = 3,
                             CustomerId = 3,
-                            OrderDateTime = new DateTime(2024, 6, 3, 0, 0, 0, 0, DateTimeKind.Local),
+                            OrderDateTime = new DateTime(2025, 1, 29, 0, 0, 0, 0, DateTimeKind.Local),
                             QRTableId = 5,
                             Status = "COMPLETED",
                             TotalAmount = 17.09m,
@@ -681,7 +714,7 @@ namespace SPSP.Services.Migrations
                         {
                             Id = 4,
                             CustomerId = 1,
-                            OrderDateTime = new DateTime(2024, 6, 3, 0, 0, 0, 0, DateTimeKind.Local),
+                            OrderDateTime = new DateTime(2025, 1, 29, 0, 0, 0, 0, DateTimeKind.Local),
                             QRTableId = 3,
                             Status = "COMPLETED",
                             TotalAmount = 8.51m,
@@ -694,7 +727,7 @@ namespace SPSP.Services.Migrations
                         {
                             Id = 5,
                             CustomerId = 2,
-                            OrderDateTime = new DateTime(2024, 6, 3, 0, 0, 0, 0, DateTimeKind.Local),
+                            OrderDateTime = new DateTime(2025, 1, 29, 0, 0, 0, 0, DateTimeKind.Local),
                             QRTableId = 4,
                             Status = "COMPLETED",
                             TotalAmount = 12.82m,
@@ -707,7 +740,7 @@ namespace SPSP.Services.Migrations
                         {
                             Id = 6,
                             CustomerId = 3,
-                            OrderDateTime = new DateTime(2024, 6, 3, 0, 0, 0, 0, DateTimeKind.Local),
+                            OrderDateTime = new DateTime(2025, 1, 29, 0, 0, 0, 0, DateTimeKind.Local),
                             QRTableId = 5,
                             Status = "COMPLETED",
                             TotalAmount = 17.09m,
@@ -720,7 +753,7 @@ namespace SPSP.Services.Migrations
                         {
                             Id = 7,
                             CustomerId = 1,
-                            OrderDateTime = new DateTime(2024, 6, 3, 0, 0, 0, 0, DateTimeKind.Local),
+                            OrderDateTime = new DateTime(2025, 1, 29, 0, 0, 0, 0, DateTimeKind.Local),
                             QRTableId = 3,
                             Status = "COMPLETED",
                             TotalAmount = 8.51m,
@@ -733,7 +766,7 @@ namespace SPSP.Services.Migrations
                         {
                             Id = 8,
                             CustomerId = 2,
-                            OrderDateTime = new DateTime(2024, 6, 3, 0, 0, 0, 0, DateTimeKind.Local),
+                            OrderDateTime = new DateTime(2025, 1, 29, 0, 0, 0, 0, DateTimeKind.Local),
                             QRTableId = 4,
                             Status = "COMPLETED",
                             TotalAmount = 12.82m,
@@ -746,7 +779,7 @@ namespace SPSP.Services.Migrations
                         {
                             Id = 9,
                             CustomerId = 3,
-                            OrderDateTime = new DateTime(2024, 6, 3, 0, 0, 0, 0, DateTimeKind.Local),
+                            OrderDateTime = new DateTime(2025, 1, 29, 0, 0, 0, 0, DateTimeKind.Local),
                             QRTableId = 5,
                             Status = "COMPLETED",
                             TotalAmount = 17.09m,
@@ -759,7 +792,7 @@ namespace SPSP.Services.Migrations
                         {
                             Id = 10,
                             CustomerId = 1,
-                            OrderDateTime = new DateTime(2024, 6, 3, 0, 0, 0, 0, DateTimeKind.Local),
+                            OrderDateTime = new DateTime(2025, 1, 29, 0, 0, 0, 0, DateTimeKind.Local),
                             QRTableId = 3,
                             Status = "ACTIVE",
                             TotalAmount = 8.51m,
@@ -772,7 +805,7 @@ namespace SPSP.Services.Migrations
                         {
                             Id = 11,
                             CustomerId = 2,
-                            OrderDateTime = new DateTime(2024, 6, 3, 0, 0, 0, 0, DateTimeKind.Local),
+                            OrderDateTime = new DateTime(2025, 1, 29, 0, 0, 0, 0, DateTimeKind.Local),
                             QRTableId = 4,
                             Status = "ACTIVE",
                             TotalAmount = 12.82m,
@@ -785,7 +818,7 @@ namespace SPSP.Services.Migrations
                         {
                             Id = 12,
                             CustomerId = 3,
-                            OrderDateTime = new DateTime(2024, 6, 3, 0, 0, 0, 0, DateTimeKind.Local),
+                            OrderDateTime = new DateTime(2025, 1, 29, 0, 0, 0, 0, DateTimeKind.Local),
                             QRTableId = 5,
                             Status = "ACTIVE",
                             TotalAmount = 17.09m,
@@ -798,7 +831,7 @@ namespace SPSP.Services.Migrations
                         {
                             Id = 13,
                             CustomerId = 1,
-                            OrderDateTime = new DateTime(2024, 6, 3, 0, 0, 0, 0, DateTimeKind.Local),
+                            OrderDateTime = new DateTime(2025, 1, 29, 0, 0, 0, 0, DateTimeKind.Local),
                             QRTableId = 3,
                             Status = "CANCELED",
                             TotalAmount = 8.51m,
@@ -811,7 +844,7 @@ namespace SPSP.Services.Migrations
                         {
                             Id = 14,
                             CustomerId = 2,
-                            OrderDateTime = new DateTime(2024, 6, 3, 0, 0, 0, 0, DateTimeKind.Local),
+                            OrderDateTime = new DateTime(2025, 1, 29, 0, 0, 0, 0, DateTimeKind.Local),
                             QRTableId = 4,
                             Status = "CANCELED",
                             TotalAmount = 12.82m,
@@ -824,7 +857,7 @@ namespace SPSP.Services.Migrations
                         {
                             Id = 15,
                             CustomerId = 3,
-                            OrderDateTime = new DateTime(2024, 6, 3, 0, 0, 0, 0, DateTimeKind.Local),
+                            OrderDateTime = new DateTime(2025, 1, 29, 0, 0, 0, 0, DateTimeKind.Local),
                             QRTableId = 5,
                             Status = "CANCELED",
                             TotalAmount = 17.09m,
@@ -837,7 +870,7 @@ namespace SPSP.Services.Migrations
                         {
                             Id = 16,
                             CustomerId = 1,
-                            OrderDateTime = new DateTime(2024, 6, 4, 13, 25, 54, 141, DateTimeKind.Local).AddTicks(8924),
+                            OrderDateTime = new DateTime(2025, 1, 30, 12, 51, 19, 177, DateTimeKind.Local).AddTicks(9285),
                             QRTableId = 5,
                             Status = "COMPLETED",
                             TotalAmount = 2.1m,
@@ -850,7 +883,7 @@ namespace SPSP.Services.Migrations
                         {
                             Id = 17,
                             CustomerId = 2,
-                            OrderDateTime = new DateTime(2024, 6, 3, 0, 0, 0, 0, DateTimeKind.Local),
+                            OrderDateTime = new DateTime(2025, 1, 29, 0, 0, 0, 0, DateTimeKind.Local),
                             QRTableId = 5,
                             Status = "COMPLETED",
                             TotalAmount = 4.7m,
@@ -863,7 +896,7 @@ namespace SPSP.Services.Migrations
                         {
                             Id = 18,
                             CustomerId = 3,
-                            OrderDateTime = new DateTime(2024, 6, 3, 0, 0, 0, 0, DateTimeKind.Local),
+                            OrderDateTime = new DateTime(2025, 1, 29, 0, 0, 0, 0, DateTimeKind.Local),
                             QRTableId = 5,
                             Status = "COMPLETED",
                             TotalAmount = 5.1m,
@@ -876,7 +909,7 @@ namespace SPSP.Services.Migrations
                         {
                             Id = 19,
                             CustomerId = 2,
-                            OrderDateTime = new DateTime(2024, 6, 3, 0, 0, 0, 0, DateTimeKind.Local),
+                            OrderDateTime = new DateTime(2025, 1, 29, 0, 0, 0, 0, DateTimeKind.Local),
                             QRTableId = 5,
                             Status = "COMPLETED",
                             TotalAmount = 4.7m,
@@ -889,7 +922,7 @@ namespace SPSP.Services.Migrations
                         {
                             Id = 20,
                             CustomerId = 3,
-                            OrderDateTime = new DateTime(2024, 6, 3, 0, 0, 0, 0, DateTimeKind.Local),
+                            OrderDateTime = new DateTime(2025, 1, 29, 0, 0, 0, 0, DateTimeKind.Local),
                             QRTableId = 5,
                             Status = "COMPLETED",
                             TotalAmount = 5.1m,
@@ -902,7 +935,7 @@ namespace SPSP.Services.Migrations
                         {
                             Id = 21,
                             CustomerId = 2,
-                            OrderDateTime = new DateTime(2024, 6, 3, 0, 0, 0, 0, DateTimeKind.Local),
+                            OrderDateTime = new DateTime(2025, 1, 29, 0, 0, 0, 0, DateTimeKind.Local),
                             QRTableId = 5,
                             Status = "COMPLETED",
                             TotalAmount = 4.7m,
@@ -915,7 +948,7 @@ namespace SPSP.Services.Migrations
                         {
                             Id = 22,
                             CustomerId = 3,
-                            OrderDateTime = new DateTime(2024, 6, 3, 0, 0, 0, 0, DateTimeKind.Local),
+                            OrderDateTime = new DateTime(2025, 1, 29, 0, 0, 0, 0, DateTimeKind.Local),
                             QRTableId = 5,
                             Status = "COMPLETED",
                             TotalAmount = 5.1m,
@@ -928,7 +961,7 @@ namespace SPSP.Services.Migrations
                         {
                             Id = 23,
                             CustomerId = 2,
-                            OrderDateTime = new DateTime(2024, 6, 3, 0, 0, 0, 0, DateTimeKind.Local),
+                            OrderDateTime = new DateTime(2025, 1, 29, 0, 0, 0, 0, DateTimeKind.Local),
                             QRTableId = 5,
                             Status = "COMPLETED",
                             TotalAmount = 4.7m,
@@ -941,7 +974,7 @@ namespace SPSP.Services.Migrations
                         {
                             Id = 24,
                             CustomerId = 3,
-                            OrderDateTime = new DateTime(2024, 6, 3, 0, 0, 0, 0, DateTimeKind.Local),
+                            OrderDateTime = new DateTime(2025, 1, 29, 0, 0, 0, 0, DateTimeKind.Local),
                             QRTableId = 5,
                             Status = "COMPLETED",
                             TotalAmount = 5.1m,
@@ -954,7 +987,7 @@ namespace SPSP.Services.Migrations
                         {
                             Id = 25,
                             CustomerId = 2,
-                            OrderDateTime = new DateTime(2024, 6, 3, 0, 0, 0, 0, DateTimeKind.Local),
+                            OrderDateTime = new DateTime(2025, 1, 29, 0, 0, 0, 0, DateTimeKind.Local),
                             QRTableId = 5,
                             Status = "COMPLETED",
                             TotalAmount = 4.7m,
@@ -967,7 +1000,7 @@ namespace SPSP.Services.Migrations
                         {
                             Id = 26,
                             CustomerId = 3,
-                            OrderDateTime = new DateTime(2024, 6, 3, 0, 0, 0, 0, DateTimeKind.Local),
+                            OrderDateTime = new DateTime(2025, 1, 29, 0, 0, 0, 0, DateTimeKind.Local),
                             QRTableId = 5,
                             Status = "COMPLETED",
                             TotalAmount = 5.1m,
@@ -980,7 +1013,7 @@ namespace SPSP.Services.Migrations
                         {
                             Id = 27,
                             CustomerId = 2,
-                            OrderDateTime = new DateTime(2024, 6, 3, 0, 0, 0, 0, DateTimeKind.Local),
+                            OrderDateTime = new DateTime(2025, 1, 29, 0, 0, 0, 0, DateTimeKind.Local),
                             QRTableId = 5,
                             Status = "COMPLETED",
                             TotalAmount = 4.7m,
@@ -993,7 +1026,7 @@ namespace SPSP.Services.Migrations
                         {
                             Id = 28,
                             CustomerId = 3,
-                            OrderDateTime = new DateTime(2024, 6, 3, 0, 0, 0, 0, DateTimeKind.Local),
+                            OrderDateTime = new DateTime(2025, 1, 29, 0, 0, 0, 0, DateTimeKind.Local),
                             QRTableId = 5,
                             Status = "COMPLETED",
                             TotalAmount = 5.1m,
@@ -1006,7 +1039,7 @@ namespace SPSP.Services.Migrations
                         {
                             Id = 29,
                             CustomerId = 2,
-                            OrderDateTime = new DateTime(2024, 6, 3, 0, 0, 0, 0, DateTimeKind.Local),
+                            OrderDateTime = new DateTime(2025, 1, 29, 0, 0, 0, 0, DateTimeKind.Local),
                             QRTableId = 5,
                             Status = "COMPLETED",
                             TotalAmount = 4.7m,
@@ -1019,7 +1052,7 @@ namespace SPSP.Services.Migrations
                         {
                             Id = 30,
                             CustomerId = 3,
-                            OrderDateTime = new DateTime(2024, 6, 3, 0, 0, 0, 0, DateTimeKind.Local),
+                            OrderDateTime = new DateTime(2025, 1, 29, 0, 0, 0, 0, DateTimeKind.Local),
                             QRTableId = 5,
                             Status = "COMPLETED",
                             TotalAmount = 5.1m,
@@ -1032,7 +1065,7 @@ namespace SPSP.Services.Migrations
                         {
                             Id = 31,
                             CustomerId = 2,
-                            OrderDateTime = new DateTime(2024, 6, 3, 0, 0, 0, 0, DateTimeKind.Local),
+                            OrderDateTime = new DateTime(2025, 1, 29, 0, 0, 0, 0, DateTimeKind.Local),
                             QRTableId = 5,
                             Status = "COMPLETED",
                             TotalAmount = 4.7m,
@@ -1045,7 +1078,7 @@ namespace SPSP.Services.Migrations
                         {
                             Id = 32,
                             CustomerId = 3,
-                            OrderDateTime = new DateTime(2024, 6, 3, 0, 0, 0, 0, DateTimeKind.Local),
+                            OrderDateTime = new DateTime(2025, 1, 29, 0, 0, 0, 0, DateTimeKind.Local),
                             QRTableId = 5,
                             Status = "COMPLETED",
                             TotalAmount = 5.1m,
@@ -1058,7 +1091,7 @@ namespace SPSP.Services.Migrations
                         {
                             Id = 33,
                             CustomerId = 2,
-                            OrderDateTime = new DateTime(2024, 6, 3, 0, 0, 0, 0, DateTimeKind.Local),
+                            OrderDateTime = new DateTime(2025, 1, 29, 0, 0, 0, 0, DateTimeKind.Local),
                             QRTableId = 5,
                             Status = "COMPLETED",
                             TotalAmount = 4.7m,
@@ -1071,7 +1104,7 @@ namespace SPSP.Services.Migrations
                         {
                             Id = 34,
                             CustomerId = 3,
-                            OrderDateTime = new DateTime(2024, 6, 3, 0, 0, 0, 0, DateTimeKind.Local),
+                            OrderDateTime = new DateTime(2025, 1, 29, 0, 0, 0, 0, DateTimeKind.Local),
                             QRTableId = 5,
                             Status = "COMPLETED",
                             TotalAmount = 5.1m,
@@ -1792,7 +1825,7 @@ namespace SPSP.Services.Migrations
                             Active = true,
                             Description = "Predstavljamo Vam naš novi proizvod.",
                             MenuItemId = 6,
-                            StartTime = new DateTime(2024, 6, 4, 13, 25, 54, 141, DateTimeKind.Local).AddTicks(9356),
+                            StartTime = new DateTime(2025, 1, 30, 12, 51, 19, 177, DateTimeKind.Local).AddTicks(9681),
                             Valid = true
                         });
                 });
@@ -2184,10 +2217,10 @@ namespace SPSP.Services.Migrations
                             Id = 4,
                             ContactInfo = "123 123 123",
                             CustomerId = 1,
-                            EndTime = new DateTime(2024, 6, 4, 21, 0, 0, 0, DateTimeKind.Unspecified),
+                            EndTime = new DateTime(2025, 1, 30, 21, 0, 0, 0, DateTimeKind.Unspecified),
                             QRTableId = 4,
                             SpecialRequest = "Ništa posebno, samo nek je čisto",
-                            StartTime = new DateTime(2024, 6, 4, 19, 0, 0, 0, DateTimeKind.Unspecified),
+                            StartTime = new DateTime(2025, 1, 30, 19, 0, 0, 0, DateTimeKind.Unspecified),
                             Status = "CONFIRMED",
                             Valid = true
                         },
@@ -2196,10 +2229,10 @@ namespace SPSP.Services.Migrations
                             Id = 5,
                             ContactInfo = "123 123 123",
                             CustomerId = 2,
-                            EndTime = new DateTime(2024, 6, 4, 21, 0, 0, 0, DateTimeKind.Unspecified),
+                            EndTime = new DateTime(2025, 1, 30, 21, 0, 0, 0, DateTimeKind.Unspecified),
                             QRTableId = 5,
                             SpecialRequest = "Ništa posebno, samo nek je čisto",
-                            StartTime = new DateTime(2024, 6, 4, 19, 0, 0, 0, DateTimeKind.Unspecified),
+                            StartTime = new DateTime(2025, 1, 30, 19, 0, 0, 0, DateTimeKind.Unspecified),
                             Status = "CONFIRMED",
                             Valid = true
                         },
@@ -2208,10 +2241,10 @@ namespace SPSP.Services.Migrations
                             Id = 6,
                             ContactInfo = "123 123 123",
                             CustomerId = 3,
-                            EndTime = new DateTime(2024, 6, 4, 21, 0, 0, 0, DateTimeKind.Unspecified),
+                            EndTime = new DateTime(2025, 1, 30, 21, 0, 0, 0, DateTimeKind.Unspecified),
                             QRTableId = 1,
                             SpecialRequest = "Ništa posebno, samo nek je čisto",
-                            StartTime = new DateTime(2024, 6, 4, 19, 0, 0, 0, DateTimeKind.Unspecified),
+                            StartTime = new DateTime(2025, 1, 30, 19, 0, 0, 0, DateTimeKind.Unspecified),
                             Status = "CONFIRMED",
                             Valid = true
                         },
@@ -2220,10 +2253,10 @@ namespace SPSP.Services.Migrations
                             Id = 7,
                             ContactInfo = "123 123 123",
                             CustomerId = 1,
-                            EndTime = new DateTime(2024, 7, 4, 21, 0, 0, 0, DateTimeKind.Unspecified),
+                            EndTime = new DateTime(2025, 2, 15, 21, 0, 0, 0, DateTimeKind.Unspecified),
                             QRTableId = 2,
                             SpecialRequest = "Ništa posebno, samo nek je čisto",
-                            StartTime = new DateTime(2024, 7, 4, 19, 0, 0, 0, DateTimeKind.Unspecified),
+                            StartTime = new DateTime(2025, 2, 15, 19, 0, 0, 0, DateTimeKind.Unspecified),
                             Status = "CONFIRMED",
                             Valid = true
                         },
@@ -2232,10 +2265,10 @@ namespace SPSP.Services.Migrations
                             Id = 8,
                             ContactInfo = "123 123 123",
                             CustomerId = 2,
-                            EndTime = new DateTime(2024, 7, 4, 21, 0, 0, 0, DateTimeKind.Unspecified),
+                            EndTime = new DateTime(2025, 2, 15, 21, 0, 0, 0, DateTimeKind.Unspecified),
                             QRTableId = 3,
                             SpecialRequest = "Ništa posebno, samo nek je čisto",
-                            StartTime = new DateTime(2024, 7, 4, 19, 0, 0, 0, DateTimeKind.Unspecified),
+                            StartTime = new DateTime(2025, 2, 15, 19, 0, 0, 0, DateTimeKind.Unspecified),
                             Status = "CONFIRMED",
                             Valid = true
                         },
@@ -2244,10 +2277,10 @@ namespace SPSP.Services.Migrations
                             Id = 9,
                             ContactInfo = "123 123 123",
                             CustomerId = 3,
-                            EndTime = new DateTime(2024, 7, 4, 21, 0, 0, 0, DateTimeKind.Unspecified),
+                            EndTime = new DateTime(2025, 2, 15, 21, 0, 0, 0, DateTimeKind.Unspecified),
                             QRTableId = 4,
                             SpecialRequest = "Ništa posebno, samo nek je čisto",
-                            StartTime = new DateTime(2024, 7, 4, 19, 0, 0, 0, DateTimeKind.Unspecified),
+                            StartTime = new DateTime(2025, 2, 15, 19, 0, 0, 0, DateTimeKind.Unspecified),
                             Status = "CONFIRMED",
                             Valid = true
                         },
@@ -2256,10 +2289,10 @@ namespace SPSP.Services.Migrations
                             Id = 10,
                             ContactInfo = "123 123 123",
                             CustomerId = 1,
-                            EndTime = new DateTime(2024, 8, 6, 21, 0, 0, 0, DateTimeKind.Unspecified),
+                            EndTime = new DateTime(2025, 3, 17, 21, 0, 0, 0, DateTimeKind.Unspecified),
                             QRTableId = 5,
                             SpecialRequest = "Ništa posebno, samo nek je čisto",
-                            StartTime = new DateTime(2024, 8, 6, 19, 0, 0, 0, DateTimeKind.Unspecified),
+                            StartTime = new DateTime(2025, 3, 17, 19, 0, 0, 0, DateTimeKind.Unspecified),
                             Status = "PENDING_CONFIRMATION",
                             Valid = true
                         },
@@ -2268,10 +2301,10 @@ namespace SPSP.Services.Migrations
                             Id = 11,
                             ContactInfo = "123 123 123",
                             CustomerId = 2,
-                            EndTime = new DateTime(2024, 8, 6, 21, 0, 0, 0, DateTimeKind.Unspecified),
+                            EndTime = new DateTime(2025, 3, 17, 21, 0, 0, 0, DateTimeKind.Unspecified),
                             QRTableId = 1,
                             SpecialRequest = "Ništa posebno, samo nek je čisto",
-                            StartTime = new DateTime(2024, 8, 6, 19, 0, 0, 0, DateTimeKind.Unspecified),
+                            StartTime = new DateTime(2025, 3, 17, 19, 0, 0, 0, DateTimeKind.Unspecified),
                             Status = "PENDING_CONFIRMATION",
                             Valid = true
                         },
@@ -2280,10 +2313,10 @@ namespace SPSP.Services.Migrations
                             Id = 12,
                             ContactInfo = "123 123 123",
                             CustomerId = 3,
-                            EndTime = new DateTime(2024, 8, 6, 21, 0, 0, 0, DateTimeKind.Unspecified),
+                            EndTime = new DateTime(2025, 3, 17, 21, 0, 0, 0, DateTimeKind.Unspecified),
                             QRTableId = 2,
                             SpecialRequest = "Ništa posebno, samo nek je čisto",
-                            StartTime = new DateTime(2024, 8, 6, 19, 0, 0, 0, DateTimeKind.Unspecified),
+                            StartTime = new DateTime(2025, 3, 17, 19, 0, 0, 0, DateTimeKind.Unspecified),
                             Status = "PENDING_CONFIRMATION",
                             Valid = true
                         });
@@ -2357,7 +2390,7 @@ namespace SPSP.Services.Migrations
                             InvoiceNumber = "123456701",
                             OrderId = 1,
                             Processed = true,
-                            SaleDate = new DateTime(2024, 6, 4, 13, 25, 54, 141, DateTimeKind.Local).AddTicks(9144),
+                            SaleDate = new DateTime(2025, 1, 30, 12, 51, 19, 177, DateTimeKind.Local).AddTicks(9505),
                             TotalAmount = 8.51m,
                             TotalAmountWithVAT = 10m,
                             VAT = 0.17m,
@@ -2372,7 +2405,7 @@ namespace SPSP.Services.Migrations
                             InvoiceNumber = "123456702",
                             OrderId = 1,
                             Processed = true,
-                            SaleDate = new DateTime(2024, 6, 4, 13, 25, 54, 141, DateTimeKind.Local).AddTicks(9153),
+                            SaleDate = new DateTime(2025, 1, 30, 12, 51, 19, 177, DateTimeKind.Local).AddTicks(9512),
                             TotalAmount = 12.82m,
                             TotalAmountWithVAT = 15m,
                             VAT = 0.17m,
@@ -2387,7 +2420,7 @@ namespace SPSP.Services.Migrations
                             InvoiceNumber = "123456703",
                             OrderId = 1,
                             Processed = true,
-                            SaleDate = new DateTime(2024, 6, 4, 13, 25, 54, 141, DateTimeKind.Local).AddTicks(9158),
+                            SaleDate = new DateTime(2025, 1, 30, 12, 51, 19, 177, DateTimeKind.Local).AddTicks(9515),
                             TotalAmount = 17.09m,
                             TotalAmountWithVAT = 20m,
                             VAT = 0.17m,
@@ -2402,7 +2435,7 @@ namespace SPSP.Services.Migrations
                             InvoiceNumber = "123456704",
                             OrderId = 1,
                             Processed = true,
-                            SaleDate = new DateTime(2024, 6, 4, 13, 25, 54, 141, DateTimeKind.Local).AddTicks(9163),
+                            SaleDate = new DateTime(2025, 1, 30, 12, 51, 19, 177, DateTimeKind.Local).AddTicks(9518),
                             TotalAmount = 8.51m,
                             TotalAmountWithVAT = 10m,
                             VAT = 0.17m,
@@ -2417,7 +2450,7 @@ namespace SPSP.Services.Migrations
                             InvoiceNumber = "123456705",
                             OrderId = 1,
                             Processed = true,
-                            SaleDate = new DateTime(2024, 6, 4, 13, 25, 54, 141, DateTimeKind.Local).AddTicks(9166),
+                            SaleDate = new DateTime(2025, 1, 30, 12, 51, 19, 177, DateTimeKind.Local).AddTicks(9521),
                             TotalAmount = 12.82m,
                             TotalAmountWithVAT = 15m,
                             VAT = 0.17m,
@@ -2432,7 +2465,7 @@ namespace SPSP.Services.Migrations
                             InvoiceNumber = "123456706",
                             OrderId = 1,
                             Processed = true,
-                            SaleDate = new DateTime(2024, 6, 4, 13, 25, 54, 141, DateTimeKind.Local).AddTicks(9170),
+                            SaleDate = new DateTime(2025, 1, 30, 12, 51, 19, 177, DateTimeKind.Local).AddTicks(9524),
                             TotalAmount = 17.09m,
                             TotalAmountWithVAT = 20m,
                             VAT = 0.17m,
@@ -2447,7 +2480,7 @@ namespace SPSP.Services.Migrations
                             InvoiceNumber = "123456707",
                             OrderId = 1,
                             Processed = true,
-                            SaleDate = new DateTime(2024, 6, 4, 13, 25, 54, 141, DateTimeKind.Local).AddTicks(9173),
+                            SaleDate = new DateTime(2025, 1, 30, 12, 51, 19, 177, DateTimeKind.Local).AddTicks(9527),
                             TotalAmount = 8.51m,
                             TotalAmountWithVAT = 10m,
                             VAT = 0.17m,
@@ -2462,7 +2495,7 @@ namespace SPSP.Services.Migrations
                             InvoiceNumber = "123456708",
                             OrderId = 1,
                             Processed = true,
-                            SaleDate = new DateTime(2024, 6, 4, 13, 25, 54, 141, DateTimeKind.Local).AddTicks(9179),
+                            SaleDate = new DateTime(2025, 1, 30, 12, 51, 19, 177, DateTimeKind.Local).AddTicks(9531),
                             TotalAmount = 12.82m,
                             TotalAmountWithVAT = 15m,
                             VAT = 0.17m,
@@ -2477,7 +2510,7 @@ namespace SPSP.Services.Migrations
                             InvoiceNumber = "123456709",
                             OrderId = 1,
                             Processed = true,
-                            SaleDate = new DateTime(2024, 6, 4, 13, 25, 54, 141, DateTimeKind.Local).AddTicks(9182),
+                            SaleDate = new DateTime(2025, 1, 30, 12, 51, 19, 177, DateTimeKind.Local).AddTicks(9536),
                             TotalAmount = 17.09m,
                             TotalAmountWithVAT = 20m,
                             VAT = 0.17m,
@@ -2990,6 +3023,15 @@ namespace SPSP.Services.Migrations
                     b.Navigation("MainMenuItem");
 
                     b.Navigation("RecommendedMenuItem");
+                });
+
+            modelBuilder.Entity("SPSP.Services.Database.MoodTracker", b =>
+                {
+                    b.HasOne("SPSP.Services.Database.Customer", "Customer")
+                        .WithMany()
+                        .HasForeignKey("CustomerId");
+
+                    b.Navigation("Customer");
                 });
 
             modelBuilder.Entity("SPSP.Services.Database.Order", b =>

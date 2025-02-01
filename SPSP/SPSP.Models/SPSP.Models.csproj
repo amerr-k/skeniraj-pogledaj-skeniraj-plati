@@ -6,4 +6,19 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Compile Remove="AbcKarta\**" />
+    <Compile Remove="FitPasos\**" />
+    <Compile Remove="Passport\**" />
+    <Compile Remove="ToDo\**" />
+    <EmbeddedResource Remove="AbcKarta\**" />
+    <EmbeddedResource Remove="FitPasos\**" />
+    <EmbeddedResource Remove="Passport\**" />
+    <EmbeddedResource Remove="ToDo\**" />
+    <None Remove="AbcKarta\**" />
+    <None Remove="FitPasos\**" />
+    <None Remove="Passport\**" />
+    <None Remove="ToDo\**" />
+  </ItemGroup>
+
 </Project>

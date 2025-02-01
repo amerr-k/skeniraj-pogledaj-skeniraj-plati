@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:spsp_mobile/providers/auth_provider.dart';
+import 'package:spsp_mobile/providers/mood_tracker_provider.dart';
 import 'package:spsp_mobile/providers/promotion_provider.dart';
 import 'package:spsp_mobile/providers/qr_table_selector_provider.dart';
 import 'package:spsp_mobile/providers/category_provider.dart';
@@ -37,6 +38,7 @@ void main() async {
       ChangeNotifierProvider(create: (_) => QRTableProvider()),
       ChangeNotifierProvider(create: (_) => CustomerProvider()),
       ChangeNotifierProvider(create: (_) => PromotionProvider()),
+      ChangeNotifierProvider(create: (_) => MoodTrackerProvider()),
     ],
     child: MaterialApp(
       debugShowCheckedModeBanner: true,

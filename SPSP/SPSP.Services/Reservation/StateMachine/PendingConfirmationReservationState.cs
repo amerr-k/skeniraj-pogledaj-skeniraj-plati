@@ -63,7 +63,7 @@ namespace SPSP.Services.Reservation.StateMachine
         {
             var allowedActions = await base.GetAllowedActions();
             allowedActions.AddRange(
-                new List<string> { "update", "confirm", "cancel"}); //mogu li se ovdje staviti create i put on hold ili cu u create-u radit provjeru?
+                new List<string> { "update", "confirm", "cancel"});
             return allowedActions;
         }
     }

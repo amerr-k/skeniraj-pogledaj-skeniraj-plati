@@ -33,15 +33,7 @@ namespace SPSP.Services.QRTable
 
         public async Task<List<Models.QRTable>> GetAllByReservationDate(QRTableSearchObject qrTableSearchObject)
         {
-            //var query = from qrt in context.QRTables
-            //            join r in context.Reservations.Where(r => r.StartTime == reservationDate)
-            //            on qrt.Id equals r.QRTableId into reservations
-            //            from res in reservations.DefaultIfEmpty()
-            //            select new
-            //            {
-            //                QRTable = qrt,
-            //                IsReserved = res != null ? true : false
-            //            };
+
 
             var query = await context.QRTables
                 .Select(qrt => new

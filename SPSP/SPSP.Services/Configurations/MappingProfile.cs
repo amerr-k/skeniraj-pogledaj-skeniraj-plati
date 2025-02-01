@@ -3,6 +3,7 @@ using SPSP.Models;
 using SPSP.Models.Request.Customer;
 using SPSP.Models.Request.Employee;
 using SPSP.Models.Request.MenuItem;
+using SPSP.Models.Request.MoodTracker;
 using SPSP.Models.Request.Order;
 using SPSP.Models.Request.OrderItem;
 using SPSP.Models.Request.PaymentGatewayData;
@@ -28,10 +29,7 @@ namespace SPSP.Services.Configurations
             CreateMap<MenuItemCreateRequest, Database.MenuItem>();
             CreateMap<MenuItemUpdateRequest, Database.MenuItem>();
 
-
             CreateMap<Database.MenuItemPrediction, Models.MenuItemPrediction>();
-            //CreateMap<MenuItemCreateRequest, Database.MenuItem>();
-            //CreateMap<MenuItemUpdateRequest, Database.MenuItem>();
 
             CreateMap<Database.Order, Models.Order>();
             CreateMap<OrderCreateRequest, Database.Order>();
@@ -79,10 +77,14 @@ namespace SPSP.Services.Configurations
             CreateMap<Database.PaymentGatewayData, Models.PaymentGatewayData>();
             CreateMap<PaymentGatewayDataCreateRequest, Database.PaymentGatewayData>();
 
-
             CreateMap<Database.Promotion, Models.Promotion>();
             CreateMap<PromotionCreateRequest, Database.Promotion>();
             CreateMap<PromotionUpdateRequest, Database.Promotion>();
+
+
+            CreateMap<Database.MoodTracker, Models.MoodTracker>();
+            CreateMap<MoodTrackerCreateRequest, Database.MoodTracker>();
+            CreateMap<MoodTrackerUpdateRequest, Database.MoodTracker>();
         }
     }
 }

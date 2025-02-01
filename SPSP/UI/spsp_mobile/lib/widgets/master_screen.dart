@@ -7,6 +7,7 @@ import 'package:spsp_mobile/screens/menu/menu_item_list_customer_screen.dart';
 import 'package:spsp_mobile/screens/order/order_list_customer_screen.dart';
 import 'package:spsp_mobile/screens/order/qr_code_scanner_customer_screen.dart';
 import 'package:spsp_mobile/screens/reservation/reservation_list_customer_screen.dart';
+import 'package:spsp_mobile/screens/test/mood_tracker_list_screen.dart';
 import 'package:spsp_mobile/utils/util.dart';
 
 class MasterScreenWidget extends StatefulWidget {
@@ -76,6 +77,17 @@ class _MasterScreenWidgetState extends State<MasterScreenWidget> {
                 );
               },
             ),
+            ListTile(
+              title: Text("MoodTracker"),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => MoodTrackerListScreen(),
+                  ),
+                );
+              },
+            )
           ],
         ),
       ),

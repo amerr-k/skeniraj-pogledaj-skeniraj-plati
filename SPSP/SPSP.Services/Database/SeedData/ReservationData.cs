@@ -12,8 +12,8 @@ namespace SPSP.Services.Database.SeedData
             // Specifično vrijeme danas (19:00)
             DateTime curentDayAt1900 = new DateTime(currentDate.Year, currentDate.Month, currentDate.Day, 19, 0, 0);
 
-            DateTime monthAfterAt1900 = new DateTime(currentDate.Year, currentDate.Month + 1, currentDate.Day, 19, 0, 0);
-            DateTime twoMonthAfterAt1900 = new DateTime(currentDate.Year, currentDate.Month + 2, currentDate.Day, 19, 0, 0);
+            DateTime monthAfterAt1900 = new DateTime(currentDate.Year, currentDate.Month + 1, 15, 19, 0, 0);
+            DateTime twoMonthAfterAt1900 = new DateTime(currentDate.Year, currentDate.Month + 2, 15, 19, 0, 0);
 
             entity.HasData(
                 new Reservation

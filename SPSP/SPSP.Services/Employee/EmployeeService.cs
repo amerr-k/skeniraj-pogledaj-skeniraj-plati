@@ -23,7 +23,6 @@ namespace SPSP.Services.Employee
         {
             this.userAccountService = userAccountService;
             this.httpContextAccessor = httpContextAccessor;
-            //obzirom da smo pozvali base() nepotrebno je ovdje dodavati i deklarisati context i mapper i funkcije
         }
 
         public override async Task<Models.Employee> Create(EmployeeCreateRequest create)

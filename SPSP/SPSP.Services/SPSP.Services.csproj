@@ -7,6 +7,15 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Passport\**" />
+    <Compile Remove="ToDo\**" />
+    <EmbeddedResource Remove="Passport\**" />
+    <EmbeddedResource Remove="ToDo\**" />
+    <None Remove="Passport\**" />
+    <None Remove="ToDo\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="11.0.0" />
     <PackageReference Include="EasyNetQ" Version="7.5.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.29" />

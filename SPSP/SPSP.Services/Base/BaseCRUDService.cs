@@ -22,6 +22,11 @@ namespace SPSP.Services.Base
             
         }
 
+        public virtual async Task PrepareBeforeUpdate(TDb db, TUpdate create)
+        {
+
+        }
+
         public virtual async Task<T> Create(TCreate create)
         {
 
@@ -47,6 +52,8 @@ namespace SPSP.Services.Base
 
             mapper.Map(update, entity);
 
+            await PrepareBeforeUpdate(entity, update);
+
             await context.SaveChangesAsync();
 
             return mapper.Map<T>(entity);
@@ -54,15 +61,3 @@ namespace SPSP.Services.Base
 
     }
 }
-
-
-//public Models.MenuItem Insert(MenuItemInsertRequest request)
-//{
-//    var entity = new Database.MenuItem();
-//    mapper.Map(request, entity);
-
-//    context.MenuItems.Add(entity);
-//    context.SaveChanges();
-
-//    return mapper.Map<Models.MenuItem>(entity);
-//}

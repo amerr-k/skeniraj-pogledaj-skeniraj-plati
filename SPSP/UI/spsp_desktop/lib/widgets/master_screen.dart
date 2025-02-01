@@ -9,6 +9,7 @@ import 'package:spsp_desktop/screens/pos/pos_screen.dart';
 import 'package:spsp_desktop/screens/promotion/promotion_list_screen.dart';
 import 'package:spsp_desktop/screens/report/report_form_screen.dart';
 import 'package:spsp_desktop/screens/reservation/reservation_list_screen.dart';
+import 'package:spsp_desktop/screens/to_do/to_do_list_screen.dart';
 
 class MasterScreenWidget extends StatefulWidget {
   String? title;
@@ -74,6 +75,12 @@ class _MasterScreenWidgetState extends State<MasterScreenWidget> {
               title: Text("Rezervacije"),
               onTap: () {
                 Navigator.of(context).push(MaterialPageRoute(builder: (context) => ReservationListScreen()));
+              },
+            ),
+            ListTile(
+              title: Text("TODO"),
+              onTap: () {
+                Navigator.of(context).push(MaterialPageRoute(builder: (context) => ToDoListScreen()));
               },
             )
           ],

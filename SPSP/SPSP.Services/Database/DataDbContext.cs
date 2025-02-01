@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using SPSP.Models;
 using SPSP.Services.Database.SeedData;
 using System.Text.RegularExpressions;
 
@@ -36,10 +37,11 @@ namespace SPSP.Services.Database
         public virtual DbSet<TrainedData> TrainedDatas { get; set; }
         public virtual DbSet<MenuItemPrediction> MenuItemPredictions { get; set; }
         public virtual DbSet<Promotion> Promotions { get; set; }
+        public virtual DbSet<MoodTracker> MoodTracker { get; set; }
+
 
         //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         //{
-
         //}
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -519,6 +521,15 @@ namespace SPSP.Services.Database
                     .HasForeignKey(m => m.MenuItemId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_Promotion_MenuItemId");
+            });
+
+            modelBuilder.Entity<MoodTracker>(entity =>
+            {
+                entity.ToTable("MoodTracker");
+
+                entity.Property(e => e.Valid)
+                    .IsRequired()
+                    .HasDefaultValueSql("((1))");
             });
 
             modelBuilder.Entity<Category>().SeedData();

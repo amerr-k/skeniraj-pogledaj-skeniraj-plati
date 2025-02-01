@@ -25,3 +25,7 @@ flutter run -d windows
 flutter run -d emulator-5554
 
 docker run -it --rm --name rabbitmq -p 5672:5672 -p 15672:15672 rabbitmq:3.13-management
+
+kako dokerizovati
+
+flutter run -d emulator-5554 --dart-define=CLIENT_ID_VALUE=Ae5GQtw-YcOPqhxUC7dInUo1VD- --dart-define=SECRET_KEY_VALUE=

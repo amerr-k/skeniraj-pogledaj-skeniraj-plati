@@ -11,6 +11,7 @@ import 'package:spsp_desktop/providers/promotion_provider.dart';
 import 'package:spsp_desktop/providers/qr_table_provider.dart';
 import 'package:spsp_desktop/providers/report_provider.dart';
 import 'package:spsp_desktop/providers/reservation_provider.dart';
+import 'package:spsp_desktop/providers/to_do_provider.dart';
 import 'package:spsp_desktop/utils/util.dart';
 import 'screens/menu_item/menu_item_list_screen.dart';
 
@@ -27,6 +28,7 @@ void main() {
         ChangeNotifierProvider(create: (_) => ReportProvider()),
         ChangeNotifierProvider(create: (_) => PromotionProvider()),
         ChangeNotifierProvider(create: (_) => ReservationProvider()),
+        ChangeNotifierProvider(create: (_) => CustomerProvider()),
       ],
       child: const MyMaterialApp(),
     ),

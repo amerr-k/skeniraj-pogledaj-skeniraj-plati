@@ -28,17 +28,13 @@ using Microsoft.ML;
 using Quartz;
 using SPSP.Services.Report;
 using SPSP.Services.Promotion;
-using SPSP.Filters;
-using SPSP.Services.Base;
+using SPSP.Services.MoodTracker;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-//add here ml context
 builder.Services.AddHttpContextAccessor();
 
 builder.Services.AddScoped<MLContext>();
-//builder.Services.AddScoped<ITransformer>();
 builder.Services.AddScoped<IRecommenderService, RecommenderService>();
 
 builder.Services.AddQuartz(options =>
@@ -46,19 +42,6 @@ builder.Services.AddQuartz(options =>
     options.UseMicrosoftDependencyInjectionJobFactory();
 
     var jobKey = JobKey.Create(nameof(RecommenderJob));
-
-    // JOB KOJI ĆE SE IZVRŠAVATI SVAKA 24 SATA, 
-    // ZA POTREBE TESTIRANJA, JOB ĆE IZVRŽITI SAMO JEDNOM I 
-    // POPUNITI TABELU MenuItemPrediction I TrainedData
-    //options.AddJob<RecommenderJob>(jobKey)
-    //    .AddTrigger(trigger => trigger.ForJob(jobKey)
-    //        .WithSimpleSchedule(schedule => schedule
-    //            .WithIntervalInHours(24)
-    //            .RepeatForever()
-    //        )
-    //    );
-    //NAKON TOGA, UMJESTO DA SE NA PODACIMA ALGORITAM PONOVO TRENIRA, 
-    //APLIKACIJA CE DOHVATATI RECOMMENED PODATKE IZ TABELA
 
     options.AddJob<RecommenderJob>(jobKey)
     .AddTrigger(trigger => trigger.ForJob(jobKey)
@@ -74,9 +57,6 @@ builder.Services.AddTransient<IEmailPublisherService, EmailPublisherService>();
 builder.Services.AddTransient<IUserAccountService, UserAccountService>();
 builder.Services.AddTransient<ICustomerService, CustomerService>();
 builder.Services.AddTransient<IEmployeeService, EmployeeService>();
-//builder.Services.AddTransient
-//    <IService<SPSP.Models.Business, BaseSearchObject>,
-//    BaseService<SPSP.Models.Business, Business, BaseSearchObject>>();
 builder.Services.AddTransient<IMenuService, MenuService>();
 builder.Services.AddTransient<IMenuItemService, MenuItemService>();
 builder.Services.AddTransient<IMenuItemPredictionService, MenuItemPredictionService>();
@@ -92,7 +72,8 @@ builder.Services.AddTransient<IQRTableService, QRTableService>();
 builder.Services.AddTransient<IReservationService, ReservationService>();
 builder.Services.AddTransient<IReportService, ReportService>();
 builder.Services.AddTransient<IPromotionService, PromotionService>();
-
+builder.Services.AddTransient<IMoodTrackerService, MoodTrackerService>();
+// ne mogu ga nikako setovati na singleton
 builder.Services.AddTransient<BaseState>();
 builder.Services.AddTransient<InitialReservationState>();
 builder.Services.AddTransient<PendingConfirmationReservationState>();
@@ -101,7 +82,7 @@ builder.Services.AddTransient<ConfirmedReservationState>();
 
 builder.Services.AddControllers(x =>
 {
-    x.Filters.Add<ErrorFilter>();
+    //x.Filters.Add<ErrorFilter>();
 });
 
 builder.Services.AddEndpointsApiExplorer();
@@ -141,8 +122,8 @@ var signingKey = builder.Configuration["TokenConfig:SigningKey"] ?? "";
 
 builder.Services.AddAuthentication(options =>
 {
-    options.DefaultAuthenticateScheme = "BasicAuthentication"; // Set BasicAuthentication as default
-    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme; // Use JwtBearer for challenges
+    options.DefaultAuthenticateScheme = "BasicAuthentication"; 
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme; 
 })
 .AddScheme<AuthenticationSchemeOptions, BasicAuthenticationHandler>("BasicAuthentication", null)
 .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options =>
@@ -161,11 +142,9 @@ builder.Services.AddAuthentication(options =>
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    //app.UseSwaggerUI();
     app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "SPSP v1"));
 }
 
@@ -187,3 +166,23 @@ using (var scope = app.Services.CreateScope())
 }
 
 app.Run();
+
+
+//jos jedan nacin registracija servisa:
+//builder.Services.AddTransient
+//    <IService<SPSP.Models.Business, BaseSearchObject>,
+//    BaseService<SPSP.Models.Business, Business, BaseSearchObject>>();
+
+
+// JOB KOJI ĆE SE IZVRŠAVATI SVAKA 24 SATA, 
+// ZA POTREBE TESTIRANJA, JOB ĆE IZVRŽITI SAMO JEDNOM I 
+// POPUNITI TABELU MenuItemPrediction I TrainedData
+//options.AddJob<RecommenderJob>(jobKey)
+//    .AddTrigger(trigger => trigger.ForJob(jobKey)
+//        .WithSimpleSchedule(schedule => schedule
+//            .WithIntervalInHours(24)
+//            .RepeatForever()
+//        )
+//    );
+//NAKON TOGA, UMJESTO DA SE NA PODACIMA ALGORITAM PONOVO TRENIRA, 
+//APLIKACIJA CE DOHVATATI RECOMMENED PODATKE IZ TABELA
